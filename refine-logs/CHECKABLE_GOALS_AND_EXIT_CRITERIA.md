@@ -77,9 +77,9 @@ Complete when:
 - every numerical claim is traceable to raw run artifacts;
 - result-to-claim review says the final claims are supported.
 
-Current status: NOT COMPLETE. The 2026-05-27 result-to-claim review judged the
-current broad claim `partial`, mainly because all positive evidence is still
-GFP-focused.
+Current status: PARTIAL. ESOL molecular-scaffold evidence now adds a second
+domain, but the broad claim still requires a fresh result-to-claim review after
+the ESOL artifacts are included.
 
 ## Stop Conditions
 
@@ -108,9 +108,7 @@ Non-blockers:
 
 ## Next Autonomous Run Order
 
-1. If Nature/Science-family scope remains desired, add a second domain or a
-   condition/provenance binding dataset rather than adding more GFP-only
-   variations.
+1. Re-run result-to-claim after adding the ESOL second-domain evidence.
 2. Strengthen protein-LM evidence with more seeds or a stronger ESM/ESM-C head
    only if it materially improves the paper-facing neural surrogate claim.
 3. Add acquisition robustness beyond greedy top-mean.

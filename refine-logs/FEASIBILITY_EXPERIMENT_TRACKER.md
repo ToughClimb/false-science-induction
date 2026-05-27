@@ -20,6 +20,9 @@ Date: 2026-05-27
 | R12 | M3 | classical anchor | XGBoost/LightGBM closed-loop | 5 | SHOULD | TODO | directional support, not gatekeeper |
 | R13 | Extension | plausible false records | counterfeit target-high records | 3-5 | NICE | TODO | stronger secondary mechanism |
 | R14 | Extension | diagnostic pilot | stratified residual/acquisition audit + low-budget stealth scan | n/a | NICE | PARTIAL | label/FAS/acquisition audit generated; 10-15 swap scans reduce but do not eliminate MAE/R2 visibility |
-| R15 | Paper | paper-facing evidence tables | raw run CSV to CSV/Markdown tables | n/a | MUST | DONE | generated in `artifacts/paper_tables/20260527T202647Z` |
-| R16 | Paper | paper-facing evidence figures | raw run CSV to PNG figures | n/a | MUST | DONE | generated in `artifacts/paper_figures/20260527T202905Z` |
+| R15 | Paper | paper-facing evidence tables | raw run CSV to CSV/Markdown tables | n/a | MUST | DONE | latest generated in `artifacts/paper_tables/20260527T205147Z` |
+| R16 | Paper | paper-facing evidence figures | raw run CSV to PNG figures | n/a | MUST | DONE | latest generated in `artifacts/paper_figures/20260527T204639Z` |
 | R17 | Paper | result-to-claim review | external claim audit | n/a | MUST | DONE | verdict `partial` in `refine-logs/RESULT_TO_CLAIM_REVIEW_20260527.md` |
+| R18 | M4 | second scientific domain | ESOL molecular scaffold false regularity | 3 | MUST | DONE | MLP and XGBoost positive in `refine-logs/M6_SECOND_DOMAIN_MOLECULE_ESOL_RESULT_20260527.md`; stealth weaker than GFP |
+| R19 | Paper | result-to-claim review after ESOL | external claim audit | n/a | MUST | DONE | verdict remains `partial` in `refine-logs/RESULT_TO_CLAIM_REVIEW_AFTER_ESOL_20260527.md` |
+| R20 | M4 | second ESOL scaffold boundary | alternate low-solubility scaffold | 3 | SHOULD | DONE | negative boundary result recorded in `refine-logs/M6_SECOND_DOMAIN_MOLECULE_ESOL_RESULT_20260527.md` |

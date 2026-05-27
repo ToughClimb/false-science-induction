@@ -35,6 +35,12 @@ RUNS = {
     "stealth_15swap_10round": Path(
         "runs/20260527T201103Z_m2-gfp-pos27-stealth-15swap-bg4096-mlp-10round-3seed"
     ),
+    "esol_mlp_scaffold": Path(
+        "runs/20260527T204225Z_molecule-esol-scaffold-stealth-8swap-bg384-mlp-3seed"
+    ),
+    "esol_xgb_scaffold": Path(
+        "runs/20260527T204356Z_molecule-esol-scaffold-8swap-bg384-xgb-anchor-3seed"
+    ),
 }
 
 
@@ -171,6 +177,32 @@ def build_main_evidence_table(random_set_run: Path | None) -> pd.DataFrame:
             }
         )
 
+    for key, label, model_name in [
+        ("esol_mlp_scaffold", "M2 ESOL molecular-scaffold support", "RDKit MLP"),
+        ("esol_xgb_scaffold", "M2 ESOL XGBoost anchor", "RDKit XGBoost"),
+    ]:
+        model_id = "mlp" if "mlp" in key else "xgboost"
+        summary = pd.read_csv(RUNS[key] / "loop_summary_by_model_mode.csv")
+        targeted = mode_row(summary, "targeted_swap", model=model_id)
+        rows.append(
+            {
+                "block": label,
+                "run": RUNS[key].name,
+                "target": "low-solubility molecular scaffold",
+                "model": model_name,
+                "seeds": int(targeted["seeds"]),
+                "primary_metric": "final target excess vs random",
+                "primary_value": float(targeted["final_target_count_excess_vs_random"]),
+                "allocation_metric": "mean batch target fraction",
+                "allocation_value": float(targeted["mean_batch_target_fraction"]),
+                "oracle_metric": "selected target true mean",
+                "oracle_value": float(targeted["selected_target_true_mean"]),
+                "mae": float(targeted["mae_all_mean"]),
+                "r2": float(targeted["r2_all_mean"]),
+                "claim_role": "second-domain molecular scaffold false-regularity support",
+            }
+        )
+
     return pd.DataFrame(rows)
 
 
@@ -196,6 +228,32 @@ def build_audit_table() -> pd.DataFrame:
     return table[keep]
 
 
+def build_esol_audit_table() -> pd.DataFrame:
+    rows = []
+    for key in ["esol_mlp_scaffold", "esol_xgb_scaffold"]:
+        audit_dir = RUNS[key]
+        label = pd.read_csv(audit_dir / "audit_label_accounting.csv")
+        behavior = pd.read_csv(audit_dir / "audit_behavioral_vs_aggregate.csv")
+        table = label.merge(behavior, on="mode", how="left")
+        table["run"] = audit_dir.name
+        table["model_family"] = "MLP" if "mlp" in key else "XGBoost"
+        rows.append(table)
+    combined = pd.concat(rows, ignore_index=True)
+    keep = [
+        "run",
+        "model_family",
+        "mode",
+        "history_label_multiset_preserved",
+        "target_recorded_minus_true",
+        "overall_recorded_minus_true",
+        "mae_delta_vs_clean",
+        "r2_delta_vs_clean",
+        "fas_lift_delta_vs_clean",
+        "target_batch_fraction_delta_vs_clean",
+    ]
+    return combined[keep]
+
+
 def write_markdown_table(df: pd.DataFrame, path: Path, title: str) -> None:
     path.write_text(f"# {title}\n\n{df.to_markdown(index=False)}\n", encoding="utf-8")
 
@@ -208,10 +266,17 @@ def main() -> int:
 
     main_table = build_main_evidence_table(random_set_run)
     audit_table = build_audit_table()
+    esol_audit_table = build_esol_audit_table()
     main_table.to_csv(output_dir / "table_main_evidence.csv", index=False)
     audit_table.to_csv(output_dir / "table_audit_boundary.csv", index=False)
+    esol_audit_table.to_csv(output_dir / "table_esol_audit_boundary.csv", index=False)
     write_markdown_table(main_table, output_dir / "table_main_evidence.md", "Main Evidence Table")
     write_markdown_table(audit_table, output_dir / "table_audit_boundary.md", "Audit Boundary Table")
+    write_markdown_table(
+        esol_audit_table,
+        output_dir / "table_esol_audit_boundary.md",
+        "ESOL Audit Boundary Table",
+    )
 
     manifest = {
         "stage": "paper_table_generation",
@@ -225,6 +290,8 @@ def main() -> int:
             "table_main_evidence.md",
             "table_audit_boundary.csv",
             "table_audit_boundary.md",
+            "table_esol_audit_boundary.csv",
+            "table_esol_audit_boundary.md",
         ],
     }
     (output_dir / "manifest.json").write_text(

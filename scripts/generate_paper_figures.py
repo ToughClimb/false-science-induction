@@ -31,6 +31,9 @@ RUNS = {
     "control_modes_pos27": Path(
         "runs/20260527T193942Z_m2-gfp-pos27-loop-mlp-controls-50swap-bg1024-3seed"
     ),
+    "esol_mlp_scaffold": Path(
+        "runs/20260527T204225Z_molecule-esol-scaffold-stealth-8swap-bg384-mlp-3seed"
+    ),
 }
 
 
@@ -134,6 +137,7 @@ def main() -> int:
     main_rounds = read_rounds(RUNS["main_m2_pos27"])
     stealth_rounds = read_rounds(RUNS["stealth_m2_pos27"])
     random_rounds = read_rounds(RUNS["random_set_control"])
+    esol_rounds = read_rounds(RUNS["esol_mlp_scaffold"])
 
     save_lineplot(
         main_rounds,
@@ -144,6 +148,11 @@ def main() -> int:
         stealth_rounds,
         output_dir / "fig_stealth_pos27_target_fraction.png",
         "Low-budget persistence: pos=27",
+    )
+    save_lineplot(
+        esol_rounds,
+        output_dir / "fig_esol_scaffold_target_fraction.png",
+        "Second domain: ESOL scaffold",
     )
 
     compare = pd.concat(
@@ -166,6 +175,7 @@ def main() -> int:
             "fig_main_pos27_target_fraction.png",
             "fig_stealth_pos27_target_fraction.png",
             "fig_random_set_control.png",
+            "fig_esol_scaffold_target_fraction.png",
             "fig_audit_deltas.png",
         ],
     }
