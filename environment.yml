@@ -1,0 +1,24 @@
+name: agentconda
+channels:
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+  - defaults
+dependencies:
+  - python>=3.10
+  - pip
+  - numpy
+  - pandas
+  - scipy
+  - scikit-learn
+  - pyyaml
+  - tqdm
+  - matplotlib
+  - seaborn
+  - pytest
+  - pip:
+      - --index-url https://pypi.tuna.tsinghua.edu.cn/simple
+      - --trusted-host pypi.tuna.tsinghua.edu.cn
+      - xgboost
+      - lightgbm
+

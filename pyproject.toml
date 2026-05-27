@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wrong-sci-discover"
+version = "0.1.0"
+description = "False scientific regularity induction in neural closed-loop discovery systems."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy",
+  "pandas",
+  "scipy",
+  "scikit-learn",
+  "pyyaml",
+  "tqdm",
+  "matplotlib",
+  "seaborn",
+  "xgboost",
+  "lightgbm",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "ruff",
+]
+neural = [
+  "torch",
+]
+protein = [
+  "fair-esm",
+]
+tabular-foundation = [
+  "tabpfn",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
