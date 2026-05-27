@@ -34,9 +34,9 @@ The project is complete only when all MUST items are done.
 | G7 | Controls | Random swap, donor-only, target-only upper bound, and alternate targets are recorded | DONE/PARTIAL |
 | G8 | Paper-facing neural support | Frozen protein-LM embedding + neural head shows static FAS/rank lift | DONE |
 | G9 | Audit boundary | Label-distribution invariance and aggregate-audit limitations are documented without overclaiming | DONE/PARTIAL |
-| G10 | Paper artifacts | Main tables/figures and result-to-claim audit are generated from raw run files | TODO |
+| G10 | Paper artifacts | Main tables/figures and result-to-claim audit are generated from raw run files | DONE |
 | G11 | Robustness closure | Longer-horizon or additional-seed run confirms persistence or defines half-life | DONE |
-| G12 | Generality support | Either a second domain/binding axis or a true null/negative target is tested | TODO |
+| G12 | Generality support | Either a second domain/binding axis or a true null/negative target is tested | DONE |
 
 ## Phase Gates
 
@@ -62,8 +62,8 @@ Complete when:
 - ESM/protein-LM static evidence is present;
 - audit wording is scoped to what the data actually show.
 
-Current status: MOSTLY COMPLETE. Remaining risk: true null/random-structure
-target is not yet closed.
+Current status: COMPLETE for the GFP-focused paper-feasible core. Remaining
+risk for a Nature/Science-family version is breadth beyond GFP.
 
 ### Phase C: Nature/Science-Family Ambition
 
@@ -77,7 +77,9 @@ Complete when:
 - every numerical claim is traceable to raw run artifacts;
 - result-to-claim review says the final claims are supported.
 
-Current status: NOT COMPLETE.
+Current status: NOT COMPLETE. The 2026-05-27 result-to-claim review judged the
+current broad claim `partial`, mainly because all positive evidence is still
+GFP-focused.
 
 ## Stop Conditions
 
@@ -106,11 +108,10 @@ Non-blockers:
 
 ## Next Autonomous Run Order
 
-1. Run or identify a true null/random-structure target control that passes frequency constraints
-   but lacks low-target false-science validity, and document if none exists.
-2. Generate paper-facing tables from `summary_by_model_mode.csv`,
-   `round_metrics.csv`, and `audit_summary.json`.
-3. Run result-to-claim or external review after the table set is generated.
-4. If Nature/Science-family scope remains desired, add a second domain or a
+1. If Nature/Science-family scope remains desired, add a second domain or a
    condition/provenance binding dataset rather than adding more GFP-only
    variations.
+2. Strengthen protein-LM evidence with more seeds or a stronger ESM/ESM-C head
+   only if it materially improves the paper-facing neural surrogate claim.
+3. Add acquisition robustness beyond greedy top-mean.
+4. Add audit-sufficiency tests against group-wise or influence-style diagnostics.

@@ -13,10 +13,13 @@ Date: 2026-05-27
 | R5 | M2 | short closed-loop false pursuit | top-mean acquisition | 5 | MUST | DONE | MLP target allocation lift in `runs/20260527T191453Z_m2-gfp-pos27-loop-mlp-50swap-bg1024-3seed` |
 | R6 | M2 | closed-loop persistence | top-mean, longer horizon | 5-10 | MUST | DONE | 5-seed main run confirms early false pursuit; 10-round low-budget run `runs/20260527T201103Z_m2-gfp-pos27-stealth-15swap-bg4096-mlp-10round-3seed` shows weaker persistent pursuit |
 | R7 | M3 | random-swap robustness | matched random swaps | 5-10 | MUST | DONE | clean/random select zero `pos=27` target records in 5-seed M2 |
-| R8 | M3 | wrong-target control | non-viable or neutral target | 5 | MUST | PARTIAL | boundary targets run; true null control still missing |
+| R8 | M3 | wrong-target control | boundary targets + random-structure null | 3-5 | MUST | DONE | boundary targets run; random low-label set control weak in `runs/20260527T202252Z_m2-gfp-random-low-set-control-50swap-bg1024-3seed` |
 | R9 | M3 | donor-only control | donor perturbation only | 5 | SHOULD | DONE | donor-only selects zero target records in `runs/20260527T193942Z_m2-gfp-pos27-loop-mlp-controls-50swap-bg1024-3seed` |
 | R10 | M3 | target-only upper bound | target high relabel, no paired preservation | 3 | SHOULD | DONE | target-only upper bound comparable to targeted swap but changes label distribution |
 | R11 | M3 | second target region | alternate motif/family/basin | 5 | SHOULD | PARTIAL | `pos=83` M2 positive; `pos=100` M1 positive |
 | R12 | M3 | classical anchor | XGBoost/LightGBM closed-loop | 5 | SHOULD | TODO | directional support, not gatekeeper |
 | R13 | Extension | plausible false records | counterfeit target-high records | 3-5 | NICE | TODO | stronger secondary mechanism |
 | R14 | Extension | diagnostic pilot | stratified residual/acquisition audit + low-budget stealth scan | n/a | NICE | PARTIAL | label/FAS/acquisition audit generated; 10-15 swap scans reduce but do not eliminate MAE/R2 visibility |
+| R15 | Paper | paper-facing evidence tables | raw run CSV to CSV/Markdown tables | n/a | MUST | DONE | generated in `artifacts/paper_tables/20260527T202647Z` |
+| R16 | Paper | paper-facing evidence figures | raw run CSV to PNG figures | n/a | MUST | DONE | generated in `artifacts/paper_figures/20260527T202905Z` |
+| R17 | Paper | result-to-claim review | external claim audit | n/a | MUST | DONE | verdict `partial` in `refine-logs/RESULT_TO_CLAIM_REVIEW_20260527.md` |
