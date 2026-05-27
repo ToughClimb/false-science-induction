@@ -24,6 +24,8 @@ evidence chain is:
 - `CLAIMS_AND_EXPERIMENT_SPEC.md`: frozen claim and experiment specification.
 - `refine-logs/FEASIBILITY_EXPERIMENT_PLAN.md`: staged feasibility plan.
 - `refine-logs/FEASIBILITY_EXPERIMENT_TRACKER.md`: initial run tracker.
+- `refine-logs/CHECKABLE_GOALS_AND_EXIT_CRITERIA.md`: autonomous goal-mode
+  completion gates and stop conditions.
 
 ## Environment
 
@@ -49,9 +51,15 @@ conda run --no-capture-output -n agentconda python -m pip install -e ".[dev]" \
   -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
+For ESM/protein-LM runs:
+
+```bash
+conda run --no-capture-output -n agentconda python -m pip install -e ".[protein]" \
+  -i https://pypi.tuna.tsinghua.edu.cn/simple
+```
+
 ## Smoke Checks
 
 ```bash
 conda run --no-capture-output -n agentconda python -m pytest -q
 ```
-

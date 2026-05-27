@@ -15,6 +15,7 @@ if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
 from false_science.features import mutation_feature_frame
+from false_science.esm_features import load_or_compute_esm2_embeddings
 from false_science.metrics import (
     false_association_strength,
     matched_non_target_controls,
@@ -55,6 +56,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--background-size", type=int, default=2048)
     parser.add_argument("--seeds", nargs="*", type=int, default=[0, 1, 2])
     parser.add_argument("--models", nargs="*", default=["mlp", "xgboost"])
+    parser.add_argument("--feature-set", choices=["mutation", "esm2"], default="mutation")
+    parser.add_argument("--feature-cache-root", default="data/cache")
+    parser.add_argument("--esm-batch-size", type=int, default=32)
     parser.add_argument("--rounds", type=int, default=5)
     parser.add_argument("--batch-size", type=int, default=20)
     parser.add_argument("--top-k", type=int, default=500)
@@ -114,7 +118,23 @@ def main() -> int:
 
     df = load_gfp_csv(data_path, args.target_column, args.mutant_column)
     y = df[args.target_column].to_numpy(dtype=float)
-    X = mutation_feature_frame(df, args.mutant_column).to_numpy(dtype=np.float32)
+    feature_metadata: dict[str, object]
+    if args.feature_set == "mutation":
+        X = mutation_feature_frame(df, args.mutant_column).to_numpy(dtype=np.float32)
+        feature_metadata = {
+            "feature_set": "mutation",
+            "n_features": int(X.shape[1]),
+        }
+    else:
+        X, feature_metadata = load_or_compute_esm2_embeddings(
+            df,
+            data_path=data_path,
+            mutant_column=args.mutant_column,
+            cache_root=args.feature_cache_root,
+            batch_size=args.esm_batch_size,
+            device=args.device,
+        )
+        feature_metadata["feature_set"] = "esm2"
     tag_sets = attach_tags(df, args.mutant_column)
     target_mask = np.array([args.target_tag in tags for tags in tag_sets], dtype=bool)
     n_mutations = n_mutations_from_mutants(df[args.mutant_column])
@@ -373,6 +393,7 @@ def main() -> int:
         "data_sha256": file_sha256(data_path),
         "n_records": int(len(df)),
         "n_features": int(X.shape[1]),
+        "feature_metadata": feature_metadata,
         "target_tag": args.target_tag,
         "target_count": int(target_mask.sum()),
         "target_scan_passed": target_scan_passed,

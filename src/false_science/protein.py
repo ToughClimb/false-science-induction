@@ -33,6 +33,30 @@ def parse_mutant(mutant: str) -> list[Mutation]:
     ]
 
 
+def apply_mutations(wild_type: str, mutant: str, strict: bool = True) -> str:
+    """Reconstruct a mutant sequence from a 1-indexed substitution string."""
+    sequence = list(str(wild_type))
+    for mutation in parse_mutant(mutant):
+        index = mutation.position - 1
+        if index < 0 or index >= len(sequence):
+            if strict:
+                raise ValueError(
+                    f"mutation position {mutation.position} outside sequence length "
+                    f"{len(sequence)}"
+                )
+            continue
+        if sequence[index] != mutation.from_aa:
+            if strict:
+                raise ValueError(
+                    "wild-type residue mismatch for "
+                    f"{mutation.from_aa}{mutation.position}{mutation.to_aa}: "
+                    f"expected {sequence[index]}"
+                )
+            continue
+        sequence[index] = mutation.to_aa
+    return "".join(sequence)
+
+
 def mutation_tags(mutant: str) -> set[str]:
     tags: set[str] = set()
     parsed = parse_mutant(mutant)
@@ -91,4 +115,3 @@ def load_gfp_csv(
     df[mutant_column] = df[mutant_column].astype(str)
     df["record_id"] = df.index.astype(int)
     return df
-
