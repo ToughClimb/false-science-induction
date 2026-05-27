@@ -60,6 +60,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--mlp-epochs", type=int, default=50)
     parser.add_argument("--mlp-hidden-dim", type=int, default=256)
     parser.add_argument("--device", choices=["cpu", "cuda"], default="cpu")
+    parser.add_argument(
+        "--allow-nonpassing-target",
+        action="store_true",
+        help="Allow boundary/control targets that do not pass the M0 low-target gate.",
+    )
     return parser.parse_args()
 
 
@@ -119,8 +124,12 @@ def main() -> int:
         tag_prefixes=(args.target_tag.split("=", 1)[0] + "=",),
     )
     scan, _ = scan_target_regions(df, scan_cfg)
-    if scan[scan["tag"] == args.target_tag].empty:
-        raise ValueError(f"target tag did not pass scan filters: {args.target_tag}")
+    target_row = scan[scan["tag"] == args.target_tag]
+    target_scan_passed = bool(
+        (not target_row.empty) and bool(target_row.iloc[0]["passes_m0_gate"])
+    )
+    if not target_scan_passed and not args.allow_nonpassing_target:
+        raise ValueError(f"target tag did not pass M0 gate: {args.target_tag}")
     pairs = select_swap_pairs(
         df,
         tag_sets,
@@ -364,6 +373,7 @@ def main() -> int:
         "n_features": int(X.shape[1]),
         "target_tag": args.target_tag,
         "target_count": int(target_mask.sum()),
+        "target_scan_passed": target_scan_passed,
         "swap_count": int(len(pairs)),
         "git_commit": git_text(["rev-parse", "HEAD"]) or "unknown",
         "git_status_short": git_text(["status", "--short"]),
@@ -381,4 +391,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
