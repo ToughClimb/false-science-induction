@@ -77,9 +77,10 @@ Complete when:
 - every numerical claim is traceable to raw run artifacts;
 - result-to-claim review says the final claims are supported.
 
-Current status: PARTIAL. ESOL molecular-scaffold evidence now adds a second
-domain, but the broad claim still requires a fresh result-to-claim review after
-the ESOL artifacts are included.
+Current status: COMPLETE for the scoped claim. The 2026-05-27 scoped
+result-to-claim review judged the current evidence `yes` with high confidence.
+Broader Nature/Science-family extensions remain optional, not required for the
+current scoped objective.
 
 ## Stop Conditions
 
@@ -108,8 +109,8 @@ Non-blockers:
 
 ## Next Autonomous Run Order
 
-1. Re-run result-to-claim after adding the ESOL second-domain evidence.
-2. Strengthen protein-LM evidence with more seeds or a stronger ESM/ESM-C head
+1. Optional: strengthen protein-LM evidence with more seeds or a stronger ESM/ESM-C head
    only if it materially improves the paper-facing neural surrogate claim.
-3. Add acquisition robustness beyond greedy top-mean.
-4. Add audit-sufficiency tests against group-wise or influence-style diagnostics.
+2. Optional: add audit-sufficiency tests against group-wise or influence-style diagnostics.
+3. Optional: test Bayesian acquisition policies such as EI, UCB, or Thompson
+   sampling.

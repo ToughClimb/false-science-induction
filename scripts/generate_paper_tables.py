@@ -35,6 +35,9 @@ RUNS = {
     "stealth_15swap_10round": Path(
         "runs/20260527T201103Z_m2-gfp-pos27-stealth-15swap-bg4096-mlp-10round-3seed"
     ),
+    "gfp_epsilon_greedy": Path(
+        "runs/20260527T205901Z_m2-gfp-pos27-epsgreedy20-50swap-bg1024-mlp-5seed"
+    ),
     "esol_mlp_scaffold": Path(
         "runs/20260527T204225Z_molecule-esol-scaffold-stealth-8swap-bg384-mlp-3seed"
     ),
@@ -112,6 +115,7 @@ def build_main_evidence_table(random_set_run: Path | None) -> pd.DataFrame:
         ("main_m2_pos27_mlp_5seed", "M2 main closed-loop pursuit", "pos=27"),
         ("second_target_pos83", "M2 second target", "pos=83"),
         ("stealth_15swap_10round", "M2 low-budget persistence", "pos=27"),
+        ("gfp_epsilon_greedy", "M2 epsilon-greedy acquisition", "pos=27"),
     ]:
         summary = read_summary(RUNS[key])
         targeted = mode_row(summary, "targeted_swap")

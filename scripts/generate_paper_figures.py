@@ -25,6 +25,9 @@ RUNS = {
     "stealth_m2_pos27": Path(
         "runs/20260527T201103Z_m2-gfp-pos27-stealth-15swap-bg4096-mlp-10round-3seed"
     ),
+    "gfp_epsilon_greedy": Path(
+        "runs/20260527T205901Z_m2-gfp-pos27-epsgreedy20-50swap-bg1024-mlp-5seed"
+    ),
     "random_set_control": Path(
         "runs/20260527T202252Z_m2-gfp-random-low-set-control-50swap-bg1024-3seed"
     ),
@@ -136,6 +139,7 @@ def main() -> int:
 
     main_rounds = read_rounds(RUNS["main_m2_pos27"])
     stealth_rounds = read_rounds(RUNS["stealth_m2_pos27"])
+    eps_rounds = read_rounds(RUNS["gfp_epsilon_greedy"])
     random_rounds = read_rounds(RUNS["random_set_control"])
     esol_rounds = read_rounds(RUNS["esol_mlp_scaffold"])
 
@@ -148,6 +152,11 @@ def main() -> int:
         stealth_rounds,
         output_dir / "fig_stealth_pos27_target_fraction.png",
         "Low-budget persistence: pos=27",
+    )
+    save_lineplot(
+        eps_rounds,
+        output_dir / "fig_epsgreedy_pos27_target_fraction.png",
+        "Exploratory acquisition: pos=27",
     )
     save_lineplot(
         esol_rounds,
@@ -174,6 +183,7 @@ def main() -> int:
         "artifacts": [
             "fig_main_pos27_target_fraction.png",
             "fig_stealth_pos27_target_fraction.png",
+            "fig_epsgreedy_pos27_target_fraction.png",
             "fig_random_set_control.png",
             "fig_esol_scaffold_target_fraction.png",
             "fig_audit_deltas.png",

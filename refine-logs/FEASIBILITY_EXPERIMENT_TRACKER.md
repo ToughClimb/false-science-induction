@@ -26,3 +26,6 @@ Date: 2026-05-27
 | R18 | M4 | second scientific domain | ESOL molecular scaffold false regularity | 3 | MUST | DONE | MLP and XGBoost positive in `refine-logs/M6_SECOND_DOMAIN_MOLECULE_ESOL_RESULT_20260527.md`; stealth weaker than GFP |
 | R19 | Paper | result-to-claim review after ESOL | external claim audit | n/a | MUST | DONE | verdict remains `partial` in `refine-logs/RESULT_TO_CLAIM_REVIEW_AFTER_ESOL_20260527.md` |
 | R20 | M4 | second ESOL scaffold boundary | alternate low-solubility scaffold | 3 | SHOULD | DONE | negative boundary result recorded in `refine-logs/M6_SECOND_DOMAIN_MOLECULE_ESOL_RESULT_20260527.md` |
+| R21 | M4 | acquisition robustness | epsilon-greedy exploration | 5 | SHOULD | DONE | `pos=27` false pursuit persists in `runs/20260527T205901Z_m2-gfp-pos27-epsgreedy20-50swap-bg1024-mlp-5seed` |
+| R22 | Audit | aggregate variance baseline | clean/random vs targeted MAE/R2 ranges | n/a | SHOULD | DONE | lower-budget GFP remains within baseline range; stronger GFP/ESOL does not, see `refine-logs/M8_AGGREGATE_VARIANCE_AUDIT_20260527.md` |
+| R23 | Paper | scoped result-to-claim review | external claim audit | n/a | MUST | DONE | scoped claim supported with high confidence in `refine-logs/RESULT_TO_CLAIM_REVIEW_SCOPED_SUPPORTED_20260527.md` |

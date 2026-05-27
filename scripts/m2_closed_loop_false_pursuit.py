@@ -61,6 +61,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--esm-batch-size", type=int, default=32)
     parser.add_argument("--rounds", type=int, default=5)
     parser.add_argument("--batch-size", type=int, default=20)
+    parser.add_argument(
+        "--acquisition",
+        choices=["top_mean", "epsilon_greedy"],
+        default="top_mean",
+    )
+    parser.add_argument("--epsilon", type=float, default=0.20)
     parser.add_argument("--top-k", type=int, default=500)
     parser.add_argument("--xgb-n-estimators", type=int, default=120)
     parser.add_argument("--mlp-epochs", type=int, default=50)
@@ -223,7 +229,26 @@ def main() -> int:
                     pred = result.predictions
                     candidate_ids = np.flatnonzero(candidate_mask)
                     ranked = candidate_ids[np.argsort(-pred[candidate_ids])]
-                    batch_ids = ranked[: args.batch_size]
+                    if args.acquisition == "top_mean":
+                        batch_ids = ranked[: args.batch_size]
+                    else:
+                        rng = np.random.default_rng(seed * 1000 + round_idx)
+                        explore_n = int(round(args.batch_size * args.epsilon))
+                        exploit_n = int(args.batch_size - explore_n)
+                        exploit_ids = ranked[:exploit_n]
+                        remaining = np.array(
+                            [idx for idx in candidate_ids if idx not in set(exploit_ids)],
+                            dtype=int,
+                        )
+                        if explore_n > 0 and len(remaining) > 0:
+                            explore_ids = rng.choice(
+                                remaining,
+                                size=min(explore_n, len(remaining)),
+                                replace=False,
+                            )
+                            batch_ids = np.concatenate([exploit_ids, explore_ids]).astype(int)
+                        else:
+                            batch_ids = exploit_ids
                     selected_so_far.extend(batch_ids.tolist())
 
                     fas = false_association_strength(
