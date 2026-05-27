@@ -22,6 +22,7 @@ from false_science.metrics import (
     target_topk_fraction,
 )
 from false_science.misbinding import (
+    DEFAULT_HISTORY_MODES,
     build_history_ids,
     label_multiset_equal,
     recorded_labels_for_history,
@@ -53,6 +54,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--target-column", default="DMS_score")
     parser.add_argument("--mutant-column", default="mutant")
     parser.add_argument("--target-tag", default="pos=27")
+    parser.add_argument("--modes", nargs="*", default=list(DEFAULT_HISTORY_MODES))
     parser.add_argument("--swap-count", type=int, default=100)
     parser.add_argument("--background-size", type=int, default=512)
     parser.add_argument("--seeds", nargs="*", type=int, default=[0, 1, 2])
@@ -138,7 +140,7 @@ def main() -> int:
             seed=seed,
         )
 
-        for mode in ["clean", "random_swap", "targeted_swap"]:
+        for mode in args.modes:
             recorded_y = recorded_labels_for_history(
                 true_y=y,
                 history_ids=history_ids,

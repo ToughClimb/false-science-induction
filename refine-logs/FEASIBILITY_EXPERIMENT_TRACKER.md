@@ -14,9 +14,9 @@ Date: 2026-05-27
 | R6 | M2 | closed-loop persistence | top-mean, longer horizon | 5-10 | MUST | PARTIAL | 5-seed `pos=27` run confirms early false pursuit; longer horizon still pending |
 | R7 | M3 | random-swap robustness | matched random swaps | 5-10 | MUST | DONE | clean/random select zero `pos=27` target records in 5-seed M2 |
 | R8 | M3 | wrong-target control | non-viable or neutral target | 5 | MUST | PARTIAL | boundary targets run; true null control still missing |
-| R9 | M3 | donor-only control | donor perturbation only | 5 | SHOULD | TODO | effect not explained by donor removal |
-| R10 | M3 | target-only upper bound | target high relabel, no paired preservation | 3 | SHOULD | TODO | upper-bound signal only |
+| R9 | M3 | donor-only control | donor perturbation only | 5 | SHOULD | DONE | donor-only selects zero target records in `runs/20260527T193942Z_m2-gfp-pos27-loop-mlp-controls-50swap-bg1024-3seed` |
+| R10 | M3 | target-only upper bound | target high relabel, no paired preservation | 3 | SHOULD | DONE | target-only upper bound comparable to targeted swap but changes label distribution |
 | R11 | M3 | second target region | alternate motif/family/basin | 5 | SHOULD | PARTIAL | `pos=83` M2 positive; `pos=100` M1 positive |
 | R12 | M3 | classical anchor | XGBoost/LightGBM closed-loop | 5 | SHOULD | TODO | directional support, not gatekeeper |
 | R13 | Extension | plausible false records | counterfeit target-high records | 3-5 | NICE | TODO | stronger secondary mechanism |
-| R14 | Extension | diagnostic pilot | stratified residual/acquisition audit | n/a | NICE | TODO | catches target-specific anomaly |
+| R14 | Extension | diagnostic pilot | stratified residual/acquisition audit | n/a | NICE | PARTIAL | label/FAS/acquisition audit generated; MAE/R2 stealth remains limited |

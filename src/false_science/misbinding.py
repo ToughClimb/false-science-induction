@@ -4,6 +4,9 @@ import numpy as np
 import pandas as pd
 
 
+DEFAULT_HISTORY_MODES = ("clean", "random_swap", "targeted_swap")
+
+
 def build_history_ids(
     n_records: int,
     target_ids: np.ndarray,
@@ -47,6 +50,20 @@ def recorded_labels_for_history(
                 recorded[history_pos[donor_id]] = float(row["target_true_label"])
         return recorded
 
+    if mode == "donor_only_swap":
+        for _, row in pairs.iterrows():
+            donor_id = int(row["donor_record_id"])
+            if donor_id in history_pos:
+                recorded[history_pos[donor_id]] = float(row["target_true_label"])
+        return recorded
+
+    if mode == "target_only_high_relabel":
+        for _, row in pairs.iterrows():
+            target_id = int(row["target_record_id"])
+            if target_id in history_pos:
+                recorded[history_pos[target_id]] = float(row["donor_true_label"])
+        return recorded
+
     if mode == "random_swap":
         rng = np.random.default_rng(seed)
         swap_n = int(len(pairs))
@@ -64,3 +81,6 @@ def recorded_labels_for_history(
 def label_multiset_equal(a: np.ndarray, b: np.ndarray) -> bool:
     return bool(np.array_equal(np.sort(a.astype(float)), np.sort(b.astype(float))))
 
+
+def mode_preserves_label_multiset(mode: str) -> bool:
+    return mode in {"clean", "random_swap", "targeted_swap"}
