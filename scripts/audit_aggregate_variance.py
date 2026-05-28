@@ -18,9 +18,9 @@ from false_science.target_scan import git_text, timestamp
 
 GFP_RUNS = [
     Path("runs/20260527T190706Z_m1-gfp-pos27-static-xgb-mlp-25swap-bg2048-3seed/metrics_by_seed.csv"),
-    Path("runs/20260527T192346Z_m2-gfp-pos27-loop-mlp-50swap-bg1024-5seed/round_metrics.csv"),
-    Path("runs/20260527T201103Z_m2-gfp-pos27-stealth-15swap-bg4096-mlp-10round-3seed/round_metrics.csv"),
-    Path("runs/20260527T205901Z_m2-gfp-pos27-epsgreedy20-50swap-bg1024-mlp-5seed/round_metrics.csv"),
+    Path("runs/20260528T015748Z_auditfix-m2-pos27-50swap-bg1024-5seed-80ep/round_metrics.csv"),
+    Path("runs/20260528T020038Z_auditfix-m2-pos27-15swap-bg4096-10round-3seed-80ep/round_metrics.csv"),
+    Path("runs/20260528T021112Z_auditfix-m2-pos27-epsgreedy20-50swap-bg1024-5seed-80ep/round_metrics.csv"),
 ]
 
 ESOL_RUNS = [
@@ -41,6 +41,10 @@ def read_metric_file(path: Path, domain: str) -> pd.DataFrame:
     df["domain"] = domain
     if "round" not in df.columns:
         df["round"] = -1
+    if "mae_audit" not in df.columns:
+        df["mae_audit"] = df["mae_all"]
+    if "r2_audit" not in df.columns:
+        df["r2_audit"] = df["r2_all"]
     return df
 
 
@@ -58,14 +62,14 @@ def main() -> int:
         .groupby(["domain", "model"], as_index=False)
         .agg(
             baseline_n=("r2_all", "count"),
-            baseline_mae_mean=("mae_all", "mean"),
-            baseline_mae_std=("mae_all", "std"),
-            baseline_r2_mean=("r2_all", "mean"),
-            baseline_r2_std=("r2_all", "std"),
-            baseline_mae_min=("mae_all", "min"),
-            baseline_mae_max=("mae_all", "max"),
-            baseline_r2_min=("r2_all", "min"),
-            baseline_r2_max=("r2_all", "max"),
+            baseline_mae_mean=("mae_audit", "mean"),
+            baseline_mae_std=("mae_audit", "std"),
+            baseline_r2_mean=("r2_audit", "mean"),
+            baseline_r2_std=("r2_audit", "std"),
+            baseline_mae_min=("mae_audit", "min"),
+            baseline_mae_max=("mae_audit", "max"),
+            baseline_r2_min=("r2_audit", "min"),
+            baseline_r2_max=("r2_audit", "max"),
         )
     )
     targeted = (
@@ -73,8 +77,8 @@ def main() -> int:
         .groupby(["domain", "model", "source_file"], as_index=False)
         .agg(
             targeted_n=("r2_all", "count"),
-            targeted_mae_mean=("mae_all", "mean"),
-            targeted_r2_mean=("r2_all", "mean"),
+            targeted_mae_mean=("mae_audit", "mean"),
+            targeted_r2_mean=("r2_audit", "mean"),
         )
     )
     audit = targeted.merge(baseline, on=["domain", "model"], how="left")
@@ -107,6 +111,7 @@ def main() -> int:
         "output_dir": str(output_dir),
         "git_commit": git_text(["rev-parse", "HEAD"]) or "unknown",
         "git_status_short": git_text(["status", "--short"]),
+        "metric_semantics": "uses mae_audit/r2_audit when available; falls back to legacy mae_all/r2_all only for old run files",
         "artifacts": [
             "aggregate_metric_observations.csv",
             "aggregate_baseline_distribution.csv",

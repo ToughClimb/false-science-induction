@@ -8,6 +8,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from sklearn.metrics import mean_absolute_error, r2_score
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SRC_ROOT = REPO_ROOT / "src"
@@ -24,6 +25,7 @@ from false_science.metrics import (
 )
 from false_science.misbinding import (
     DEFAULT_HISTORY_MODES,
+    build_audit_ids,
     build_history_ids,
     label_multiset_equal,
     recorded_labels_for_history,
@@ -58,6 +60,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--modes", nargs="*", default=list(DEFAULT_HISTORY_MODES))
     parser.add_argument("--swap-count", type=int, default=100)
     parser.add_argument("--background-size", type=int, default=512)
+    parser.add_argument("--audit-size", type=int, default=4096)
     parser.add_argument("--seeds", nargs="*", type=int, default=[0, 1, 2])
     parser.add_argument("--models", nargs="*", default=["xgboost", "mlp"])
     parser.add_argument("--feature-set", choices=["mutation", "esm2"], default="mutation")
@@ -152,8 +155,15 @@ def main() -> int:
             background_size=args.background_size,
             seed=seed,
         )
+        audit_ids = build_audit_ids(
+            n_records=len(df),
+            excluded_ids=history_ids,
+            audit_size=args.audit_size,
+            seed=seed + 10_000,
+        )
         candidate_mask = np.ones(len(df), dtype=bool)
         candidate_mask[history_ids] = False
+        candidate_mask[audit_ids] = False
         control_ids = matched_non_target_controls(
             target_mask=target_mask,
             candidate_mask=candidate_mask,
@@ -208,6 +218,8 @@ def main() -> int:
                     raise ValueError(f"unknown model: {model_name}")
 
                 pred = result.predictions
+                audit_mae = float(mean_absolute_error(y[audit_ids], pred[audit_ids]))
+                audit_r2 = float(r2_score(y[audit_ids], pred[audit_ids]))
                 fas = false_association_strength(
                     pred,
                     target_mask=target_mask,
@@ -248,6 +260,8 @@ def main() -> int:
                         ),
                         "mae_all": result.mae,
                         "r2_all": result.r2,
+                        "mae_audit": audit_mae,
+                        "r2_audit": audit_r2,
                         "fas": fas,
                         "true_fas": true_fas,
                         "target_topk_fraction": topk_fraction,
@@ -303,6 +317,8 @@ def main() -> int:
             seeds=("seed", "nunique"),
             mae_all_mean=("mae_all", "mean"),
             r2_all_mean=("r2_all", "mean"),
+            mae_audit_mean=("mae_audit", "mean"),
+            r2_audit_mean=("r2_audit", "mean"),
             fas_mean=("fas", "mean"),
             fas_lift_vs_clean_mean=("fas_lift_vs_clean", "mean"),
             fas_lift_vs_random_mean=("fas_lift_vs_random", "mean"),
@@ -334,6 +350,8 @@ def main() -> int:
         "target_count": int(target_mask.sum()),
         "target_scan_passed": target_scan_passed,
         "swap_count": int(len(pairs)),
+        "audit_size": int(args.audit_size),
+        "audit_metric_semantics": "held-out non-history, non-acquisition records per seed",
         "git_commit": git_text(["rev-parse", "HEAD"]) or "unknown",
         "git_status_short": git_text(["status", "--short"]),
         "config": config,

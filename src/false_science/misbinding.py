@@ -27,6 +27,23 @@ def build_history_ids(
     return np.sort(np.concatenate([selected, background]).astype(int))
 
 
+def build_audit_ids(
+    n_records: int,
+    excluded_ids: np.ndarray,
+    audit_size: int,
+    seed: int,
+) -> np.ndarray:
+    excluded = set(np.asarray(excluded_ids, dtype=int).tolist())
+    available = np.array(
+        [idx for idx in range(n_records) if idx not in excluded],
+        dtype=int,
+    )
+    if audit_size > len(available):
+        raise ValueError("audit_size exceeds available non-history records")
+    rng = np.random.default_rng(seed)
+    return np.sort(rng.choice(available, size=audit_size, replace=False).astype(int))
+
+
 def recorded_labels_for_history(
     true_y: np.ndarray,
     history_ids: np.ndarray,

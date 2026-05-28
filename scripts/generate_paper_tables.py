@@ -21,10 +21,10 @@ RUNS = {
         "runs/20260527T190706Z_m1-gfp-pos27-static-xgb-mlp-25swap-bg2048-3seed"
     ),
     "main_m2_pos27_mlp_5seed": Path(
-        "runs/20260527T192346Z_m2-gfp-pos27-loop-mlp-50swap-bg1024-5seed"
+        "runs/20260528T015748Z_auditfix-m2-pos27-50swap-bg1024-5seed-80ep"
     ),
     "control_modes_pos27": Path(
-        "runs/20260527T193942Z_m2-gfp-pos27-loop-mlp-controls-50swap-bg1024-3seed"
+        "runs/20260528T021111Z_auditfix-m2-pos27-controls-50swap-bg1024-3seed-80ep"
     ),
     "second_target_pos83": Path(
         "runs/20260527T192131Z_m2-gfp-pos83-loop-mlp-25swap-bg2048-3seed"
@@ -33,10 +33,10 @@ RUNS = {
         "runs/20260527T200102Z_m1-gfp-pos27-esm2-static-10swap-bg4096-3seed"
     ),
     "stealth_15swap_10round": Path(
-        "runs/20260527T201103Z_m2-gfp-pos27-stealth-15swap-bg4096-mlp-10round-3seed"
+        "runs/20260528T020038Z_auditfix-m2-pos27-15swap-bg4096-10round-3seed-80ep"
     ),
     "gfp_epsilon_greedy": Path(
-        "runs/20260527T205901Z_m2-gfp-pos27-epsgreedy20-50swap-bg1024-mlp-5seed"
+        "runs/20260528T021112Z_auditfix-m2-pos27-epsgreedy20-50swap-bg1024-5seed-80ep"
     ),
     "esol_mlp_scaffold": Path(
         "runs/20260527T204225Z_molecule-esol-scaffold-stealth-8swap-bg384-mlp-3seed"
@@ -83,6 +83,12 @@ def mode_row(df: pd.DataFrame, mode: str, model: str = "mlp") -> pd.Series:
     return rows.iloc[0]
 
 
+def metric_value(row: pd.Series, audit_name: str, legacy_name: str) -> float:
+    if audit_name in row.index and pd.notna(row[audit_name]):
+        return float(row[audit_name])
+    return float(row[legacy_name])
+
+
 def build_main_evidence_table(random_set_run: Path | None) -> pd.DataFrame:
     rows: list[dict[str, object]] = []
 
@@ -105,8 +111,8 @@ def build_main_evidence_table(random_set_run: Path | None) -> pd.DataFrame:
             "allocation_value": float(m1_t["topk_fraction_mean"]),
             "oracle_metric": "target candidate true mean",
             "oracle_value": float(m1_t_metrics["target_true_mean_candidate"].mean()),
-            "mae": float(m1_t["mae_all_mean"]),
-            "r2": float(m1_t["r2_all_mean"]),
+            "mae": metric_value(m1_t, "mae_audit_mean", "mae_all_mean"),
+            "r2": metric_value(m1_t, "r2_audit_mean", "r2_all_mean"),
             "claim_role": "neural model learns target-high false association",
         }
     )
@@ -132,8 +138,8 @@ def build_main_evidence_table(random_set_run: Path | None) -> pd.DataFrame:
                 "allocation_value": float(targeted["mean_batch_target_fraction"]),
                 "oracle_metric": "selected target true mean",
                 "oracle_value": float(targeted["selected_target_true_mean"]),
-                "mae": float(targeted["mae_all_mean"]),
-                "r2": float(targeted["r2_all_mean"]),
+                "mae": metric_value(targeted, "mae_audit_mean", "mae_all_mean"),
+                "r2": metric_value(targeted, "r2_audit_mean", "r2_all_mean"),
                 "claim_role": "closed-loop allocates budget toward false target",
             }
         )
@@ -153,8 +159,8 @@ def build_main_evidence_table(random_set_run: Path | None) -> pd.DataFrame:
             "allocation_value": float(esm_t["rank_lift_vs_random_mean"]),
             "oracle_metric": "target",
             "oracle_value": "low-true pos=27",
-            "mae": float(esm_t["mae_all_mean"]),
-            "r2": float(esm_t["r2_all_mean"]),
+            "mae": metric_value(esm_t, "mae_audit_mean", "mae_all_mean"),
+            "r2": metric_value(esm_t, "r2_audit_mean", "r2_all_mean"),
             "claim_role": "protein-LM neural surrogate also internalizes false association",
         }
     )
@@ -175,8 +181,8 @@ def build_main_evidence_table(random_set_run: Path | None) -> pd.DataFrame:
                 "allocation_value": float(targeted["mean_batch_target_fraction"]),
                 "oracle_metric": "selected target true mean",
                 "oracle_value": float(targeted["selected_target_true_mean"]),
-                "mae": float(targeted["mae_all_mean"]),
-                "r2": float(targeted["r2_all_mean"]),
+                "mae": metric_value(targeted, "mae_audit_mean", "mae_all_mean"),
+                "r2": metric_value(targeted, "r2_audit_mean", "r2_all_mean"),
                 "claim_role": "negative/random-structure boundary control",
             }
         )
@@ -201,8 +207,8 @@ def build_main_evidence_table(random_set_run: Path | None) -> pd.DataFrame:
                 "allocation_value": float(targeted["mean_batch_target_fraction"]),
                 "oracle_metric": "selected target true mean",
                 "oracle_value": float(targeted["selected_target_true_mean"]),
-                "mae": float(targeted["mae_all_mean"]),
-                "r2": float(targeted["r2_all_mean"]),
+                "mae": metric_value(targeted, "mae_audit_mean", "mae_all_mean"),
+                "r2": metric_value(targeted, "r2_audit_mean", "r2_all_mean"),
                 "claim_role": "second-domain molecular scaffold false-regularity support",
             }
         )
@@ -289,6 +295,7 @@ def main() -> int:
         "git_status_short": git_text(["status", "--short"]),
         "runs": {key: str(path) for key, path in RUNS.items()},
         "random_set_control_run": str(random_set_run) if random_set_run else "",
+        "mae_r2_semantics": "mae/r2 columns use held-out audit means when available; legacy runs fall back to all-record means",
         "artifacts": [
             "table_main_evidence.csv",
             "table_main_evidence.md",

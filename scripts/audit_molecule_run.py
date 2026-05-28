@@ -20,6 +20,8 @@ def main() -> int:
     history = pd.read_csv(run_dir / "history_labels.csv")
     loop = pd.read_csv(run_dir / "loop_summary_by_model_mode.csv")
     metadata = json.loads((run_dir / "metadata.json").read_text(encoding="utf-8"))
+    mae_col = "mae_audit_mean" if "mae_audit_mean" in loop.columns else "mae_all_mean"
+    r2_col = "r2_audit_mean" if "r2_audit_mean" in loop.columns else "r2_all_mean"
 
     label_rows = []
     for mode, group in history.groupby("mode"):
@@ -46,17 +48,17 @@ def main() -> int:
         )
     label = pd.DataFrame(label_rows).sort_values("mode")
 
-    clean = loop[loop["mode"] == "clean"][["model", "mae_all_mean", "r2_all_mean", "fas_lift_vs_random_mean", "mean_batch_target_fraction"]].rename(
+    clean = loop[loop["mode"] == "clean"][["model", mae_col, r2_col, "fas_lift_vs_random_mean", "mean_batch_target_fraction"]].rename(
         columns={
-            "mae_all_mean": "clean_mae_all_mean",
-            "r2_all_mean": "clean_r2_all_mean",
+            mae_col: "clean_mae_audit_mean",
+            r2_col: "clean_r2_audit_mean",
             "fas_lift_vs_random_mean": "clean_fas_lift_vs_random_mean",
             "mean_batch_target_fraction": "clean_batch_target_fraction",
         }
     )
     behavior = loop.merge(clean, on="model", how="left")
-    behavior["mae_delta_vs_clean"] = behavior["mae_all_mean"] - behavior["clean_mae_all_mean"]
-    behavior["r2_delta_vs_clean"] = behavior["r2_all_mean"] - behavior["clean_r2_all_mean"]
+    behavior["mae_delta_vs_clean"] = behavior[mae_col] - behavior["clean_mae_audit_mean"]
+    behavior["r2_delta_vs_clean"] = behavior[r2_col] - behavior["clean_r2_audit_mean"]
     behavior["fas_lift_delta_vs_clean"] = (
         behavior["fas_lift_vs_random_mean"] - behavior["clean_fas_lift_vs_random_mean"]
     )

@@ -8,6 +8,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from sklearn.metrics import mean_absolute_error, r2_score
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SRC_ROOT = REPO_ROOT / "src"
@@ -20,7 +21,12 @@ from false_science.metrics import (
     target_mean_rank_percentile,
     target_topk_fraction,
 )
-from false_science.misbinding import build_history_ids, label_multiset_equal, recorded_labels_for_history
+from false_science.misbinding import (
+    build_audit_ids,
+    build_history_ids,
+    label_multiset_equal,
+    recorded_labels_for_history,
+)
 from false_science.models import fit_predict_torch_mlp, fit_predict_xgboost
 from false_science.molecule import esol_feature_frame, load_esol_csv
 from false_science.target_scan import file_sha256, git_text, make_run_dir
@@ -47,6 +53,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--donor-quantile", type=float, default=0.90)
     parser.add_argument("--swap-count", type=int, default=20)
     parser.add_argument("--background-size", type=int, default=256)
+    parser.add_argument("--audit-size", type=int, default=256)
     parser.add_argument("--seeds", nargs="*", type=int, default=[0, 1, 2])
     parser.add_argument("--models", nargs="*", default=["mlp", "xgboost"])
     parser.add_argument("--rounds", type=int, default=5)
@@ -234,8 +241,17 @@ def main() -> int:
             background_size=args.background_size,
             seed=seed,
         )
+        audit_ids = build_audit_ids(
+            n_records=len(df),
+            excluded_ids=base_history_ids,
+            audit_size=args.audit_size,
+            seed=seed + 10_000,
+        )
+        audit_mask = np.zeros(len(df), dtype=bool)
+        audit_mask[audit_ids] = True
         candidate_mask = np.ones(len(df), dtype=bool)
         candidate_mask[base_history_ids] = False
+        candidate_mask[audit_ids] = False
         control_ids = matched_non_target_controls(target_mask, candidate_mask, n_mutations, seed)
 
         for mode in ("clean", "random_swap", "targeted_swap"):
@@ -255,6 +271,8 @@ def main() -> int:
             for model in args.models:
                 result = fit_model(model, X, y, base_history_ids, initial_recorded, seed, args)
                 pred = result.predictions
+                audit_mae = float(mean_absolute_error(y[audit_ids], pred[audit_ids]))
+                audit_r2 = float(r2_score(y[audit_ids], pred[audit_ids]))
                 static_rows.append(
                     {
                         "seed": seed,
@@ -270,6 +288,8 @@ def main() -> int:
                         ),
                         "mae_all": result.mae,
                         "r2_all": result.r2,
+                        "mae_audit": audit_mae,
+                        "r2_audit": audit_r2,
                         "fas": false_association_strength(pred, target_mask, control_ids, candidate_mask),
                         "target_topk_fraction": target_topk_fraction(
                             pred, target_mask, candidate_mask, args.top_k
@@ -287,12 +307,14 @@ def main() -> int:
                 for round_idx in range(args.rounds):
                     observed = np.zeros(len(df), dtype=bool)
                     observed[train_ids] = True
-                    loop_candidate_mask = ~observed
+                    loop_candidate_mask = (~observed) & (~audit_mask)
                     loop_control_ids = matched_non_target_controls(
                         target_mask, loop_candidate_mask, n_mutations, seed + round_idx
                     )
                     loop_result = fit_model(model, X, y, train_ids, train_y, seed + round_idx, args)
                     pred = loop_result.predictions
+                    loop_audit_mae = float(mean_absolute_error(y[audit_ids], pred[audit_ids]))
+                    loop_audit_r2 = float(r2_score(y[audit_ids], pred[audit_ids]))
                     candidate_ids = np.flatnonzero(loop_candidate_mask)
                     ranked = candidate_ids[np.argsort(-pred[candidate_ids])]
                     batch_ids = ranked[: args.batch_size]
@@ -320,6 +342,8 @@ def main() -> int:
                             ),
                             "mae_all": loop_result.mae,
                             "r2_all": loop_result.r2,
+                            "mae_audit": loop_audit_mae,
+                            "r2_audit": loop_audit_r2,
                         }
                     )
                     for rank, record_id in enumerate(batch_ids):
@@ -391,6 +415,8 @@ def main() -> int:
             seeds=("seed", "nunique"),
             mae_all_mean=("mae_all", "mean"),
             r2_all_mean=("r2_all", "mean"),
+            mae_audit_mean=("mae_audit", "mean"),
+            r2_audit_mean=("r2_audit", "mean"),
             fas_mean=("fas", "mean"),
             fas_lift_vs_random_mean=("fas_lift_vs_random", "mean"),
             topk_fraction_mean=("target_topk_fraction", "mean"),
@@ -416,6 +442,8 @@ def main() -> int:
             selected_target_true_mean=("batch_target_true_mean", "mean"),
             mae_all_mean=("mae_all", "mean"),
             r2_all_mean=("r2_all", "mean"),
+            mae_audit_mean=("mae_audit", "mean"),
+            r2_audit_mean=("r2_audit", "mean"),
         )
         .sort_values(["model", "mode"])
     )
@@ -441,6 +469,8 @@ def main() -> int:
         "target_count": int(target_mask.sum()),
         "target_scan_row": target_row.iloc[0].to_dict(),
         "swap_count": int(len(pairs)),
+        "audit_size": int(args.audit_size),
+        "audit_metric_semantics": "held-out non-history, non-acquisition records per seed",
         "label_multiset_preserved": label_multiset_equal(
             np.concatenate([pairs["target_true_label"], pairs["donor_true_label"]]),
             np.concatenate(

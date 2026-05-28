@@ -19,6 +19,8 @@ def main() -> int:
     run_dir = Path(args.run_dir)
     rounds = pd.read_csv(run_dir / "round_metrics.csv")
     initial = pd.read_csv(run_dir / "initial_history_labels.csv")
+    mae_col = "mae_audit" if "mae_audit" in rounds.columns else "mae_all"
+    r2_col = "r2_audit" if "r2_audit" in rounds.columns else "r2_all"
 
     label_audit = (
         initial.groupby("mode", as_index=False)
@@ -54,6 +56,8 @@ def main() -> int:
     behavioral = (
         rounds.groupby(["model", "mode"], as_index=False)
         .agg(
+            mae_audit_mean=(mae_col, "mean"),
+            r2_audit_mean=(r2_col, "mean"),
             mae_all_mean=("mae_all", "mean"),
             r2_all_mean=("r2_all", "mean"),
             fas_mean=("fas", "mean"),
@@ -65,21 +69,21 @@ def main() -> int:
     )
 
     clean = behavioral[behavioral["mode"].eq("clean")][
-        ["model", "mae_all_mean", "r2_all_mean", "fas_mean", "mean_batch_target_fraction"]
+        ["model", "mae_audit_mean", "r2_audit_mean", "fas_mean", "mean_batch_target_fraction"]
     ].rename(
         columns={
-            "mae_all_mean": "clean_mae_all_mean",
-            "r2_all_mean": "clean_r2_all_mean",
+            "mae_audit_mean": "clean_mae_audit_mean",
+            "r2_audit_mean": "clean_r2_audit_mean",
             "fas_mean": "clean_fas_mean",
             "mean_batch_target_fraction": "clean_batch_target_fraction",
         }
     )
     behavioral = behavioral.merge(clean, on="model", how="left")
     behavioral["mae_delta_vs_clean"] = (
-        behavioral["mae_all_mean"] - behavioral["clean_mae_all_mean"]
+        behavioral["mae_audit_mean"] - behavioral["clean_mae_audit_mean"]
     )
     behavioral["r2_delta_vs_clean"] = (
-        behavioral["r2_all_mean"] - behavioral["clean_r2_all_mean"]
+        behavioral["r2_audit_mean"] - behavioral["clean_r2_audit_mean"]
     )
     behavioral["fas_delta_vs_clean"] = behavioral["fas_mean"] - behavioral["clean_fas_mean"]
     behavioral["target_batch_fraction_delta_vs_clean"] = (
@@ -107,4 +111,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

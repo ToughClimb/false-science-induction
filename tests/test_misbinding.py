@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 
 from false_science.misbinding import (
+    build_audit_ids,
     build_history_ids,
     label_multiset_equal,
     mode_preserves_label_multiset,
@@ -78,3 +79,10 @@ def test_build_history_ids_includes_swap_records() -> None:
     for record_id in [1, 2, 8, 9]:
         assert record_id in set(history.tolist())
     assert len(history) == 8
+
+
+def test_build_audit_ids_excludes_history_records() -> None:
+    history = np.array([1, 2, 8, 9])
+    audit = build_audit_ids(n_records=20, excluded_ids=history, audit_size=6, seed=0)
+    assert len(audit) == 6
+    assert not set(audit.tolist()) & set(history.tolist())
