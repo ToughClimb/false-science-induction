@@ -549,7 +549,7 @@ def main() -> int:
                 ]
             ),
         ),
-        "git_commit": git_text(["rev-parse", "HEAD"]) or "unknown",
+        "git_commit": git_text(["rev-parse", "HEAD"]),
         "git_status_short": git_text(["status", "--short"]),
         "config": config_for_metadata(vars(args)),
     }

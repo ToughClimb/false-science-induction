@@ -289,7 +289,7 @@ def main() -> int:
     manifest = {
         "stage": "paper_table_generation",
         "output_dir": str(output_dir),
-        "git_commit": git_text(["rev-parse", "HEAD"]) or "unknown",
+        "git_commit": git_text(["rev-parse", "HEAD"]),
         "git_status_short": git_text(["status", "--short"]),
         "runs": {key: str(path) for key, path in runs.items()},
         "random_set_control_run": str(random_set_run) if random_set_run else "",

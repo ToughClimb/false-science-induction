@@ -34,8 +34,7 @@ def main() -> int:
             missing.append(module)
 
     if missing:
-        print("missing modules: " + ", ".join(missing))
-        return 1
+        raise RuntimeError("missing modules: " + ", ".join(missing))
     return 0
 
 

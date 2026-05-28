@@ -174,7 +174,7 @@ def main() -> int:
     manifest = {
         "stage": "paper_figure_generation",
         "output_dir": str(output_dir),
-        "git_commit": git_text(["rev-parse", "HEAD"]) or "unknown",
+        "git_commit": git_text(["rev-parse", "HEAD"]),
         "git_status_short": git_text(["status", "--short"]),
         "runs": {key: str(value) for key, value in runs.items()},
         "artifacts": [

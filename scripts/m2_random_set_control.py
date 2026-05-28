@@ -408,7 +408,7 @@ def main() -> int:
         "swap_count": int(args.swap_count),
         "audit_size": int(args.audit_size),
         "audit_metric_semantics": "held-out non-history, non-acquisition records per seed",
-        "git_commit": git_text(["rev-parse", "HEAD"]) or "unknown",
+        "git_commit": git_text(["rev-parse", "HEAD"]),
         "git_status_short": git_text(["status", "--short"]),
         "config": config,
     }

@@ -99,7 +99,9 @@ def main() -> int:
         config_metadata=config_for_metadata(vars(args)),
     )
     print(json.dumps({"run_dir": str(run_dir), **summary}, indent=2, sort_keys=True))
-    return 0 if summary["n_passing_targets"] else 2
+    if not summary["n_passing_targets"]:
+        raise RuntimeError(f"M0 found no passing target regions; run_dir={run_dir}")
+    return 0
 
 
 if __name__ == "__main__":

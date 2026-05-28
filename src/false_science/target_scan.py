@@ -65,12 +65,11 @@ def file_sha256(path: str | Path) -> str:
 
 
 def git_text(args: list[str]) -> str:
-    try:
-        return subprocess.check_output(
-            ["git", *args], stderr=subprocess.DEVNULL, text=True
-        ).strip()
-    except Exception:
-        return ""
+    return subprocess.check_output(
+        ["git", *args],
+        stderr=subprocess.STDOUT,
+        text=True,
+    ).strip()
 
 
 def make_run_dir(output_root: str | Path, tag: str) -> Path:
@@ -280,7 +279,7 @@ def write_scan_artifacts(
         "label_multiset_preserved_for_selected_pairs": (
             label_multiset_preserved(pairs) if len(pairs) else False
         ),
-        "git_commit": git_text(["rev-parse", "HEAD"]) or "unknown",
+        "git_commit": git_text(["rev-parse", "HEAD"]),
         "git_status_short": git_text(["status", "--short"]),
         "config": config_metadata,
     }

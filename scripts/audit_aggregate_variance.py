@@ -45,10 +45,11 @@ def main() -> int:
     for metric_file in args.metric_files:
         require_keys(metric_file, ["path", "domain"], "audit_aggregate_variance.metric_file")
         path = Path(metric_file["path"])
-        if path.is_file():
-            frames.append(read_metric_file(path, str(metric_file["domain"])))
+        if not path.is_file():
+            raise FileNotFoundError(f"configured metric file not found: {path}")
+        frames.append(read_metric_file(path, str(metric_file["domain"])))
     if not frames:
-        raise FileNotFoundError("no configured metric files exist")
+        raise ValueError("metric_files is empty")
     metrics = pd.concat(frames, ignore_index=True)
     metrics = metrics[metrics["model"].isin(["mlp", "xgboost"])].copy()
 
@@ -104,7 +105,7 @@ def main() -> int:
     manifest = {
         "stage": "aggregate_variance_audit",
         "output_dir": str(output_dir),
-        "git_commit": git_text(["rev-parse", "HEAD"]) or "unknown",
+        "git_commit": git_text(["rev-parse", "HEAD"]),
         "git_status_short": git_text(["status", "--short"]),
         "metric_semantics": "uses mae_audit/r2_audit when available; falls back to legacy mae_all/r2_all only for old run files",
         "metric_files": args.metric_files,
