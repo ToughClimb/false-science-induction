@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-export PIP_INDEX_URL="${PIP_INDEX_URL:-https://pypi.tuna.tsinghua.edu.cn/simple}"
-export PIP_TRUSTED_HOST="${PIP_TRUSTED_HOST:-pypi.tuna.tsinghua.edu.cn}"
+: "${PIP_INDEX_URL:?source configs/mirrors.env.example before running this script}"
+: "${PIP_TRUSTED_HOST:?source configs/mirrors.env.example before running this script}"
 
 python -m pip install --upgrade pip setuptools wheel \
   -i "${PIP_INDEX_URL}" \
@@ -11,4 +11,3 @@ python -m pip install --upgrade pip setuptools wheel \
 python -m pip install -e ".[dev]" \
   -i "${PIP_INDEX_URL}" \
   --trusted-host "${PIP_TRUSTED_HOST}"
-

@@ -4,9 +4,6 @@ import numpy as np
 import pandas as pd
 
 
-DEFAULT_HISTORY_MODES = ("clean", "random_swap", "targeted_swap")
-
-
 def build_history_ids(
     n_records: int,
     target_ids: np.ndarray,

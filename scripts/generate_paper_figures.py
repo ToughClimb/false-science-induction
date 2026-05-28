@@ -15,35 +15,32 @@ SRC_ROOT = REPO_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
+from false_science.config import (
+    load_json_config,
+    parse_config_arg,
+    require_keys,
+    require_nested,
+)
 from false_science.target_scan import git_text, timestamp
 
 
-RUNS = {
-    "main_m2_pos27": Path(
-        "runs/20260527T192346Z_m2-gfp-pos27-loop-mlp-50swap-bg1024-5seed"
-    ),
-    "stealth_m2_pos27": Path(
-        "runs/20260527T201103Z_m2-gfp-pos27-stealth-15swap-bg4096-mlp-10round-3seed"
-    ),
-    "gfp_epsilon_greedy": Path(
-        "runs/20260527T205901Z_m2-gfp-pos27-epsgreedy20-50swap-bg1024-mlp-5seed"
-    ),
-    "random_set_control": Path(
-        "runs/20260527T202252Z_m2-gfp-random-low-set-control-50swap-bg1024-3seed"
-    ),
-    "control_modes_pos27": Path(
-        "runs/20260527T193942Z_m2-gfp-pos27-loop-mlp-controls-50swap-bg1024-3seed"
-    ),
-    "esol_mlp_scaffold": Path(
-        "runs/20260527T204225Z_molecule-esol-scaffold-stealth-8swap-bg384-mlp-3seed"
-    ),
-}
+REQUIRED_RUN_KEYS = [
+    "main_m2_pos27",
+    "stealth_m2_pos27",
+    "gfp_epsilon_greedy",
+    "random_set_control",
+    "control_modes_pos27",
+    "esol_mlp_scaffold",
+]
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Generate paper-facing figures.")
-    parser.add_argument("--output-dir", default="artifacts/paper_figures")
-    return parser.parse_args()
+    config_path = parse_config_arg("Generate paper-facing figures.")
+    cfg = load_json_config(config_path)
+    require_keys(cfg, ["output_dir", "runs"], "generate_paper_figures")
+    run_cfg = require_nested(cfg, "runs", "generate_paper_figures")
+    require_keys(run_cfg, REQUIRED_RUN_KEYS, "generate_paper_figures.runs")
+    return argparse.Namespace(**cfg)
 
 
 def read_rounds(run_dir: Path) -> pd.DataFrame:
@@ -102,8 +99,7 @@ def save_control_barplot(df: pd.DataFrame, output_path: Path) -> None:
     plt.close()
 
 
-def save_audit_plot(output_path: Path) -> None:
-    audit_dir = RUNS["control_modes_pos27"]
+def save_audit_plot(audit_dir: Path, output_path: Path) -> None:
     audit = pd.read_csv(audit_dir / "audit_behavioral_vs_aggregate.csv")
     plot_df = audit[audit["mode"].isin(["random_swap", "donor_only_swap", "targeted_swap"])].copy()
     plot_df = plot_df.melt(
@@ -135,13 +131,14 @@ def main() -> int:
     args = parse_args()
     output_dir = Path(args.output_dir) / timestamp()
     output_dir.mkdir(parents=True, exist_ok=True)
+    runs = {key: Path(value) for key, value in args.runs.items()}
     sns.set_theme(style="whitegrid", context="paper")
 
-    main_rounds = read_rounds(RUNS["main_m2_pos27"])
-    stealth_rounds = read_rounds(RUNS["stealth_m2_pos27"])
-    eps_rounds = read_rounds(RUNS["gfp_epsilon_greedy"])
-    random_rounds = read_rounds(RUNS["random_set_control"])
-    esol_rounds = read_rounds(RUNS["esol_mlp_scaffold"])
+    main_rounds = read_rounds(runs["main_m2_pos27"])
+    stealth_rounds = read_rounds(runs["stealth_m2_pos27"])
+    eps_rounds = read_rounds(runs["gfp_epsilon_greedy"])
+    random_rounds = read_rounds(runs["random_set_control"])
+    esol_rounds = read_rounds(runs["esol_mlp_scaffold"])
 
     save_lineplot(
         main_rounds,
@@ -172,14 +169,14 @@ def main() -> int:
         ignore_index=True,
     )
     save_control_barplot(compare, output_dir / "fig_random_set_control.png")
-    save_audit_plot(output_dir / "fig_audit_deltas.png")
+    save_audit_plot(runs["control_modes_pos27"], output_dir / "fig_audit_deltas.png")
 
     manifest = {
         "stage": "paper_figure_generation",
         "output_dir": str(output_dir),
         "git_commit": git_text(["rev-parse", "HEAD"]) or "unknown",
         "git_status_short": git_text(["status", "--short"]),
-        "runs": {key: str(value) for key, value in RUNS.items()},
+        "runs": {key: str(value) for key, value in runs.items()},
         "artifacts": [
             "fig_main_pos27_target_fraction.png",
             "fig_stealth_pos27_target_fraction.png",

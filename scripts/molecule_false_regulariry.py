@@ -15,6 +15,15 @@ SRC_ROOT = REPO_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
+from false_science.config import (
+    config_for_metadata,
+    load_json_config,
+    parse_config_arg,
+    require_choice,
+    require_keys,
+    require_list_values,
+    require_nested,
+)
 from false_science.metrics import (
     false_association_strength,
     matched_non_target_controls,
@@ -32,38 +41,80 @@ from false_science.molecule import esol_feature_frame, load_esol_csv
 from false_science.target_scan import file_sha256, git_text, make_run_dir
 
 
-DEFAULT_ESOL_PATH = "/home/misaka/inverse-ai4sci/data/molecule_esol/delaney-processed.csv"
+REQUIRED_CONFIG_KEYS = [
+    "data_path",
+    "output_root",
+    "tag",
+    "target_column",
+    "smiles_column",
+    "target_tag",
+    "tag_prefixes",
+    "min_target_count",
+    "min_target_prevalence",
+    "max_target_prevalence",
+    "target_quantile",
+    "donor_quantile",
+    "swap_count",
+    "background_size",
+    "audit_size",
+    "seeds",
+    "modes",
+    "models",
+    "rounds",
+    "batch_size",
+    "top_k",
+    "device",
+    "morgan_n_bits",
+    "morgan_radius",
+    "ring_count_column",
+    "audit_seed_offset",
+    "mlp",
+    "xgboost",
+]
+
+REQUIRED_MLP_KEYS = [
+    "epochs",
+    "hidden_dim",
+    "batch_size",
+    "learning_rate",
+    "weight_decay",
+    "dropout",
+]
+
+REQUIRED_XGBOOST_KEYS = [
+    "n_estimators",
+    "max_depth",
+    "learning_rate",
+    "subsample",
+    "colsample_bytree",
+    "reg_lambda",
+    "n_jobs",
+    "tree_method",
+]
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description="ESOL molecular false-regularity induction pilot."
+    config_path = parse_config_arg("ESOL molecular false-regularity induction pilot.")
+    cfg = load_json_config(config_path)
+    require_keys(cfg, REQUIRED_CONFIG_KEYS, "molecule_false_regularity")
+    mlp_cfg = require_nested(cfg, "mlp", "molecule_false_regularity")
+    xgb_cfg = require_nested(cfg, "xgboost", "molecule_false_regularity")
+    require_keys(mlp_cfg, REQUIRED_MLP_KEYS, "molecule_false_regularity.mlp")
+    require_keys(xgb_cfg, REQUIRED_XGBOOST_KEYS, "molecule_false_regularity.xgboost")
+    require_choice(cfg, "device", {"cpu", "cuda"}, "molecule_false_regularity")
+    require_list_values(
+        cfg,
+        "models",
+        {"mlp", "xgboost"},
+        "molecule_false_regularity",
     )
-    parser.add_argument("--data-path", default=DEFAULT_ESOL_PATH)
-    parser.add_argument("--output-root", default="runs")
-    parser.add_argument("--tag", default="molecule-esol-scaffold-false-regularity")
-    parser.add_argument("--target-column", default="measured log solubility in mols per litre")
-    parser.add_argument("--smiles-column", default="smiles")
-    parser.add_argument("--target-tag", default="")
-    parser.add_argument("--tag-prefixes", nargs="*", default=["scaffold=", "ring_bin=", "fr_aromatic_ring"])
-    parser.add_argument("--min-target-count", type=int, default=20)
-    parser.add_argument("--min-target-prevalence", type=float, default=0.02)
-    parser.add_argument("--max-target-prevalence", type=float, default=0.40)
-    parser.add_argument("--target-quantile", type=float, default=0.40)
-    parser.add_argument("--donor-quantile", type=float, default=0.90)
-    parser.add_argument("--swap-count", type=int, default=20)
-    parser.add_argument("--background-size", type=int, default=256)
-    parser.add_argument("--audit-size", type=int, default=256)
-    parser.add_argument("--seeds", nargs="*", type=int, default=[0, 1, 2])
-    parser.add_argument("--models", nargs="*", default=["mlp", "xgboost"])
-    parser.add_argument("--rounds", type=int, default=5)
-    parser.add_argument("--batch-size", type=int, default=10)
-    parser.add_argument("--top-k", type=int, default=100)
-    parser.add_argument("--mlp-epochs", type=int, default=80)
-    parser.add_argument("--mlp-hidden-dim", type=int, default=128)
-    parser.add_argument("--xgb-n-estimators", type=int, default=120)
-    parser.add_argument("--device", choices=["cpu", "cuda"], default="cpu")
-    return parser.parse_args()
+    require_list_values(
+        cfg,
+        "modes",
+        {"clean", "random_swap", "targeted_swap"},
+        "molecule_false_regularity",
+    )
+    return argparse.Namespace(**cfg)
 
 
 def scan_tags(
@@ -172,24 +223,37 @@ def fit_model(
     args: argparse.Namespace,
 ):
     if model == "mlp":
+        mlp_cfg = args.mlp
         return fit_predict_torch_mlp(
             X[train_ids],
             train_y,
             X,
             y,
             seed=seed,
-            epochs=args.mlp_epochs,
-            hidden_dim=args.mlp_hidden_dim,
+            epochs=mlp_cfg["epochs"],
+            hidden_dim=mlp_cfg["hidden_dim"],
+            batch_size=mlp_cfg["batch_size"],
+            learning_rate=mlp_cfg["learning_rate"],
+            weight_decay=mlp_cfg["weight_decay"],
+            dropout=mlp_cfg["dropout"],
             device=args.device,
         )
     if model == "xgboost":
+        xgb_cfg = args.xgboost
         return fit_predict_xgboost(
             X[train_ids],
             train_y,
             X,
             y,
             seed=seed,
-            n_estimators=args.xgb_n_estimators,
+            n_estimators=xgb_cfg["n_estimators"],
+            max_depth=xgb_cfg["max_depth"],
+            learning_rate=xgb_cfg["learning_rate"],
+            subsample=xgb_cfg["subsample"],
+            colsample_bytree=xgb_cfg["colsample_bytree"],
+            reg_lambda=xgb_cfg["reg_lambda"],
+            n_jobs=xgb_cfg["n_jobs"],
+            tree_method=xgb_cfg["tree_method"],
         )
     raise ValueError(f"unknown model: {model}")
 
@@ -198,10 +262,15 @@ def main() -> int:
     args = parse_args()
     data_path = Path(args.data_path)
     df = load_esol_csv(str(data_path), args.target_column, args.smiles_column)
-    X_df, tag_sets = esol_feature_frame(df, args.smiles_column)
+    X_df, tag_sets = esol_feature_frame(
+        df,
+        args.smiles_column,
+        n_bits=args.morgan_n_bits,
+        radius=args.morgan_radius,
+    )
     X = X_df.to_numpy(dtype=np.float32)
     y = df[args.target_column].to_numpy(dtype=float)
-    n_mutations = df["Number of Rings"].fillna(0).astype(int).to_numpy()
+    n_mutations = df[args.ring_count_column].fillna(0).astype(int).to_numpy()
 
     scan = scan_tags(
         y,
@@ -245,7 +314,7 @@ def main() -> int:
             n_records=len(df),
             excluded_ids=base_history_ids,
             audit_size=args.audit_size,
-            seed=seed + 10_000,
+            seed=seed + args.audit_seed_offset,
         )
         audit_mask = np.zeros(len(df), dtype=bool)
         audit_mask[audit_ids] = True
@@ -254,7 +323,7 @@ def main() -> int:
         candidate_mask[audit_ids] = False
         control_ids = matched_non_target_controls(target_mask, candidate_mask, n_mutations, seed)
 
-        for mode in ("clean", "random_swap", "targeted_swap"):
+        for mode in args.modes:
             initial_recorded = recorded_labels_for_history(y, base_history_ids, pairs, mode, seed)
             history_rows.append(
                 pd.DataFrame(
@@ -482,12 +551,12 @@ def main() -> int:
         ),
         "git_commit": git_text(["rev-parse", "HEAD"]) or "unknown",
         "git_status_short": git_text(["status", "--short"]),
-        "config": vars(args),
+        "config": config_for_metadata(vars(args)),
     }
     with open(run_dir / "metadata.json", "w", encoding="utf-8") as handle:
         json.dump(metadata, handle, indent=2, sort_keys=True)
     with open(run_dir / "config.json", "w", encoding="utf-8") as handle:
-        json.dump(vars(args), handle, indent=2, sort_keys=True)
+        json.dump(config_for_metadata(vars(args)), handle, indent=2, sort_keys=True)
 
     print(json.dumps(metadata, indent=2, sort_keys=True))
     print("STATIC")

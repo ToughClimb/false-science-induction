@@ -1,0 +1,15 @@
+{
+  "output_dir": "artifacts/paper_tables",
+  "random_set_control_run": "runs/20260528T021109Z_auditfix-m2-random-low-set-control-50swap-bg1024-3seed-80ep",
+  "runs": {
+    "main_m1_pos27_mlp_25swap": "runs/20260527T190706Z_m1-gfp-pos27-static-xgb-mlp-25swap-bg2048-3seed",
+    "main_m2_pos27_mlp_5seed": "runs/20260528T015748Z_auditfix-m2-pos27-50swap-bg1024-5seed-80ep",
+    "control_modes_pos27": "runs/20260528T021111Z_auditfix-m2-pos27-controls-50swap-bg1024-3seed-80ep",
+    "second_target_pos83": "runs/20260527T192131Z_m2-gfp-pos83-loop-mlp-25swap-bg2048-3seed",
+    "esm2_static_pos27": "runs/20260527T200102Z_m1-gfp-pos27-esm2-static-10swap-bg4096-3seed",
+    "stealth_15swap_10round": "runs/20260528T020038Z_auditfix-m2-pos27-15swap-bg4096-10round-3seed-80ep",
+    "gfp_epsilon_greedy": "runs/20260528T021112Z_auditfix-m2-pos27-epsgreedy20-50swap-bg1024-5seed-80ep",
+    "esol_mlp_scaffold": "runs/20260527T204225Z_molecule-esol-scaffold-stealth-8swap-bg384-mlp-3seed",
+    "esol_xgb_scaffold": "runs/20260527T204356Z_molecule-esol-scaffold-8swap-bg384-xgb-anchor-3seed"
+  }
+}

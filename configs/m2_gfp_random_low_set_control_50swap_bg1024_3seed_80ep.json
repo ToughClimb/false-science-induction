@@ -1,0 +1,38 @@
+{
+  "data_path": "/home/misaka/inverse-ai4sci/data/protein_gfp/GFP_AEQVI_Sarkisyan_2016.csv",
+  "output_root": "runs",
+  "tag": "auditfix-m2-random-low-set-control-50swap-bg1024-3seed-80ep",
+  "target_column": "DMS_score",
+  "mutant_column": "mutant",
+  "max_rows": null,
+  "random_state": 0,
+  "target_set_size": 1077,
+  "target_low_quantile": 0.4,
+  "donor_quantile": 0.9,
+  "swap_count": 50,
+  "background_size": 1024,
+  "audit_size": 4096,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "modes": [
+    "clean",
+    "random_swap",
+    "targeted_swap"
+  ],
+  "rounds": 5,
+  "batch_size": 20,
+  "top_k": 500,
+  "device": "cuda",
+  "mlp": {
+    "epochs": 80,
+    "hidden_dim": 256,
+    "batch_size": 256,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "dropout": 0.05
+  },
+  "audit_seed_offset": 10000
+}

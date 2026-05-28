@@ -13,26 +13,15 @@ SRC_ROOT = REPO_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
+from false_science.config import load_json_config, parse_config_arg, require_keys
 from false_science.target_scan import git_text, timestamp
 
 
-GFP_RUNS = [
-    Path("runs/20260527T190706Z_m1-gfp-pos27-static-xgb-mlp-25swap-bg2048-3seed/metrics_by_seed.csv"),
-    Path("runs/20260528T015748Z_auditfix-m2-pos27-50swap-bg1024-5seed-80ep/round_metrics.csv"),
-    Path("runs/20260528T020038Z_auditfix-m2-pos27-15swap-bg4096-10round-3seed-80ep/round_metrics.csv"),
-    Path("runs/20260528T021112Z_auditfix-m2-pos27-epsgreedy20-50swap-bg1024-5seed-80ep/round_metrics.csv"),
-]
-
-ESOL_RUNS = [
-    Path("runs/20260527T204225Z_molecule-esol-scaffold-stealth-8swap-bg384-mlp-3seed/round_metrics.csv"),
-    Path("runs/20260527T204356Z_molecule-esol-scaffold-8swap-bg384-xgb-anchor-3seed/round_metrics.csv"),
-]
-
-
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Aggregate validation variance audit.")
-    parser.add_argument("--output-dir", default="artifacts/audit_variance")
-    return parser.parse_args()
+    config_path = parse_config_arg("Aggregate validation variance audit.")
+    cfg = load_json_config(config_path)
+    require_keys(cfg, ["output_dir", "metric_files"], "audit_aggregate_variance")
+    return argparse.Namespace(**cfg)
 
 
 def read_metric_file(path: Path, domain: str) -> pd.DataFrame:
@@ -52,8 +41,14 @@ def main() -> int:
     args = parse_args()
     output_dir = Path(args.output_dir) / timestamp()
     output_dir.mkdir(parents=True, exist_ok=True)
-    frames = [read_metric_file(path, "GFP") for path in GFP_RUNS if path.is_file()]
-    frames.extend(read_metric_file(path, "ESOL") for path in ESOL_RUNS if path.is_file())
+    frames = []
+    for metric_file in args.metric_files:
+        require_keys(metric_file, ["path", "domain"], "audit_aggregate_variance.metric_file")
+        path = Path(metric_file["path"])
+        if path.is_file():
+            frames.append(read_metric_file(path, str(metric_file["domain"])))
+    if not frames:
+        raise FileNotFoundError("no configured metric files exist")
     metrics = pd.concat(frames, ignore_index=True)
     metrics = metrics[metrics["model"].isin(["mlp", "xgboost"])].copy()
 
@@ -112,6 +107,7 @@ def main() -> int:
         "git_commit": git_text(["rev-parse", "HEAD"]) or "unknown",
         "git_status_short": git_text(["status", "--short"]),
         "metric_semantics": "uses mae_audit/r2_audit when available; falls back to legacy mae_all/r2_all only for old run files",
+        "metric_files": args.metric_files,
         "artifacts": [
             "aggregate_metric_observations.csv",
             "aggregate_baseline_distribution.csv",

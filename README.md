@@ -63,3 +63,20 @@ conda run --no-capture-output -n agentconda python -m pip install -e ".[protein]
 ```bash
 conda run --no-capture-output -n agentconda python -m pytest -q
 ```
+
+## Config-Only Runs
+
+Runnable experiment, audit, table, and figure scripts accept only a fixed JSON
+configuration via `--config`. Experimental variables such as data paths, target
+definitions, model hyperparameters, seeds, budgets, audit paths, and output
+roots live under `configs/`.
+
+Examples:
+
+```bash
+conda run --no-capture-output -n agentconda python scripts/m0_scan_gfp_targets.py \
+  --config configs/m0_gfp_target_scan.json
+
+conda run --no-capture-output -n agentconda python scripts/m2_closed_loop_false_pursuit.py \
+  --config configs/m2_gfp_pos27_topmean_50swap_bg1024_5seed_80ep.json
+```

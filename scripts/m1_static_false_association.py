@@ -5,6 +5,7 @@ import argparse
 import json
 import sys
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -16,7 +17,19 @@ if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
 from false_science.features import mutation_feature_frame
-from false_science.esm_features import load_or_compute_esm2_embeddings
+from false_science.config import (
+    config_for_metadata,
+    load_json_config,
+    parse_config_arg,
+    require_choice,
+    require_keys,
+    require_list_values,
+    require_nested,
+)
+from false_science.esm_features import (
+    PROTEINGYM_GFP_AEQVI_SEQUENCE,
+    load_or_compute_esm2_embeddings,
+)
 from false_science.metrics import (
     false_association_strength,
     matched_non_target_controls,
@@ -24,7 +37,6 @@ from false_science.metrics import (
     target_topk_fraction,
 )
 from false_science.misbinding import (
-    DEFAULT_HISTORY_MODES,
     build_audit_ids,
     build_history_ids,
     label_multiset_equal,
@@ -43,44 +55,170 @@ from false_science.target_scan import (
 )
 
 
-DEFAULT_GFP_PATH = (
-    "/home/misaka/inverse-ai4sci/data/protein_gfp/"
-    "GFP_AEQVI_Sarkisyan_2016.csv"
-)
+REQUIRED_CONFIG_KEYS = [
+    "data_path",
+    "output_root",
+    "tag",
+    "target_column",
+    "mutant_column",
+    "max_rows",
+    "random_state",
+    "target_tag",
+    "modes",
+    "swap_count",
+    "background_size",
+    "audit_size",
+    "audit_seed_offset",
+    "seeds",
+    "models",
+    "feature_set",
+    "feature_cache_root",
+    "esm_model_name",
+    "esm_batch_size",
+    "top_k",
+    "device",
+    "allow_nonpassing_target",
+    "target_scan",
+    "mlp",
+    "xgboost",
+]
+
+REQUIRED_SCAN_KEYS = [
+    "min_target_count",
+    "min_target_prevalence",
+    "max_target_prevalence",
+    "target_mean_quantile",
+    "donor_quantile",
+    "min_swap_count",
+    "max_targets",
+    "tag_prefixes",
+]
+
+REQUIRED_MLP_KEYS = [
+    "epochs",
+    "hidden_dim",
+    "batch_size",
+    "learning_rate",
+    "weight_decay",
+    "dropout",
+]
+
+REQUIRED_XGBOOST_KEYS = [
+    "n_estimators",
+    "max_depth",
+    "learning_rate",
+    "subsample",
+    "colsample_bytree",
+    "reg_lambda",
+    "n_jobs",
+    "tree_method",
+]
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="M1 static false-association run.")
-    parser.add_argument("--data-path", default=DEFAULT_GFP_PATH)
-    parser.add_argument("--output-root", default="runs")
-    parser.add_argument("--tag", default="m1-static-false-association")
-    parser.add_argument("--target-column", default="DMS_score")
-    parser.add_argument("--mutant-column", default="mutant")
-    parser.add_argument("--target-tag", default="pos=27")
-    parser.add_argument("--modes", nargs="*", default=list(DEFAULT_HISTORY_MODES))
-    parser.add_argument("--swap-count", type=int, default=100)
-    parser.add_argument("--background-size", type=int, default=512)
-    parser.add_argument("--audit-size", type=int, default=4096)
-    parser.add_argument("--seeds", nargs="*", type=int, default=[0, 1, 2])
-    parser.add_argument("--models", nargs="*", default=["xgboost", "mlp"])
-    parser.add_argument("--feature-set", choices=["mutation", "esm2"], default="mutation")
-    parser.add_argument("--feature-cache-root", default="data/cache")
-    parser.add_argument("--esm-batch-size", type=int, default=32)
-    parser.add_argument("--top-k", type=int, default=500)
-    parser.add_argument("--xgb-n-estimators", type=int, default=200)
-    parser.add_argument("--mlp-epochs", type=int, default=80)
-    parser.add_argument("--mlp-hidden-dim", type=int, default=256)
-    parser.add_argument("--device", choices=["cpu", "cuda"], default="cpu")
-    parser.add_argument(
-        "--allow-nonpassing-target",
-        action="store_true",
-        help="Allow boundary/control targets that do not pass the M0 low-target gate.",
+    config_path = parse_config_arg("M1 static false-association run.")
+    cfg = load_json_config(config_path)
+    require_keys(cfg, REQUIRED_CONFIG_KEYS, "m1_static_false_association")
+    scan_cfg = require_nested(cfg, "target_scan", "m1_static_false_association")
+    mlp_cfg = require_nested(cfg, "mlp", "m1_static_false_association")
+    xgb_cfg = require_nested(cfg, "xgboost", "m1_static_false_association")
+    require_keys(scan_cfg, REQUIRED_SCAN_KEYS, "m1_static_false_association.target_scan")
+    require_keys(mlp_cfg, REQUIRED_MLP_KEYS, "m1_static_false_association.mlp")
+    require_keys(xgb_cfg, REQUIRED_XGBOOST_KEYS, "m1_static_false_association.xgboost")
+    require_choice(
+        cfg,
+        "feature_set",
+        {"mutation", "esm2"},
+        "m1_static_false_association",
     )
-    return parser.parse_args()
+    require_choice(cfg, "device", {"cpu", "cuda"}, "m1_static_false_association")
+    require_list_values(
+        cfg,
+        "models",
+        {"mlp", "xgboost"},
+        "m1_static_false_association",
+    )
+    require_list_values(
+        cfg,
+        "modes",
+        {
+            "clean",
+            "random_swap",
+            "targeted_swap",
+            "donor_only_swap",
+            "target_only_high_relabel",
+        },
+        "m1_static_false_association",
+    )
+    return argparse.Namespace(**cfg)
 
 
 def n_mutations_from_mutants(mutants: pd.Series) -> np.ndarray:
     return mutants.astype(str).map(lambda value: 0 if not value else len(value.split(":"))).to_numpy()
+
+
+def build_scan_config(args: argparse.Namespace, data_path: Path) -> TargetScanConfig:
+    scan_cfg = args.target_scan
+    return TargetScanConfig(
+        data_path=str(data_path),
+        target_column=args.target_column,
+        mutant_column=args.mutant_column,
+        max_rows=args.max_rows,
+        random_state=args.random_state,
+        min_target_count=scan_cfg["min_target_count"],
+        min_target_prevalence=scan_cfg["min_target_prevalence"],
+        max_target_prevalence=scan_cfg["max_target_prevalence"],
+        target_mean_quantile=scan_cfg["target_mean_quantile"],
+        donor_quantile=scan_cfg["donor_quantile"],
+        min_swap_count=scan_cfg["min_swap_count"],
+        max_targets=scan_cfg["max_targets"],
+        tag_prefixes=tuple(scan_cfg["tag_prefixes"]),
+    )
+
+
+def fit_model(
+    model_name: str,
+    x_train: np.ndarray,
+    y_train: np.ndarray,
+    x_eval: np.ndarray,
+    y_eval: np.ndarray,
+    seed: int,
+    args: argparse.Namespace,
+) -> Any:
+    if model_name == "xgboost":
+        xgb_cfg = args.xgboost
+        return fit_predict_xgboost(
+            x_train,
+            y_train,
+            x_eval,
+            y_eval,
+            seed=seed,
+            n_estimators=xgb_cfg["n_estimators"],
+            max_depth=xgb_cfg["max_depth"],
+            learning_rate=xgb_cfg["learning_rate"],
+            subsample=xgb_cfg["subsample"],
+            colsample_bytree=xgb_cfg["colsample_bytree"],
+            reg_lambda=xgb_cfg["reg_lambda"],
+            n_jobs=xgb_cfg["n_jobs"],
+            tree_method=xgb_cfg["tree_method"],
+        )
+    if model_name == "mlp":
+        mlp_cfg = args.mlp
+        return fit_predict_torch_mlp(
+            x_train,
+            y_train,
+            x_eval,
+            y_eval,
+            seed=seed,
+            epochs=mlp_cfg["epochs"],
+            hidden_dim=mlp_cfg["hidden_dim"],
+            batch_size=mlp_cfg["batch_size"],
+            learning_rate=mlp_cfg["learning_rate"],
+            weight_decay=mlp_cfg["weight_decay"],
+            dropout=mlp_cfg["dropout"],
+            device=args.device,
+        )
+    raise ValueError(f"unknown model: {model_name}")
 
 
 def main() -> int:
@@ -89,7 +227,13 @@ def main() -> int:
     if not data_path.is_file():
         raise FileNotFoundError(f"GFP data not found: {data_path}")
 
-    df = load_gfp_csv(data_path, args.target_column, args.mutant_column)
+    df = load_gfp_csv(
+        data_path,
+        args.target_column,
+        args.mutant_column,
+        max_rows=args.max_rows,
+        random_state=args.random_state,
+    )
     y = df[args.target_column].to_numpy(dtype=float)
     feature_metadata: dict[str, object]
     if args.feature_set == "mutation":
@@ -105,8 +249,10 @@ def main() -> int:
             data_path=data_path,
             mutant_column=args.mutant_column,
             cache_root=args.feature_cache_root,
+            model_name=args.esm_model_name,
             batch_size=args.esm_batch_size,
             device=args.device,
+            wild_type_sequence=PROTEINGYM_GFP_AEQVI_SEQUENCE,
         )
         X_df = pd.DataFrame(columns=[f"esm2_{idx}" for idx in range(X.shape[1])])
         feature_metadata["feature_set"] = "esm2"
@@ -115,12 +261,7 @@ def main() -> int:
     if not target_mask.any():
         raise ValueError(f"target tag not found: {args.target_tag}")
 
-    scan_cfg = TargetScanConfig(
-        data_path=str(data_path),
-        target_column=args.target_column,
-        mutant_column=args.mutant_column,
-        tag_prefixes=(args.target_tag.split("=", 1)[0] + "=",),
-    )
+    scan_cfg = build_scan_config(args, data_path)
     scan, _ = scan_target_regions(df, scan_cfg)
     target_row = scan[scan["tag"] == args.target_tag]
     target_scan_passed = bool(
@@ -159,7 +300,7 @@ def main() -> int:
             n_records=len(df),
             excluded_ids=history_ids,
             audit_size=args.audit_size,
-            seed=seed + 10_000,
+            seed=seed + args.audit_seed_offset,
         )
         candidate_mask = np.ones(len(df), dtype=bool)
         candidate_mask[history_ids] = False
@@ -194,28 +335,15 @@ def main() -> int:
             )
 
             for model_name in args.models:
-                if model_name == "xgboost":
-                    result = fit_predict_xgboost(
-                        X[history_ids],
-                        recorded_y,
-                        X,
-                        y,
-                        seed=seed,
-                        n_estimators=args.xgb_n_estimators,
-                    )
-                elif model_name == "mlp":
-                    result = fit_predict_torch_mlp(
-                        X[history_ids],
-                        recorded_y,
-                        X,
-                        y,
-                        seed=seed,
-                        epochs=args.mlp_epochs,
-                        hidden_dim=args.mlp_hidden_dim,
-                        device=args.device,
-                    )
-                else:
-                    raise ValueError(f"unknown model: {model_name}")
+                result = fit_model(
+                    model_name,
+                    X[history_ids],
+                    recorded_y,
+                    X,
+                    y,
+                    seed,
+                    args,
+                )
 
                 pred = result.predictions
                 audit_mae = float(mean_absolute_error(y[audit_ids], pred[audit_ids]))
@@ -338,7 +466,7 @@ def main() -> int:
     summary.to_csv(run_dir / "summary_by_model_mode.csv", index=False)
     X_df.head(0).to_csv(run_dir / "feature_columns.csv", index=False)
 
-    config = vars(args).copy()
+    config = config_for_metadata(vars(args))
     metadata = {
         "stage": "M1_static_false_association",
         "run_dir": str(run_dir),

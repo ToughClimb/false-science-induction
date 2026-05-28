@@ -13,49 +13,39 @@ SRC_ROOT = REPO_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
+from false_science.config import (
+    load_json_config,
+    parse_config_arg,
+    require_keys,
+    require_nested,
+)
 from false_science.target_scan import git_text, timestamp
 
 
-RUNS = {
-    "main_m1_pos27_mlp_25swap": Path(
-        "runs/20260527T190706Z_m1-gfp-pos27-static-xgb-mlp-25swap-bg2048-3seed"
-    ),
-    "main_m2_pos27_mlp_5seed": Path(
-        "runs/20260528T015748Z_auditfix-m2-pos27-50swap-bg1024-5seed-80ep"
-    ),
-    "control_modes_pos27": Path(
-        "runs/20260528T021111Z_auditfix-m2-pos27-controls-50swap-bg1024-3seed-80ep"
-    ),
-    "second_target_pos83": Path(
-        "runs/20260527T192131Z_m2-gfp-pos83-loop-mlp-25swap-bg2048-3seed"
-    ),
-    "esm2_static_pos27": Path(
-        "runs/20260527T200102Z_m1-gfp-pos27-esm2-static-10swap-bg4096-3seed"
-    ),
-    "stealth_15swap_10round": Path(
-        "runs/20260528T020038Z_auditfix-m2-pos27-15swap-bg4096-10round-3seed-80ep"
-    ),
-    "gfp_epsilon_greedy": Path(
-        "runs/20260528T021112Z_auditfix-m2-pos27-epsgreedy20-50swap-bg1024-5seed-80ep"
-    ),
-    "esol_mlp_scaffold": Path(
-        "runs/20260527T204225Z_molecule-esol-scaffold-stealth-8swap-bg384-mlp-3seed"
-    ),
-    "esol_xgb_scaffold": Path(
-        "runs/20260527T204356Z_molecule-esol-scaffold-8swap-bg384-xgb-anchor-3seed"
-    ),
-}
+REQUIRED_RUN_KEYS = [
+    "main_m1_pos27_mlp_25swap",
+    "main_m2_pos27_mlp_5seed",
+    "control_modes_pos27",
+    "second_target_pos83",
+    "esm2_static_pos27",
+    "stealth_15swap_10round",
+    "gfp_epsilon_greedy",
+    "esol_mlp_scaffold",
+    "esol_xgb_scaffold",
+]
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Generate paper-facing tables.")
-    parser.add_argument("--output-dir", default="artifacts/paper_tables")
-    parser.add_argument(
-        "--random-set-control-run",
-        default="",
-        help="Optional run directory from scripts/m2_random_set_control.py.",
+    config_path = parse_config_arg("Generate paper-facing tables.")
+    cfg = load_json_config(config_path)
+    require_keys(
+        cfg,
+        ["output_dir", "runs", "random_set_control_run"],
+        "generate_paper_tables",
     )
-    return parser.parse_args()
+    run_cfg = require_nested(cfg, "runs", "generate_paper_tables")
+    require_keys(run_cfg, REQUIRED_RUN_KEYS, "generate_paper_tables.runs")
+    return argparse.Namespace(**cfg)
 
 
 def read_summary(run_dir: Path) -> pd.DataFrame:
@@ -76,7 +66,7 @@ def read_metrics(run_dir: Path) -> pd.DataFrame:
     return df
 
 
-def mode_row(df: pd.DataFrame, mode: str, model: str = "mlp") -> pd.Series:
+def mode_row(df: pd.DataFrame, mode: str, model: str) -> pd.Series:
     rows = df[(df["mode"] == mode) & (df["model"] == model)]
     if rows.empty:
         raise ValueError(f"missing mode={mode} model={model}")
@@ -89,19 +79,22 @@ def metric_value(row: pd.Series, audit_name: str, legacy_name: str) -> float:
     return float(row[legacy_name])
 
 
-def build_main_evidence_table(random_set_run: Path | None) -> pd.DataFrame:
+def build_main_evidence_table(
+    runs: dict[str, Path],
+    random_set_run: Path | None,
+) -> pd.DataFrame:
     rows: list[dict[str, object]] = []
 
-    m1 = read_summary(RUNS["main_m1_pos27_mlp_25swap"])
-    m1_metrics = read_metrics(RUNS["main_m1_pos27_mlp_25swap"])
-    m1_t = mode_row(m1, "targeted_swap")
+    m1 = read_summary(runs["main_m1_pos27_mlp_25swap"])
+    m1_metrics = read_metrics(runs["main_m1_pos27_mlp_25swap"])
+    m1_t = mode_row(m1, "targeted_swap", model="mlp")
     m1_t_metrics = m1_metrics[
         (m1_metrics["mode"] == "targeted_swap") & (m1_metrics["model"] == "mlp")
     ]
     rows.append(
         {
             "block": "M1 static false association",
-            "run": RUNS["main_m1_pos27_mlp_25swap"].name,
+            "run": runs["main_m1_pos27_mlp_25swap"].name,
             "target": "pos=27",
             "model": "mutation-feature MLP",
             "seeds": int(m1_t["seeds"]),
@@ -123,12 +116,12 @@ def build_main_evidence_table(random_set_run: Path | None) -> pd.DataFrame:
         ("stealth_15swap_10round", "M2 low-budget persistence", "pos=27"),
         ("gfp_epsilon_greedy", "M2 epsilon-greedy acquisition", "pos=27"),
     ]:
-        summary = read_summary(RUNS[key])
-        targeted = mode_row(summary, "targeted_swap")
+        summary = read_summary(runs[key])
+        targeted = mode_row(summary, "targeted_swap", model="mlp")
         rows.append(
             {
                 "block": label,
-                "run": RUNS[key].name,
+                "run": runs[key].name,
                 "target": target,
                 "model": "mutation-feature MLP",
                 "seeds": int(targeted["seeds"]),
@@ -144,8 +137,8 @@ def build_main_evidence_table(random_set_run: Path | None) -> pd.DataFrame:
             }
         )
 
-    esm = read_summary(RUNS["esm2_static_pos27"])
-    esm_t = mode_row(esm, "targeted_swap")
+    esm = read_summary(runs["esm2_static_pos27"])
+    esm_t = mode_row(esm, "targeted_swap", model="mlp")
     rows.append(
         {
             "block": "M1 ESM-2 static support",
@@ -167,7 +160,7 @@ def build_main_evidence_table(random_set_run: Path | None) -> pd.DataFrame:
 
     if random_set_run is not None:
         random_summary = read_summary(random_set_run)
-        targeted = mode_row(random_summary, "targeted_swap")
+        targeted = mode_row(random_summary, "targeted_swap", model="mlp")
         rows.append(
             {
                 "block": "M2 random-structure target control",
@@ -192,12 +185,12 @@ def build_main_evidence_table(random_set_run: Path | None) -> pd.DataFrame:
         ("esol_xgb_scaffold", "M2 ESOL XGBoost anchor", "RDKit XGBoost"),
     ]:
         model_id = "mlp" if "mlp" in key else "xgboost"
-        summary = pd.read_csv(RUNS[key] / "loop_summary_by_model_mode.csv")
+        summary = pd.read_csv(runs[key] / "loop_summary_by_model_mode.csv")
         targeted = mode_row(summary, "targeted_swap", model=model_id)
         rows.append(
             {
                 "block": label,
-                "run": RUNS[key].name,
+                "run": runs[key].name,
                 "target": "low-solubility molecular scaffold",
                 "model": model_name,
                 "seeds": int(targeted["seeds"]),
@@ -216,8 +209,8 @@ def build_main_evidence_table(random_set_run: Path | None) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def build_audit_table() -> pd.DataFrame:
-    audit_dir = RUNS["control_modes_pos27"]
+def build_audit_table(runs: dict[str, Path]) -> pd.DataFrame:
+    audit_dir = runs["control_modes_pos27"]
     label_path = audit_dir / "audit_label_accounting.csv"
     behavior_path = audit_dir / "audit_behavioral_vs_aggregate.csv"
     if not label_path.is_file() or not behavior_path.is_file():
@@ -238,10 +231,10 @@ def build_audit_table() -> pd.DataFrame:
     return table[keep]
 
 
-def build_esol_audit_table() -> pd.DataFrame:
+def build_esol_audit_table(runs: dict[str, Path]) -> pd.DataFrame:
     rows = []
     for key in ["esol_mlp_scaffold", "esol_xgb_scaffold"]:
-        audit_dir = RUNS[key]
+        audit_dir = runs[key]
         label = pd.read_csv(audit_dir / "audit_label_accounting.csv")
         behavior = pd.read_csv(audit_dir / "audit_behavioral_vs_aggregate.csv")
         table = label.merge(behavior, on="mode", how="left")
@@ -272,11 +265,16 @@ def main() -> int:
     args = parse_args()
     output_dir = Path(args.output_dir) / timestamp()
     output_dir.mkdir(parents=True, exist_ok=True)
-    random_set_run = Path(args.random_set_control_run) if args.random_set_control_run else None
+    runs = {key: Path(value) for key, value in args.runs.items()}
+    random_set_run = (
+        Path(args.random_set_control_run)
+        if args.random_set_control_run is not None
+        else None
+    )
 
-    main_table = build_main_evidence_table(random_set_run)
-    audit_table = build_audit_table()
-    esol_audit_table = build_esol_audit_table()
+    main_table = build_main_evidence_table(runs, random_set_run)
+    audit_table = build_audit_table(runs)
+    esol_audit_table = build_esol_audit_table(runs)
     main_table.to_csv(output_dir / "table_main_evidence.csv", index=False)
     audit_table.to_csv(output_dir / "table_audit_boundary.csv", index=False)
     esol_audit_table.to_csv(output_dir / "table_esol_audit_boundary.csv", index=False)
@@ -293,7 +291,7 @@ def main() -> int:
         "output_dir": str(output_dir),
         "git_commit": git_text(["rev-parse", "HEAD"]) or "unknown",
         "git_status_short": git_text(["status", "--short"]),
-        "runs": {key: str(path) for key, path in RUNS.items()},
+        "runs": {key: str(path) for key, path in runs.items()},
         "random_set_control_run": str(random_set_run) if random_set_run else "",
         "mae_r2_semantics": "mae/r2 columns use held-out audit means when available; legacy runs fall back to all-record means",
         "artifacts": [

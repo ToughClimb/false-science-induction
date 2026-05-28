@@ -8,7 +8,7 @@ from false_science.protein import amino_acid_group, parse_mutant
 
 def mutation_feature_frame(
     df: pd.DataFrame,
-    mutant_column: str = "mutant",
+    mutant_column: str,
 ) -> pd.DataFrame:
     parsed_mutants = [parse_mutant(mutant) for mutant in df[mutant_column].astype(str)]
     all_positions = sorted({mutation.position for parsed in parsed_mutants for mutation in parsed})
@@ -45,4 +45,3 @@ def mutation_feature_frame(
 
     X = pd.DataFrame(rows).replace([np.inf, -np.inf], np.nan).fillna(0.0)
     return X.astype(np.float32)
-

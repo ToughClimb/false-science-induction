@@ -14,7 +14,11 @@ def test_proteingym_gfp_sequence_matches_mutation_coordinates() -> None:
 
 def test_gfp_mutant_sequences_apply_dataset_style_tokens() -> None:
     df = pd.DataFrame({"mutant": ["K3R:Y237H"]})
-    sequence = gfp_mutant_sequences(df)[0]
+    sequence = gfp_mutant_sequences(
+        df,
+        mutant_column="mutant",
+        wild_type_sequence=PROTEINGYM_GFP_AEQVI_SEQUENCE,
+    )[0]
     assert sequence[2] == "R"
     assert sequence[236] == "H"
     assert len(sequence) == len(PROTEINGYM_GFP_AEQVI_SEQUENCE)

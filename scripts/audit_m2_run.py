@@ -3,15 +3,24 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 import pandas as pd
 
+REPO_ROOT = Path(__file__).resolve().parents[1]
+SRC_ROOT = REPO_ROOT / "src"
+if str(SRC_ROOT) not in sys.path:
+    sys.path.insert(0, str(SRC_ROOT))
+
+from false_science.config import load_json_config, parse_config_arg, require_keys
+
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Audit an M2 closed-loop run.")
-    parser.add_argument("run_dir")
-    return parser.parse_args()
+    config_path = parse_config_arg("Audit an M2 closed-loop run.")
+    cfg = load_json_config(config_path)
+    require_keys(cfg, ["run_dir"], "audit_m2_run")
+    return argparse.Namespace(**cfg)
 
 
 def main() -> int:

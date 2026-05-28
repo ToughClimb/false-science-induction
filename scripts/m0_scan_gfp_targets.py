@@ -11,6 +11,12 @@ SRC_ROOT = REPO_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
+from false_science.config import (
+    config_for_metadata,
+    load_json_config,
+    parse_config_arg,
+    require_keys,
+)
 from false_science.protein import load_gfp_csv
 from false_science.target_scan import (
     TargetScanConfig,
@@ -21,40 +27,31 @@ from false_science.target_scan import (
 )
 
 
-DEFAULT_GFP_PATH = (
-    "/home/misaka/inverse-ai4sci/data/protein_gfp/"
-    "GFP_AEQVI_Sarkisyan_2016.csv"
-)
+REQUIRED_CONFIG_KEYS = [
+    "data_path",
+    "output_root",
+    "tag",
+    "target_column",
+    "mutant_column",
+    "max_rows",
+    "random_state",
+    "min_target_count",
+    "min_target_prevalence",
+    "max_target_prevalence",
+    "target_mean_quantile",
+    "donor_quantile",
+    "min_swap_count",
+    "max_targets",
+    "tag_prefixes",
+    "candidate_pair_count",
+]
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description="M0 scan for low-performing GFP target regions."
-    )
-    parser.add_argument("--data-path", default=DEFAULT_GFP_PATH)
-    parser.add_argument("--output-root", default="runs")
-    parser.add_argument("--tag", default="m0-gfp-target-scan")
-    parser.add_argument("--target-column", default="DMS_score")
-    parser.add_argument("--mutant-column", default="mutant")
-    parser.add_argument("--max-rows", type=int, default=None)
-    parser.add_argument("--random-state", type=int, default=0)
-    parser.add_argument("--min-target-count", type=int, default=100)
-    parser.add_argument("--min-target-prevalence", type=float, default=0.02)
-    parser.add_argument("--max-target-prevalence", type=float, default=0.35)
-    parser.add_argument("--target-mean-quantile", type=float, default=0.40)
-    parser.add_argument("--donor-quantile", type=float, default=0.90)
-    parser.add_argument("--min-swap-count", type=int, default=25)
-    parser.add_argument("--max-targets", type=int, default=50)
-    parser.add_argument(
-        "--tag-prefixes",
-        nargs="*",
-        default=None,
-        help=(
-            "Candidate tag prefixes to scan, for example --tag-prefixes pos= "
-            "change=. Defaults to position, change, group, and mutation-count bins."
-        ),
-    )
-    return parser.parse_args()
+    config_path = parse_config_arg("M0 scan for low-performing GFP target regions.")
+    cfg = load_json_config(config_path)
+    require_keys(cfg, REQUIRED_CONFIG_KEYS, "m0_scan_gfp_targets")
+    return argparse.Namespace(**cfg)
 
 
 def main() -> int:
@@ -72,9 +69,7 @@ def main() -> int:
         donor_quantile=args.donor_quantile,
         min_swap_count=args.min_swap_count,
         max_targets=args.max_targets,
-        tag_prefixes=tuple(args.tag_prefixes)
-        if args.tag_prefixes
-        else TargetScanConfig.tag_prefixes,
+        tag_prefixes=tuple(args.tag_prefixes),
     )
 
     data_path = Path(cfg.data_path)
@@ -100,6 +95,8 @@ def main() -> int:
         scan=scan,
         tag_sets=tag_sets,
         data_sha256=file_sha256(data_path),
+        candidate_pair_count=args.candidate_pair_count,
+        config_metadata=config_for_metadata(vars(args)),
     )
     print(json.dumps({"run_dir": str(run_dir), **summary}, indent=2, sort_keys=True))
     return 0 if summary["n_passing_targets"] else 2

@@ -33,7 +33,7 @@ def parse_mutant(mutant: str) -> list[Mutation]:
     ]
 
 
-def apply_mutations(wild_type: str, mutant: str, strict: bool = True) -> str:
+def apply_mutations(wild_type: str, mutant: str, strict: bool) -> str:
     """Reconstruct a mutant sequence from a 1-indexed substitution string."""
     sequence = list(str(wild_type))
     for mutation in parse_mutant(mutant):
@@ -96,15 +96,18 @@ def amino_acid_group(aa: str) -> str:
         "G": "special",
         "P": "special",
     }
-    return groups.get(str(aa), "other")
+    aa_key = str(aa)
+    if aa_key in groups:
+        return groups[aa_key]
+    return "other"
 
 
 def load_gfp_csv(
     path: str | Path,
-    target_column: str = "DMS_score",
-    mutant_column: str = "mutant",
-    max_rows: int | None = None,
-    random_state: int = 0,
+    target_column: str,
+    mutant_column: str,
+    max_rows: int | None,
+    random_state: int,
 ) -> pd.DataFrame:
     df = pd.read_csv(path)
     df = df.dropna(subset=[target_column, mutant_column]).reset_index(drop=True)

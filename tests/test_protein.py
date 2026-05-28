@@ -31,12 +31,12 @@ def test_parse_mutant_ignores_invalid_tokens() -> None:
 
 
 def test_apply_mutations_reconstructs_sequence() -> None:
-    assert apply_mutations("ABCDE", "A1V:C3D") == "VBDDE"
+    assert apply_mutations("ABCDE", "A1V:C3D", strict=True) == "VBDDE"
 
 
 def test_apply_mutations_checks_wild_type_residue() -> None:
     try:
-        apply_mutations("ABCDE", "K1R")
+        apply_mutations("ABCDE", "K1R", strict=True)
     except ValueError as exc:
         assert "wild-type residue mismatch" in str(exc)
     else:

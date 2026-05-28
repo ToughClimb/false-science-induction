@@ -3,7 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import subprocess
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
@@ -38,18 +38,18 @@ SCAN_COLUMNS = [
 @dataclass(frozen=True)
 class TargetScanConfig:
     data_path: str
-    target_column: str = "DMS_score"
-    mutant_column: str = "mutant"
-    max_rows: int | None = None
-    random_state: int = 0
-    min_target_count: int = 100
-    min_target_prevalence: float = 0.02
-    max_target_prevalence: float = 0.35
-    target_mean_quantile: float = 0.40
-    donor_quantile: float = 0.90
-    min_swap_count: int = 25
-    max_targets: int = 50
-    tag_prefixes: tuple[str, ...] = ("pos=", "change=", "group=", "n_mut_bin=")
+    target_column: str
+    mutant_column: str
+    max_rows: int | None
+    random_state: int
+    min_target_count: int
+    min_target_prevalence: float
+    max_target_prevalence: float
+    target_mean_quantile: float
+    donor_quantile: float
+    min_swap_count: int
+    max_targets: int
+    tag_prefixes: tuple[str, ...]
 
 
 def timestamp() -> str:
@@ -248,6 +248,8 @@ def write_scan_artifacts(
     scan: pd.DataFrame,
     tag_sets: list[set[str]],
     data_sha256: str,
+    candidate_pair_count: int,
+    config_metadata: dict[str, object],
 ) -> dict[str, object]:
     passing = scan[scan["passes_m0_gate"]] if not scan.empty else pd.DataFrame()
     selected = None if passing.empty else passing.iloc[0].to_dict()
@@ -258,7 +260,7 @@ def write_scan_artifacts(
             tag_sets,
             target_tag=str(selected["tag"]),
             cfg=cfg,
-            swap_count=int(min(selected["max_swap_count"], 100)),
+            swap_count=int(min(selected["max_swap_count"], candidate_pair_count)),
         )
 
     scan.to_csv(run_dir / "target_scan.csv", index=False)
@@ -274,15 +276,16 @@ def write_scan_artifacts(
         "n_passing_targets": int(len(passing)),
         "selected_target": selected,
         "swap_pair_count": int(len(pairs)),
+        "candidate_pair_count": int(candidate_pair_count),
         "label_multiset_preserved_for_selected_pairs": (
             label_multiset_preserved(pairs) if len(pairs) else False
         ),
         "git_commit": git_text(["rev-parse", "HEAD"]) or "unknown",
         "git_status_short": git_text(["status", "--short"]),
-        "config": asdict(cfg),
+        "config": config_metadata,
     }
     with open(run_dir / "summary.json", "w", encoding="utf-8") as handle:
         json.dump(summary, handle, indent=2, sort_keys=True)
     with open(run_dir / "config.json", "w", encoding="utf-8") as handle:
-        json.dump(asdict(cfg), handle, indent=2, sort_keys=True)
+        json.dump(config_metadata, handle, indent=2, sort_keys=True)
     return summary

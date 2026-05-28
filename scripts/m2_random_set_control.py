@@ -15,6 +15,15 @@ SRC_ROOT = REPO_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
+from false_science.config import (
+    config_for_metadata,
+    load_json_config,
+    parse_config_arg,
+    require_choice,
+    require_keys,
+    require_list_values,
+    require_nested,
+)
 from false_science.features import mutation_feature_frame
 from false_science.metrics import (
     false_association_strength,
@@ -28,35 +37,56 @@ from false_science.protein import load_gfp_csv
 from false_science.target_scan import file_sha256, git_text, make_run_dir
 
 
-DEFAULT_GFP_PATH = (
-    "/home/misaka/inverse-ai4sci/data/protein_gfp/"
-    "GFP_AEQVI_Sarkisyan_2016.csv"
-)
+REQUIRED_CONFIG_KEYS = [
+    "data_path",
+    "output_root",
+    "tag",
+    "target_column",
+    "mutant_column",
+    "max_rows",
+    "random_state",
+    "target_set_size",
+    "target_low_quantile",
+    "donor_quantile",
+    "swap_count",
+    "background_size",
+    "audit_size",
+    "audit_seed_offset",
+    "seeds",
+    "modes",
+    "rounds",
+    "batch_size",
+    "top_k",
+    "device",
+    "mlp",
+]
+
+REQUIRED_MLP_KEYS = [
+    "epochs",
+    "hidden_dim",
+    "batch_size",
+    "learning_rate",
+    "weight_decay",
+    "dropout",
+]
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description="M2 random-set null control for false-science pursuit."
+    config_path = parse_config_arg(
+        "M2 random-set null control for false-science pursuit."
     )
-    parser.add_argument("--data-path", default=DEFAULT_GFP_PATH)
-    parser.add_argument("--output-root", default="runs")
-    parser.add_argument("--tag", default="m2-random-set-control")
-    parser.add_argument("--target-column", default="DMS_score")
-    parser.add_argument("--mutant-column", default="mutant")
-    parser.add_argument("--target-set-size", type=int, default=1077)
-    parser.add_argument("--target-low-quantile", type=float, default=0.40)
-    parser.add_argument("--donor-quantile", type=float, default=0.90)
-    parser.add_argument("--swap-count", type=int, default=50)
-    parser.add_argument("--background-size", type=int, default=1024)
-    parser.add_argument("--audit-size", type=int, default=4096)
-    parser.add_argument("--seeds", nargs="*", type=int, default=[0, 1, 2])
-    parser.add_argument("--rounds", type=int, default=5)
-    parser.add_argument("--batch-size", type=int, default=20)
-    parser.add_argument("--top-k", type=int, default=500)
-    parser.add_argument("--mlp-epochs", type=int, default=80)
-    parser.add_argument("--mlp-hidden-dim", type=int, default=256)
-    parser.add_argument("--device", choices=["cpu", "cuda"], default="cpu")
-    return parser.parse_args()
+    cfg = load_json_config(config_path)
+    require_keys(cfg, REQUIRED_CONFIG_KEYS, "m2_random_set_control")
+    mlp_cfg = require_nested(cfg, "mlp", "m2_random_set_control")
+    require_keys(mlp_cfg, REQUIRED_MLP_KEYS, "m2_random_set_control.mlp")
+    require_choice(cfg, "device", {"cpu", "cuda"}, "m2_random_set_control")
+    require_list_values(
+        cfg,
+        "modes",
+        {"clean", "random_swap", "targeted_swap"},
+        "m2_random_set_control",
+    )
+    return argparse.Namespace(**cfg)
 
 
 def n_mutations_from_mutants(mutants: pd.Series) -> np.ndarray:
@@ -108,7 +138,13 @@ def main() -> int:
     if not data_path.is_file():
         raise FileNotFoundError(f"GFP data not found: {data_path}")
 
-    df = load_gfp_csv(data_path, args.target_column, args.mutant_column)
+    df = load_gfp_csv(
+        data_path,
+        args.target_column,
+        args.mutant_column,
+        max_rows=args.max_rows,
+        random_state=args.random_state,
+    )
     y = df[args.target_column].to_numpy(dtype=float)
     X = mutation_feature_frame(df, args.mutant_column).to_numpy(dtype=np.float32)
     n_mutations = n_mutations_from_mutants(df[args.mutant_column])
@@ -152,12 +188,12 @@ def main() -> int:
             n_records=len(df),
             excluded_ids=base_history_ids,
             audit_size=args.audit_size,
-            seed=seed + 10_000,
+            seed=seed + args.audit_seed_offset,
         )
         audit_mask = np.zeros(len(df), dtype=bool)
         audit_mask[audit_ids] = True
 
-        for mode in ("clean", "random_swap", "targeted_swap"):
+        for mode in args.modes:
             initial_recorded = recorded_labels_for_history(
                 true_y=y,
                 history_ids=base_history_ids,
@@ -185,8 +221,12 @@ def main() -> int:
                     X,
                     y,
                     seed=seed + round_idx,
-                    epochs=args.mlp_epochs,
-                    hidden_dim=args.mlp_hidden_dim,
+                    epochs=args.mlp["epochs"],
+                    hidden_dim=args.mlp["hidden_dim"],
+                    batch_size=args.mlp["batch_size"],
+                    learning_rate=args.mlp["learning_rate"],
+                    weight_decay=args.mlp["weight_decay"],
+                    dropout=args.mlp["dropout"],
                     device=args.device,
                 )
                 pred = result.predictions
@@ -354,7 +394,7 @@ def main() -> int:
     pd.DataFrame(selection_rows).to_csv(run_dir / "selected_records.csv", index=False)
     summary.to_csv(run_dir / "summary_by_model_mode.csv", index=False)
 
-    config = vars(args).copy()
+    config = config_for_metadata(vars(args))
     metadata = {
         "stage": "M2_random_set_control",
         "run_dir": str(run_dir),

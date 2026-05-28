@@ -16,7 +16,19 @@ if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
 from false_science.features import mutation_feature_frame
-from false_science.esm_features import load_or_compute_esm2_embeddings
+from false_science.config import (
+    config_for_metadata,
+    load_json_config,
+    parse_config_arg,
+    require_choice,
+    require_keys,
+    require_list_values,
+    require_nested,
+)
+from false_science.esm_features import (
+    PROTEINGYM_GFP_AEQVI_SEQUENCE,
+    load_or_compute_esm2_embeddings,
+)
 from false_science.metrics import (
     false_association_strength,
     matched_non_target_controls,
@@ -24,7 +36,6 @@ from false_science.metrics import (
     target_topk_fraction,
 )
 from false_science.misbinding import build_audit_ids, build_history_ids, recorded_labels_for_history
-from false_science.misbinding import DEFAULT_HISTORY_MODES
 from false_science.models import fit_predict_torch_mlp, fit_predict_xgboost
 from false_science.protein import load_gfp_csv
 from false_science.target_scan import (
@@ -38,52 +49,136 @@ from false_science.target_scan import (
 )
 
 
-DEFAULT_GFP_PATH = (
-    "/home/misaka/inverse-ai4sci/data/protein_gfp/"
-    "GFP_AEQVI_Sarkisyan_2016.csv"
-)
+REQUIRED_CONFIG_KEYS = [
+    "data_path",
+    "output_root",
+    "tag",
+    "target_column",
+    "mutant_column",
+    "max_rows",
+    "random_state",
+    "target_tag",
+    "modes",
+    "swap_count",
+    "background_size",
+    "audit_size",
+    "audit_seed_offset",
+    "exploration_seed_multiplier",
+    "seeds",
+    "models",
+    "feature_set",
+    "feature_cache_root",
+    "esm_model_name",
+    "esm_batch_size",
+    "rounds",
+    "batch_size",
+    "acquisition",
+    "epsilon",
+    "top_k",
+    "device",
+    "allow_nonpassing_target",
+    "target_scan",
+    "mlp",
+    "xgboost",
+]
+
+REQUIRED_SCAN_KEYS = [
+    "min_target_count",
+    "min_target_prevalence",
+    "max_target_prevalence",
+    "target_mean_quantile",
+    "donor_quantile",
+    "min_swap_count",
+    "max_targets",
+    "tag_prefixes",
+]
+
+REQUIRED_MLP_KEYS = [
+    "epochs",
+    "hidden_dim",
+    "batch_size",
+    "learning_rate",
+    "weight_decay",
+    "dropout",
+]
+
+REQUIRED_XGBOOST_KEYS = [
+    "n_estimators",
+    "max_depth",
+    "learning_rate",
+    "subsample",
+    "colsample_bytree",
+    "reg_lambda",
+    "n_jobs",
+    "tree_method",
+]
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="M2 closed-loop false-pursuit run.")
-    parser.add_argument("--data-path", default=DEFAULT_GFP_PATH)
-    parser.add_argument("--output-root", default="runs")
-    parser.add_argument("--tag", default="m2-closed-loop-false-pursuit")
-    parser.add_argument("--target-column", default="DMS_score")
-    parser.add_argument("--mutant-column", default="mutant")
-    parser.add_argument("--target-tag", default="pos=27")
-    parser.add_argument("--modes", nargs="*", default=list(DEFAULT_HISTORY_MODES))
-    parser.add_argument("--swap-count", type=int, default=25)
-    parser.add_argument("--background-size", type=int, default=2048)
-    parser.add_argument("--audit-size", type=int, default=4096)
-    parser.add_argument("--seeds", nargs="*", type=int, default=[0, 1, 2])
-    parser.add_argument("--models", nargs="*", default=["mlp", "xgboost"])
-    parser.add_argument("--feature-set", choices=["mutation", "esm2"], default="mutation")
-    parser.add_argument("--feature-cache-root", default="data/cache")
-    parser.add_argument("--esm-batch-size", type=int, default=32)
-    parser.add_argument("--rounds", type=int, default=5)
-    parser.add_argument("--batch-size", type=int, default=20)
-    parser.add_argument(
-        "--acquisition",
-        choices=["top_mean", "epsilon_greedy"],
-        default="top_mean",
+    config_path = parse_config_arg("M2 closed-loop false-pursuit run.")
+    cfg = load_json_config(config_path)
+    require_keys(cfg, REQUIRED_CONFIG_KEYS, "m2_closed_loop_false_pursuit")
+    scan_cfg = require_nested(cfg, "target_scan", "m2_closed_loop_false_pursuit")
+    mlp_cfg = require_nested(cfg, "mlp", "m2_closed_loop_false_pursuit")
+    xgb_cfg = require_nested(cfg, "xgboost", "m2_closed_loop_false_pursuit")
+    require_keys(scan_cfg, REQUIRED_SCAN_KEYS, "m2_closed_loop_false_pursuit.target_scan")
+    require_keys(mlp_cfg, REQUIRED_MLP_KEYS, "m2_closed_loop_false_pursuit.mlp")
+    require_keys(xgb_cfg, REQUIRED_XGBOOST_KEYS, "m2_closed_loop_false_pursuit.xgboost")
+    require_choice(
+        cfg,
+        "feature_set",
+        {"mutation", "esm2"},
+        "m2_closed_loop_false_pursuit",
     )
-    parser.add_argument("--epsilon", type=float, default=0.20)
-    parser.add_argument("--top-k", type=int, default=500)
-    parser.add_argument("--xgb-n-estimators", type=int, default=120)
-    parser.add_argument("--mlp-epochs", type=int, default=80)
-    parser.add_argument("--mlp-hidden-dim", type=int, default=256)
-    parser.add_argument("--device", choices=["cpu", "cuda"], default="cpu")
-    parser.add_argument(
-        "--allow-nonpassing-target",
-        action="store_true",
-        help="Allow boundary/control targets that do not pass the M0 low-target gate.",
+    require_choice(
+        cfg,
+        "acquisition",
+        {"top_mean", "epsilon_greedy"},
+        "m2_closed_loop_false_pursuit",
     )
-    return parser.parse_args()
+    require_choice(cfg, "device", {"cpu", "cuda"}, "m2_closed_loop_false_pursuit")
+    require_list_values(
+        cfg,
+        "models",
+        {"mlp", "xgboost"},
+        "m2_closed_loop_false_pursuit",
+    )
+    require_list_values(
+        cfg,
+        "modes",
+        {
+            "clean",
+            "random_swap",
+            "targeted_swap",
+            "donor_only_swap",
+            "target_only_high_relabel",
+        },
+        "m2_closed_loop_false_pursuit",
+    )
+    return argparse.Namespace(**cfg)
 
 
 def n_mutations_from_mutants(mutants: pd.Series) -> np.ndarray:
     return mutants.astype(str).map(lambda value: 0 if not value else len(value.split(":"))).to_numpy()
+
+
+def build_scan_config(args: argparse.Namespace, data_path: Path) -> TargetScanConfig:
+    scan_cfg = args.target_scan
+    return TargetScanConfig(
+        data_path=str(data_path),
+        target_column=args.target_column,
+        mutant_column=args.mutant_column,
+        max_rows=args.max_rows,
+        random_state=args.random_state,
+        min_target_count=scan_cfg["min_target_count"],
+        min_target_prevalence=scan_cfg["min_target_prevalence"],
+        max_target_prevalence=scan_cfg["max_target_prevalence"],
+        target_mean_quantile=scan_cfg["target_mean_quantile"],
+        donor_quantile=scan_cfg["donor_quantile"],
+        min_swap_count=scan_cfg["min_swap_count"],
+        max_targets=scan_cfg["max_targets"],
+        tag_prefixes=tuple(scan_cfg["tag_prefixes"]),
+    )
 
 
 def fit_predict(
@@ -96,23 +191,36 @@ def fit_predict(
     args: argparse.Namespace,
 ):
     if model_name == "xgboost":
+        xgb_cfg = args.xgboost
         return fit_predict_xgboost(
             X[train_ids],
             train_y_recorded,
             X,
             y_true,
             seed=seed,
-            n_estimators=args.xgb_n_estimators,
+            n_estimators=xgb_cfg["n_estimators"],
+            max_depth=xgb_cfg["max_depth"],
+            learning_rate=xgb_cfg["learning_rate"],
+            subsample=xgb_cfg["subsample"],
+            colsample_bytree=xgb_cfg["colsample_bytree"],
+            reg_lambda=xgb_cfg["reg_lambda"],
+            n_jobs=xgb_cfg["n_jobs"],
+            tree_method=xgb_cfg["tree_method"],
         )
     if model_name == "mlp":
+        mlp_cfg = args.mlp
         return fit_predict_torch_mlp(
             X[train_ids],
             train_y_recorded,
             X,
             y_true,
             seed=seed,
-            epochs=args.mlp_epochs,
-            hidden_dim=args.mlp_hidden_dim,
+            epochs=mlp_cfg["epochs"],
+            hidden_dim=mlp_cfg["hidden_dim"],
+            batch_size=mlp_cfg["batch_size"],
+            learning_rate=mlp_cfg["learning_rate"],
+            weight_decay=mlp_cfg["weight_decay"],
+            dropout=mlp_cfg["dropout"],
             device=args.device,
         )
     raise ValueError(f"unknown model: {model_name}")
@@ -124,7 +232,13 @@ def main() -> int:
     if not data_path.is_file():
         raise FileNotFoundError(f"GFP data not found: {data_path}")
 
-    df = load_gfp_csv(data_path, args.target_column, args.mutant_column)
+    df = load_gfp_csv(
+        data_path,
+        args.target_column,
+        args.mutant_column,
+        max_rows=args.max_rows,
+        random_state=args.random_state,
+    )
     y = df[args.target_column].to_numpy(dtype=float)
     feature_metadata: dict[str, object]
     if args.feature_set == "mutation":
@@ -139,20 +253,17 @@ def main() -> int:
             data_path=data_path,
             mutant_column=args.mutant_column,
             cache_root=args.feature_cache_root,
+            model_name=args.esm_model_name,
             batch_size=args.esm_batch_size,
             device=args.device,
+            wild_type_sequence=PROTEINGYM_GFP_AEQVI_SEQUENCE,
         )
         feature_metadata["feature_set"] = "esm2"
     tag_sets = attach_tags(df, args.mutant_column)
     target_mask = np.array([args.target_tag in tags for tags in tag_sets], dtype=bool)
     n_mutations = n_mutations_from_mutants(df[args.mutant_column])
 
-    scan_cfg = TargetScanConfig(
-        data_path=str(data_path),
-        target_column=args.target_column,
-        mutant_column=args.mutant_column,
-        tag_prefixes=(args.target_tag.split("=", 1)[0] + "=",),
-    )
+    scan_cfg = build_scan_config(args, data_path)
     scan, _ = scan_target_regions(df, scan_cfg)
     target_row = scan[scan["tag"] == args.target_tag]
     target_scan_passed = bool(
@@ -187,7 +298,7 @@ def main() -> int:
             n_records=len(df),
             excluded_ids=base_history_ids,
             audit_size=args.audit_size,
-            seed=seed + 10_000,
+            seed=seed + args.audit_seed_offset,
         )
         audit_mask = np.zeros(len(df), dtype=bool)
         audit_mask[audit_ids] = True
@@ -244,7 +355,9 @@ def main() -> int:
                     if args.acquisition == "top_mean":
                         batch_ids = ranked[: args.batch_size]
                     else:
-                        rng = np.random.default_rng(seed * 1000 + round_idx)
+                        rng = np.random.default_rng(
+                            seed * args.exploration_seed_multiplier + round_idx
+                        )
                         explore_n = int(round(args.batch_size * args.epsilon))
                         exploit_n = int(args.batch_size - explore_n)
                         exploit_ids = ranked[:exploit_n]
@@ -427,7 +540,7 @@ def main() -> int:
     selections.to_csv(run_dir / "selected_records.csv", index=False)
     summary.to_csv(run_dir / "summary_by_model_mode.csv", index=False)
 
-    config = vars(args).copy()
+    config = config_for_metadata(vars(args))
     metadata = {
         "stage": "M2_closed_loop_false_pursuit",
         "run_dir": str(run_dir),

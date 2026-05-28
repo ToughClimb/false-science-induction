@@ -6,8 +6,8 @@ import pandas as pd
 
 def load_esol_csv(
     path: str,
-    target_column: str = "measured log solubility in mols per litre",
-    smiles_column: str = "smiles",
+    target_column: str,
+    smiles_column: str,
 ) -> pd.DataFrame:
     df = pd.read_csv(path)
     df = df.dropna(subset=[target_column, smiles_column]).reset_index(drop=True)
@@ -20,9 +20,9 @@ def load_esol_csv(
 
 def esol_feature_frame(
     df: pd.DataFrame,
-    smiles_column: str = "smiles",
-    n_bits: int = 512,
-    radius: int = 2,
+    smiles_column: str,
+    n_bits: int,
+    radius: int,
 ) -> tuple[pd.DataFrame, list[set[str]]]:
     from rdkit import Chem
     from rdkit.Chem import Crippen, Descriptors, Lipinski, rdFingerprintGenerator, rdMolDescriptors

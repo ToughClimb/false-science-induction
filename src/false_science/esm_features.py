@@ -20,8 +20,8 @@ PROTEINGYM_GFP_AEQVI_SEQUENCE = (
 
 def gfp_mutant_sequences(
     df: pd.DataFrame,
-    mutant_column: str = "mutant",
-    wild_type_sequence: str = PROTEINGYM_GFP_AEQVI_SEQUENCE,
+    mutant_column: str,
+    wild_type_sequence: str,
 ) -> list[str]:
     return [
         apply_mutations(wild_type_sequence, mutant, strict=True)
@@ -32,11 +32,12 @@ def gfp_mutant_sequences(
 def load_or_compute_esm2_embeddings(
     df: pd.DataFrame,
     data_path: str | Path,
-    mutant_column: str = "mutant",
-    cache_root: str | Path = "data/cache",
-    model_name: str = "esm2_t6_8M_UR50D",
-    batch_size: int = 32,
-    device: str = "cpu",
+    mutant_column: str,
+    cache_root: str | Path,
+    model_name: str,
+    batch_size: int,
+    device: str,
+    wild_type_sequence: str,
 ) -> tuple[np.ndarray, dict[str, object]]:
     data_path = Path(data_path)
     cache_root = Path(cache_root)
@@ -60,12 +61,16 @@ def load_or_compute_esm2_embeddings(
     if model_name != "esm2_t6_8M_UR50D":
         raise ValueError(f"unsupported ESM model: {model_name}")
     if device == "cuda" and not torch.cuda.is_available():
-        device = "cpu"
+        raise RuntimeError("configured device is cuda but CUDA is not available")
 
     model, alphabet = esm.pretrained.esm2_t6_8M_UR50D()
     model.eval().to(device)
     batch_converter = alphabet.get_batch_converter()
-    sequences = gfp_mutant_sequences(df, mutant_column=mutant_column)
+    sequences = gfp_mutant_sequences(
+        df,
+        mutant_column=mutant_column,
+        wild_type_sequence=wild_type_sequence,
+    )
     embeddings: list[np.ndarray] = []
 
     with torch.no_grad():

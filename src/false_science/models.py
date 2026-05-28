@@ -20,21 +20,28 @@ def fit_predict_xgboost(
     x_eval: np.ndarray,
     y_eval: np.ndarray,
     seed: int,
-    n_estimators: int = 200,
+    n_estimators: int,
+    max_depth: int,
+    learning_rate: float,
+    subsample: float,
+    colsample_bytree: float,
+    reg_lambda: float,
+    n_jobs: int,
+    tree_method: str,
 ) -> PredictionResult:
     from xgboost import XGBRegressor
 
     model = XGBRegressor(
         n_estimators=n_estimators,
-        max_depth=4,
-        learning_rate=0.05,
-        subsample=0.9,
-        colsample_bytree=0.8,
-        reg_lambda=1.0,
+        max_depth=max_depth,
+        learning_rate=learning_rate,
+        subsample=subsample,
+        colsample_bytree=colsample_bytree,
+        reg_lambda=reg_lambda,
         objective="reg:squarederror",
         random_state=seed,
-        n_jobs=4,
-        tree_method="hist",
+        n_jobs=n_jobs,
+        tree_method=tree_method,
     )
     model.fit(x_train, y_train)
     pred = model.predict(x_eval)
@@ -51,12 +58,13 @@ def fit_predict_torch_mlp(
     x_eval: np.ndarray,
     y_eval: np.ndarray,
     seed: int,
-    epochs: int = 80,
-    hidden_dim: int = 256,
-    batch_size: int = 256,
-    learning_rate: float = 1e-3,
-    weight_decay: float = 1e-4,
-    device: str = "cpu",
+    epochs: int,
+    hidden_dim: int,
+    batch_size: int,
+    learning_rate: float,
+    weight_decay: float,
+    dropout: float,
+    device: str,
 ) -> PredictionResult:
     import torch
     from torch import nn
@@ -65,7 +73,7 @@ def fit_predict_torch_mlp(
     torch.manual_seed(seed)
     np.random.seed(seed)
     if device == "cuda" and not torch.cuda.is_available():
-        device = "cpu"
+        raise RuntimeError("configured device is cuda but CUDA is not available")
 
     scaler = StandardScaler()
     x_train_scaled = scaler.fit_transform(x_train).astype(np.float32)
@@ -78,10 +86,10 @@ def fit_predict_torch_mlp(
     model = nn.Sequential(
         nn.Linear(x_train_scaled.shape[1], hidden_dim),
         nn.ReLU(),
-        nn.Dropout(0.05),
+        nn.Dropout(dropout),
         nn.Linear(hidden_dim, hidden_dim),
         nn.ReLU(),
-        nn.Dropout(0.05),
+        nn.Dropout(dropout),
         nn.Linear(hidden_dim, 1),
     ).to(device)
     optimizer = torch.optim.AdamW(
@@ -97,7 +105,7 @@ def fit_predict_torch_mlp(
     generator = torch.Generator().manual_seed(seed)
     loader = DataLoader(
         dataset,
-        batch_size=min(batch_size, len(dataset)),
+        batch_size=batch_size,
         shuffle=True,
         generator=generator,
     )
@@ -126,4 +134,3 @@ def fit_predict_torch_mlp(
         mae=float(mean_absolute_error(y_eval, pred)),
         r2=float(r2_score(y_eval, pred)),
     )
-

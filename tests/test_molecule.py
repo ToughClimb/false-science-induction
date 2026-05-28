@@ -12,7 +12,12 @@ def test_esol_feature_frame_builds_scaffold_tags() -> None:
             ]
         }
     )
-    features, tag_sets = esol_feature_frame(df, n_bits=64)
+    features, tag_sets = esol_feature_frame(
+        df,
+        smiles_column="smiles",
+        n_bits=64,
+        radius=2,
+    )
     assert features.shape[0] == 2
     assert any(tag.startswith("scaffold=") for tag in tag_sets[0])
     assert "scaffold=__acyclic__" in tag_sets[1]

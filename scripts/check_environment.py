@@ -21,8 +21,10 @@ REQUIRED_MODULES = [
 def main() -> int:
     print(f"python: {sys.version.split()[0]}")
     print(f"executable: {sys.executable}")
-    print(f"PIP_INDEX_URL: {os.environ.get('PIP_INDEX_URL', '<unset>')}")
-    print(f"HTTP_PROXY: {os.environ.get('HTTP_PROXY', '<unset>')}")
+    pip_index = os.environ["PIP_INDEX_URL"] if "PIP_INDEX_URL" in os.environ else "<unset>"
+    http_proxy = os.environ["HTTP_PROXY"] if "HTTP_PROXY" in os.environ else "<unset>"
+    print(f"PIP_INDEX_URL: {pip_index}")
+    print(f"HTTP_PROXY: {http_proxy}")
 
     missing: list[str] = []
     for module in REQUIRED_MODULES:
@@ -39,4 +41,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
