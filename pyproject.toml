@@ -25,6 +25,11 @@ dependencies = [
 dev = [
   "pytest",
   "ruff",
+  "tabulate",
+]
+materials = [
+  "pymatgen",
+  "matminer",
 ]
 neural = [
   "torch",
@@ -42,6 +47,9 @@ full = [
   "torch",
   "rdkit",
   "fair-esm",
+  "pymatgen",
+  "matminer",
+  "tabulate",
   "tabpfn",
 ]
 

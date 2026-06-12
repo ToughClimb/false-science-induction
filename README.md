@@ -35,10 +35,24 @@ Python 3.10 or newer is recommended.
 python -m pip install -e ".[dev]"
 ```
 
+The full smoke suite includes material-composition tests and Matbench/materials
+utilities. Install the materials extra before running all tests or
+`scripts/reproduce_smoke.sh`:
+
+```bash
+python -m pip install -e ".[dev,materials]"
+```
+
 For neural experiments:
 
 ```bash
 python -m pip install -e ".[dev,neural]"
+```
+
+For materials/Matbench experiments:
+
+```bash
+python -m pip install -e ".[dev,materials]"
 ```
 
 For molecule/ESOL experiments:
@@ -53,10 +67,11 @@ For ESM/protein-language-model experiments:
 python -m pip install -e ".[dev,protein]"
 ```
 
-For the full local test suite, install the neural and chemistry extras:
+For the broad local test suite with optional domains enabled, install the
+corresponding extras:
 
 ```bash
-python -m pip install -e ".[dev,neural,chemistry]"
+python -m pip install -e ".[dev,materials,neural,chemistry]"
 python -m pytest -q
 ```
 
@@ -80,6 +95,7 @@ repository root.
 Run the lightweight smoke suite:
 
 ```bash
+python -m pip install -e ".[dev,materials]"
 scripts/reproduce_smoke.sh
 ```
 

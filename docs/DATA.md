@@ -32,8 +32,10 @@ export WRONG_SCI_DATA_ROOT="$PWD/data/raw"
   `measured log solubility in mols per litre`.
 
 Materials experiments that use Matbench load public datasets through
-`matminer`; BEAR, CAMEO and SAMPLE retrospective scripts require the
-corresponding public archives described in the manuscript and config files.
+`matminer` and parse compositions with `pymatgen`; install them with
+`python -m pip install -e ".[materials]"`. BEAR, CAMEO and SAMPLE
+retrospective scripts require the corresponding public archives described in
+the manuscript and config files.
 
 ## Path Resolution
 
