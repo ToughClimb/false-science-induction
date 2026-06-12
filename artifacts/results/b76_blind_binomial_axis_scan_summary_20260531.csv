@@ -1,0 +1,4 @@
+dataset,model,trace_count,control_trace_count,target_trace_count,control_any_axis_flag_rate,target_any_axis_flag_rate,target_axis_flag_rate,target_axis_top1_rate,target_axis_top2_rate,target_axis_top5_rate,control_target_axis_flag_rate,target_median_first_flag_round,target_flagged_axis_allocation_fraction,mean_flagged_axes_per_target_trace
+gfp_b37,mlp,30,20,10,1.0,1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.9994706193753309,8.0
+materials_b38,mlp,30,20,10,1.0,1.0,1.0,1.0,1.0,1.0,0.0,0.0,1.0,11.6
+cameo_b39,rf_ensemble_ucb,30,20,10,0.8,1.0,0.9,1.0,1.0,1.0,0.05,0.0,0.9602122015915119,4.8

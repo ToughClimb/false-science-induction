@@ -1,0 +1,54 @@
+{
+  "output_json": "runs/b18_statistics_aggregate_20260529.json",
+  "output_csv": "runs/b18_statistics_aggregate_20260529.csv",
+  "bootstrap_iterations": 10000,
+  "bootstrap_seed": 20260529,
+  "main_effects": [
+    {
+      "name": "b18_short_final_count_mlp",
+      "run_dir": "runs/20260529T113213Z_b18-materials-disttrigger-dim32-s001-25swap-bg1024-mlp-tabm-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "mlp",
+      "mode_a": "targeted_swap",
+      "mode_b": "random_swap",
+      "value_column": "cumulative_triggered_target_count",
+      "round": 4,
+      "comparison": "paired_seed_difference"
+    },
+    {
+      "name": "b18_short_final_count_tabm",
+      "run_dir": "runs/20260529T113213Z_b18-materials-disttrigger-dim32-s001-25swap-bg1024-mlp-tabm-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "tabm_mini",
+      "mode_a": "targeted_swap",
+      "mode_b": "random_swap",
+      "value_column": "cumulative_triggered_target_count",
+      "round": 4,
+      "comparison": "paired_seed_difference"
+    },
+    {
+      "name": "b18_long_post5_gain_mlp",
+      "run_dir": "runs/20260529T113808Z_b18-materials-disttrigger-dim32-s001-long10-batch10-candidate80-bg1024-mlp-tabm-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "mlp",
+      "mode_a": "targeted_swap",
+      "mode_b": "random_swap",
+      "value_column": "cumulative_triggered_target_count",
+      "round_a": 9,
+      "round_b": 4,
+      "comparison": "paired_seed_post_round_gain_difference"
+    },
+    {
+      "name": "b18_long_post5_gain_tabm",
+      "run_dir": "runs/20260529T113808Z_b18-materials-disttrigger-dim32-s001-long10-batch10-candidate80-bg1024-mlp-tabm-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "tabm_mini",
+      "mode_a": "targeted_swap",
+      "mode_b": "random_swap",
+      "value_column": "cumulative_triggered_target_count",
+      "round_a": 9,
+      "round_b": 4,
+      "comparison": "paired_seed_post_round_gain_difference"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "data_path": "${WRONG_SCI_DATA_ROOT}/protein_gfp/GFP_AEQVI_Sarkisyan_2016.csv",
+  "output_root": "runs",
+  "tag": "m0-gfp-target-scan",
+  "target_column": "DMS_score",
+  "mutant_column": "mutant",
+  "max_rows": null,
+  "random_state": 0,
+  "min_target_count": 100,
+  "min_target_prevalence": 0.02,
+  "max_target_prevalence": 0.35,
+  "target_mean_quantile": 0.4,
+  "donor_quantile": 0.9,
+  "min_swap_count": 25,
+  "max_targets": 50,
+  "tag_prefixes": [
+    "pos=",
+    "change=",
+    "group=",
+    "n_mut_bin="
+  ],
+  "candidate_pair_count": 100
+}

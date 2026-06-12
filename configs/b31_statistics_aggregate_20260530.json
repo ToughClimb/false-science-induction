@@ -1,0 +1,30 @@
+{
+  "output_json": "runs/b31_statistics_aggregate_20260530.json",
+  "output_csv": "runs/b31_statistics_aggregate_20260530.csv",
+  "bootstrap_iterations": 10000,
+  "bootstrap_seed": 3100,
+  "main_effects": [
+    {
+      "name": "b31_cameo_targeted_vs_random_final_target_count",
+      "run_dir": "runs/20260530T062752Z_b31-cameo-retrospective-rfucb-10seed",
+      "metrics_file": "round_metrics.csv",
+      "model": "rf_ensemble_ucb",
+      "mode_a": "targeted_swap",
+      "mode_b": "random_swap",
+      "value_column": "cumulative_target_count",
+      "comparison": "paired_seed_difference",
+      "round": 5
+    },
+    {
+      "name": "b31_cameo_targeted_vs_clean_final_target_count",
+      "run_dir": "runs/20260530T062752Z_b31-cameo-retrospective-rfucb-10seed",
+      "metrics_file": "round_metrics.csv",
+      "model": "rf_ensemble_ucb",
+      "mode_a": "targeted_swap",
+      "mode_b": "clean",
+      "value_column": "cumulative_target_count",
+      "comparison": "paired_seed_difference",
+      "round": 5
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "axis": "PrinterNozzle",
+  "model": "mlp_mc_dropout_ucb",
+  "paired_summary": {
+    "mode_means": {
+      "clean": {
+        "final_target_count": 0.0,
+        "label_multiset_preserved": 1.0,
+        "selected_target_true_mean": NaN,
+        "selected_true_mean": 27.331597956935003
+      },
+      "random_swap": {
+        "final_target_count": 0.1,
+        "label_multiset_preserved": 1.0,
+        "selected_target_true_mean": 23.42937333,
+        "selected_true_mean": 27.322692030185
+      },
+      "targeted_relink": {
+        "final_target_count": 108.8,
+        "label_multiset_preserved": 1.0,
+        "selected_target_true_mean": 3.3892325063780504,
+        "selected_true_mean": 14.526837549735001
+      }
+    },
+    "targeted_minus_clean_mean": 108.8,
+    "targeted_minus_random_mean": 108.7,
+    "targeted_minus_random_negative_seeds": 0,
+    "targeted_minus_random_positive_seeds": 10,
+    "targeted_minus_random_seed_differences": [
+      147,
+      82,
+      113,
+      156,
+      76,
+      147,
+      80,
+      79,
+      109,
+      98
+    ],
+    "targeted_minus_random_tied_seeds": 0
+  },
+  "scan_rows": [
+    {
+      "axis": "PrinterNozzle",
+      "axis_mean": 7.479819856535064,
+      "candidate_count": 2347,
+      "count": 3622,
+      "global_mean_minus_axis_mean": 7.832245115652103,
+      "history_count": 1275,
+      "value": 1.0
+    },
+    {
+      "axis": "NozzleSize",
+      "axis_mean": 7.479819856535064,
+      "candidate_count": 2347,
+      "count": 3622,
+      "global_mean_minus_axis_mean": 7.832245115652103,
+      "history_count": 1275,
+      "value": 0.5
+    }
+  ],
+  "value": 1.0
+}

@@ -1,0 +1,208 @@
+{
+  "alpha_grid": [
+    0.05,
+    0.01,
+    0.001,
+    0.0001
+  ],
+  "datasets": [
+    "gfp_b37",
+    "materials_b38",
+    "cameo_b39",
+    "bear_b70"
+  ],
+  "summary": [
+    {
+      "alpha": 0.0001,
+      "control_round_flag_rate": 0.0,
+      "control_seed_any_flag_rate": 0.0,
+      "dataset": "bear_b70",
+      "target_flagged_proposed_count": 751,
+      "target_flagged_proposed_fraction": 0.7585858585858586,
+      "target_median_first_flag_round": 0.0,
+      "target_proposed_count": 990,
+      "target_round_flag_rate": 0.44,
+      "target_seed_any_flag_rate": 1.0
+    },
+    {
+      "alpha": 0.001,
+      "control_round_flag_rate": 0.0,
+      "control_seed_any_flag_rate": 0.0,
+      "dataset": "bear_b70",
+      "target_flagged_proposed_count": 775,
+      "target_flagged_proposed_fraction": 0.7828282828282829,
+      "target_median_first_flag_round": 0.0,
+      "target_proposed_count": 990,
+      "target_round_flag_rate": 0.46,
+      "target_seed_any_flag_rate": 1.0
+    },
+    {
+      "alpha": 0.01,
+      "control_round_flag_rate": 0.0,
+      "control_seed_any_flag_rate": 0.0,
+      "dataset": "bear_b70",
+      "target_flagged_proposed_count": 796,
+      "target_flagged_proposed_fraction": 0.804040404040404,
+      "target_median_first_flag_round": 0.0,
+      "target_proposed_count": 990,
+      "target_round_flag_rate": 0.48,
+      "target_seed_any_flag_rate": 1.0
+    },
+    {
+      "alpha": 0.05,
+      "control_round_flag_rate": 0.0,
+      "control_seed_any_flag_rate": 0.0,
+      "dataset": "bear_b70",
+      "target_flagged_proposed_count": 833,
+      "target_flagged_proposed_fraction": 0.8414141414141414,
+      "target_median_first_flag_round": 0.0,
+      "target_proposed_count": 990,
+      "target_round_flag_rate": 0.52,
+      "target_seed_any_flag_rate": 1.0
+    },
+    {
+      "alpha": 0.0001,
+      "control_round_flag_rate": 0.0,
+      "control_seed_any_flag_rate": 0.0,
+      "dataset": "cameo_b39",
+      "target_flagged_proposed_count": 304,
+      "target_flagged_proposed_fraction": 0.8063660477453581,
+      "target_median_first_flag_round": 0.0,
+      "target_proposed_count": 377,
+      "target_round_flag_rate": 0.6333333333333333,
+      "target_seed_any_flag_rate": 0.8
+    },
+    {
+      "alpha": 0.001,
+      "control_round_flag_rate": 0.0,
+      "control_seed_any_flag_rate": 0.0,
+      "dataset": "cameo_b39",
+      "target_flagged_proposed_count": 356,
+      "target_flagged_proposed_fraction": 0.9442970822281167,
+      "target_median_first_flag_round": 0.0,
+      "target_proposed_count": 377,
+      "target_round_flag_rate": 0.75,
+      "target_seed_any_flag_rate": 0.8
+    },
+    {
+      "alpha": 0.01,
+      "control_round_flag_rate": 0.008333333333333333,
+      "control_seed_any_flag_rate": 0.05,
+      "dataset": "cameo_b39",
+      "target_flagged_proposed_count": 362,
+      "target_flagged_proposed_fraction": 0.9602122015915119,
+      "target_median_first_flag_round": 0.0,
+      "target_proposed_count": 377,
+      "target_round_flag_rate": 0.7666666666666667,
+      "target_seed_any_flag_rate": 0.9
+    },
+    {
+      "alpha": 0.05,
+      "control_round_flag_rate": 0.016666666666666666,
+      "control_seed_any_flag_rate": 0.1,
+      "dataset": "cameo_b39",
+      "target_flagged_proposed_count": 372,
+      "target_flagged_proposed_fraction": 0.986737400530504,
+      "target_median_first_flag_round": 0.0,
+      "target_proposed_count": 377,
+      "target_round_flag_rate": 0.8,
+      "target_seed_any_flag_rate": 1.0
+    },
+    {
+      "alpha": 0.0001,
+      "control_round_flag_rate": 0.0,
+      "control_seed_any_flag_rate": 0.0,
+      "dataset": "gfp_b37",
+      "target_flagged_proposed_count": 3760,
+      "target_flagged_proposed_fraction": 0.999734113267748,
+      "target_median_first_flag_round": 0.0,
+      "target_proposed_count": 3761,
+      "target_round_flag_rate": 0.98,
+      "target_seed_any_flag_rate": 1.0
+    },
+    {
+      "alpha": 0.001,
+      "control_round_flag_rate": 0.0,
+      "control_seed_any_flag_rate": 0.0,
+      "dataset": "gfp_b37",
+      "target_flagged_proposed_count": 3760,
+      "target_flagged_proposed_fraction": 0.999734113267748,
+      "target_median_first_flag_round": 0.0,
+      "target_proposed_count": 3761,
+      "target_round_flag_rate": 0.98,
+      "target_seed_any_flag_rate": 1.0
+    },
+    {
+      "alpha": 0.01,
+      "control_round_flag_rate": 0.0,
+      "control_seed_any_flag_rate": 0.0,
+      "dataset": "gfp_b37",
+      "target_flagged_proposed_count": 3760,
+      "target_flagged_proposed_fraction": 0.999734113267748,
+      "target_median_first_flag_round": 0.0,
+      "target_proposed_count": 3761,
+      "target_round_flag_rate": 0.98,
+      "target_seed_any_flag_rate": 1.0
+    },
+    {
+      "alpha": 0.05,
+      "control_round_flag_rate": 0.0,
+      "control_seed_any_flag_rate": 0.0,
+      "dataset": "gfp_b37",
+      "target_flagged_proposed_count": 3760,
+      "target_flagged_proposed_fraction": 0.999734113267748,
+      "target_median_first_flag_round": 0.0,
+      "target_proposed_count": 3761,
+      "target_round_flag_rate": 0.98,
+      "target_seed_any_flag_rate": 1.0
+    },
+    {
+      "alpha": 0.0001,
+      "control_round_flag_rate": 0.0,
+      "control_seed_any_flag_rate": 0.0,
+      "dataset": "materials_b38",
+      "target_flagged_proposed_count": 2229,
+      "target_flagged_proposed_fraction": 1.0,
+      "target_median_first_flag_round": 0.0,
+      "target_proposed_count": 2229,
+      "target_round_flag_rate": 1.0,
+      "target_seed_any_flag_rate": 1.0
+    },
+    {
+      "alpha": 0.001,
+      "control_round_flag_rate": 0.0,
+      "control_seed_any_flag_rate": 0.0,
+      "dataset": "materials_b38",
+      "target_flagged_proposed_count": 2229,
+      "target_flagged_proposed_fraction": 1.0,
+      "target_median_first_flag_round": 0.0,
+      "target_proposed_count": 2229,
+      "target_round_flag_rate": 1.0,
+      "target_seed_any_flag_rate": 1.0
+    },
+    {
+      "alpha": 0.01,
+      "control_round_flag_rate": 0.0,
+      "control_seed_any_flag_rate": 0.0,
+      "dataset": "materials_b38",
+      "target_flagged_proposed_count": 2229,
+      "target_flagged_proposed_fraction": 1.0,
+      "target_median_first_flag_round": 0.0,
+      "target_proposed_count": 2229,
+      "target_round_flag_rate": 1.0,
+      "target_seed_any_flag_rate": 1.0
+    },
+    {
+      "alpha": 0.05,
+      "control_round_flag_rate": 0.0,
+      "control_seed_any_flag_rate": 0.0,
+      "dataset": "materials_b38",
+      "target_flagged_proposed_count": 2229,
+      "target_flagged_proposed_fraction": 1.0,
+      "target_median_first_flag_round": 0.0,
+      "target_proposed_count": 2229,
+      "target_round_flag_rate": 1.0,
+      "target_seed_any_flag_rate": 1.0
+    }
+  ]
+}

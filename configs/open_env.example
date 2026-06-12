@@ -1,0 +1,3 @@
+# Source this file from the repository root before running configs that use
+# ${WRONG_SCI_DATA_ROOT}.
+export WRONG_SCI_DATA_ROOT="${WRONG_SCI_DATA_ROOT:-$PWD/data/raw}"

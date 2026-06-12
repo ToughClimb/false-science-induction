@@ -1,0 +1,19 @@
+name: false-science-induction
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python>=3.10
+  - pip
+  - numpy
+  - pandas
+  - scipy
+  - scikit-learn
+  - pyyaml
+  - tqdm
+  - matplotlib
+  - seaborn
+  - pytest
+  - pip:
+      - xgboost
+      - lightgbm

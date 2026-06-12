@@ -1,0 +1,71 @@
+{
+  "run_dirs": [
+    "runs/20260529T103300Z_b12-materials-disttrigger-dim32-s001-25swap-bg1024-mlp-tabm-3seed-80ep",
+    "runs/20260529T103028Z_b12-materials-disttrigger-dim32-s002-25swap-bg1024-mlp-tabm-3seed-80ep",
+    "runs/20260529T102451Z_b12-materials-disttrigger-dim32-s004-25swap-bg1024-mlp-tabm-3seed-80ep",
+    "runs/20260529T102646Z_b12-materials-disttrigger-dim16-s008-25swap-bg1024-mlp-tabm-3seed-80ep",
+    "runs/20260529T102836Z_b12-materials-disttrigger-dim32-s012-25swap-bg1024-mlp-tabm-3seed-80ep",
+    "runs/20260529T093821Z_b9-materials-matbench-expt-gap-disttrigger-s008-dim32-25swap-bg1024-mlp-tabm-xgb-3seed-80ep"
+  ],
+  "output_csv": "runs/b12_materials_disttrigger_ablation_aggregate_20260529.csv",
+  "metadata_file": "metadata.json",
+  "summary_file": "summary_by_model_mode.csv",
+  "required_metadata_keys": [
+    "target_tag",
+    "target_count",
+    "swap_count",
+    "label_multiset_preserved",
+    "config"
+  ],
+  "required_trigger_keys": [
+    "distributed_dim_count",
+    "distributed_scale",
+    "distributed_seed"
+  ],
+  "required_summary_columns": [
+    "model",
+    "mode",
+    "seeds",
+    "rounds",
+    "mean_batch_triggered_target_fraction",
+    "fas_lift_vs_random_mean",
+    "fas_trigger_off_mean",
+    "trigger_toggle_delta_mean",
+    "selected_true_mean",
+    "selected_triggered_target_true_mean",
+    "mae_audit_mean",
+    "r2_audit_mean",
+    "mae_audit_non_trigger_mean",
+    "r2_audit_non_trigger_mean",
+    "final_cumulative_triggered_target_count",
+    "final_triggered_target_count_excess_vs_clean",
+    "final_triggered_target_count_excess_vs_random"
+  ],
+  "output_columns": [
+    "run_dir",
+    "trigger_distributed_dim_count",
+    "trigger_distributed_scale",
+    "trigger_distributed_seed",
+    "target_tag",
+    "target_count",
+    "swap_count",
+    "label_multiset_preserved",
+    "model",
+    "mode",
+    "seeds",
+    "rounds",
+    "mean_batch_triggered_target_fraction",
+    "fas_lift_vs_random_mean",
+    "fas_trigger_off_mean",
+    "trigger_toggle_delta_mean",
+    "selected_true_mean",
+    "selected_triggered_target_true_mean",
+    "mae_audit_mean",
+    "r2_audit_mean",
+    "mae_audit_non_trigger_mean",
+    "r2_audit_non_trigger_mean",
+    "final_cumulative_triggered_target_count",
+    "final_triggered_target_count_excess_vs_clean",
+    "final_triggered_target_count_excess_vs_random"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "bear": {
+    "axis_candidates": [
+      "PrinterNozzle",
+      "NozzleSize",
+      "PrinterNumber",
+      "DecisionPolicy"
+    ],
+    "config_path": "configs/b70_bear_physical_sdl_replay_20260530.json",
+    "min_axis_count": 5,
+    "target_axis_aliases": [
+      "PrinterNozzle=1",
+      "NozzleSize=0.5"
+    ]
+  },
+  "datasets": [
+    {
+      "clean_mode": "clean",
+      "feature_source": "gfp_mutation",
+      "initial_history_file": "initial_history_labels.csv",
+      "name": "GFP B19",
+      "pairs_file": "triggered_swap_pairs.csv",
+      "random_mode": "random_swap",
+      "run_config_file": "config.json",
+      "run_dir": "runs/20260529T115315Z_b19-gfp-pos27-disttrigger-dim32-s003-25swap-bg2048-mlp-tabm-10seed-80ep",
+      "selected_file": "selected_records.csv",
+      "targeted_mode": "targeted_swap"
+    },
+    {
+      "clean_mode": "clean",
+      "feature_source": "materials_composition",
+      "initial_history_file": "initial_history_labels.csv",
+      "name": "Materials B18",
+      "pairs_file": "triggered_swap_pairs.csv",
+      "random_mode": "random_swap",
+      "run_config_file": "config.json",
+      "run_dir": "runs/20260529T113213Z_b18-materials-disttrigger-dim32-s001-25swap-bg1024-mlp-tabm-10seed-80ep",
+      "selected_file": "selected_records.csv",
+      "targeted_mode": "targeted_swap"
+    }
+  ],
+  "knn_neighbors": 25,
+  "oob_n_estimators": 64,
+  "output_bear_selected_csv": "artifacts/results/b73_bear_selected_records_20260530.csv",
+  "output_bear_triage_csv": "artifacts/results/b73_standard_feedback_triage_20260530.csv",
+  "output_concentration_csv": "artifacts/results/b73_healthy_vs_false_concentration_20260530.csv",
+  "output_json": "artifacts/results/b73_standard_screen_triage_20260530.json",
+  "output_md": "artifacts/results/B73_STANDARD_SCREEN_TRIAGE_RESULT_20260530.md",
+  "output_screen_csv": "artifacts/results/b73_standard_screen_baselines_20260530.csv",
+  "output_tex": "paper-nature-main/tables/table_b73_standard_screen_triage.tex",
+  "pca_components": 3,
+  "ridge_alpha": 1.0
+}

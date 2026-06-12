@@ -1,0 +1,226 @@
+{
+  "rows": [
+    {
+      "boundary": "Blind to paired relabeling that preserves recorded-label multiset.",
+      "check": "marginal label multiset",
+      "dataset": "GFP B19",
+      "detected_in_primary_runs": "no",
+      "detection_readout": "targeted label multiset equals random/clean by construction",
+      "online_surface": "initial records",
+      "requires_known_axis": "no",
+      "target_control_contrast": 1.3322676295501878e-16
+    },
+    {
+      "boundary": "Global moments are unchanged up to numerical precision under paired swaps.",
+      "check": "global recorded-label mean",
+      "dataset": "GFP B19",
+      "detected_in_primary_runs": "no",
+      "detection_readout": "absolute mean delta targeted minus random",
+      "online_surface": "initial records",
+      "requires_known_axis": "no",
+      "target_control_contrast": 1.3322676295501878e-16
+    },
+    {
+      "boundary": "Effective when the correct slice/provenance group is already known and populated.",
+      "check": "known target-slice mean",
+      "dataset": "GFP B19",
+      "detected_in_primary_runs": "yes",
+      "detection_readout": "target-slice recorded mean shift targeted minus random",
+      "online_surface": "initial records",
+      "requires_known_axis": "yes",
+      "target_control_contrast": 2.749604123902079
+    },
+    {
+      "boundary": "Requires knowing or reconstructing the implicated donor-target pairing.",
+      "check": "paired donor-target conditional contrast",
+      "dataset": "GFP B19",
+      "detected_in_primary_runs": "yes",
+      "detection_readout": "target-side recorded shift over swapped pairs",
+      "online_surface": "initial records",
+      "requires_known_axis": "yes",
+      "target_control_contrast": 2.774316238577599
+    },
+    {
+      "boundary": "Predictive skill on the recorded distribution can remain nontrivial while the scientific binding is wrong.",
+      "check": "same-distribution audit R2 (mlp)",
+      "dataset": "GFP B19",
+      "detected_in_primary_runs": "weak/no",
+      "detection_readout": "audit R2 delta targeted minus random",
+      "online_surface": "held-out records from same recorded distribution",
+      "requires_known_axis": "no",
+      "target_control_contrast": -0.06630783289225306
+    },
+    {
+      "boundary": "Measures harm after budget has been executed; not an early provenance detector.",
+      "check": "same-budget true-response shortfall (mlp)",
+      "dataset": "GFP B19",
+      "detected_in_primary_runs": "yes after feedback",
+      "detection_readout": "selected true mean shortfall targeted versus random",
+      "online_surface": "executed feedback",
+      "requires_known_axis": "no",
+      "target_control_contrast": 0.3628117388789991
+    },
+    {
+      "boundary": "Requires either a monitored slice or an all-axis scan plus control calibration.",
+      "check": "false-axis acquisition excess (mlp)",
+      "dataset": "GFP B19",
+      "detected_in_primary_runs": "yes",
+      "detection_readout": "final false-axis count excess targeted versus random",
+      "online_surface": "proposed or executed acquisition trace",
+      "requires_known_axis": "yes",
+      "target_control_contrast": 47.0
+    },
+    {
+      "boundary": "Predictive skill on the recorded distribution can remain nontrivial while the scientific binding is wrong.",
+      "check": "same-distribution audit R2 (tabm_mini)",
+      "dataset": "GFP B19",
+      "detected_in_primary_runs": "weak/no",
+      "detection_readout": "audit R2 delta targeted minus random",
+      "online_surface": "held-out records from same recorded distribution",
+      "requires_known_axis": "no",
+      "target_control_contrast": -0.1146981818832234
+    },
+    {
+      "boundary": "Measures harm after budget has been executed; not an early provenance detector.",
+      "check": "same-budget true-response shortfall (tabm_mini)",
+      "dataset": "GFP B19",
+      "detected_in_primary_runs": "yes after feedback",
+      "detection_readout": "selected true mean shortfall targeted versus random",
+      "online_surface": "executed feedback",
+      "requires_known_axis": "no",
+      "target_control_contrast": 0.28260869381192855
+    },
+    {
+      "boundary": "Requires either a monitored slice or an all-axis scan plus control calibration.",
+      "check": "false-axis acquisition excess (tabm_mini)",
+      "dataset": "GFP B19",
+      "detected_in_primary_runs": "yes",
+      "detection_readout": "final false-axis count excess targeted versus random",
+      "online_surface": "proposed or executed acquisition trace",
+      "requires_known_axis": "yes",
+      "target_control_contrast": 36.1
+    },
+    {
+      "boundary": "Blind to paired relabeling that preserves recorded-label multiset.",
+      "check": "marginal label multiset",
+      "dataset": "Materials B18",
+      "detected_in_primary_runs": "no",
+      "detection_readout": "targeted label multiset equals random/clean by construction",
+      "online_surface": "initial records",
+      "requires_known_axis": "no",
+      "target_control_contrast": 4.4408920985006264e-17
+    },
+    {
+      "boundary": "Global moments are unchanged up to numerical precision under paired swaps.",
+      "check": "global recorded-label mean",
+      "dataset": "Materials B18",
+      "detected_in_primary_runs": "no",
+      "detection_readout": "absolute mean delta targeted minus random",
+      "online_surface": "initial records",
+      "requires_known_axis": "no",
+      "target_control_contrast": 4.4408920985006264e-17
+    },
+    {
+      "boundary": "Effective when the correct slice/provenance group is already known and populated.",
+      "check": "known target-slice mean",
+      "dataset": "Materials B18",
+      "detected_in_primary_runs": "yes",
+      "detection_readout": "target-slice recorded mean shift targeted minus random",
+      "online_surface": "initial records",
+      "requires_known_axis": "yes",
+      "target_control_contrast": 8.49956
+    },
+    {
+      "boundary": "Requires knowing or reconstructing the implicated donor-target pairing.",
+      "check": "paired donor-target conditional contrast",
+      "dataset": "Materials B18",
+      "detected_in_primary_runs": "yes",
+      "detection_readout": "target-side recorded shift over swapped pairs",
+      "online_surface": "initial records",
+      "requires_known_axis": "yes",
+      "target_control_contrast": 8.54
+    },
+    {
+      "boundary": "Predictive skill on the recorded distribution can remain nontrivial while the scientific binding is wrong.",
+      "check": "same-distribution audit R2 (mlp)",
+      "dataset": "Materials B18",
+      "detected_in_primary_runs": "weak/no",
+      "detection_readout": "audit R2 delta targeted minus random",
+      "online_surface": "held-out records from same recorded distribution",
+      "requires_known_axis": "no",
+      "target_control_contrast": -0.07584347478041809
+    },
+    {
+      "boundary": "Measures harm after budget has been executed; not an early provenance detector.",
+      "check": "same-budget true-response shortfall (mlp)",
+      "dataset": "Materials B18",
+      "detected_in_primary_runs": "yes after feedback",
+      "detection_readout": "selected true mean shortfall targeted versus random",
+      "online_surface": "executed feedback",
+      "requires_known_axis": "no",
+      "target_control_contrast": 0.2795519999999998
+    },
+    {
+      "boundary": "Requires either a monitored slice or an all-axis scan plus control calibration.",
+      "check": "false-axis acquisition excess (mlp)",
+      "dataset": "Materials B18",
+      "detected_in_primary_runs": "yes",
+      "detection_readout": "final false-axis count excess targeted versus random",
+      "online_surface": "proposed or executed acquisition trace",
+      "requires_known_axis": "yes",
+      "target_control_contrast": 41.1
+    },
+    {
+      "boundary": "Predictive skill on the recorded distribution can remain nontrivial while the scientific binding is wrong.",
+      "check": "same-distribution audit R2 (tabm_mini)",
+      "dataset": "Materials B18",
+      "detected_in_primary_runs": "weak/no",
+      "detection_readout": "audit R2 delta targeted minus random",
+      "online_surface": "held-out records from same recorded distribution",
+      "requires_known_axis": "no",
+      "target_control_contrast": -0.1043440394764873
+    },
+    {
+      "boundary": "Measures harm after budget has been executed; not an early provenance detector.",
+      "check": "same-budget true-response shortfall (tabm_mini)",
+      "dataset": "Materials B18",
+      "detected_in_primary_runs": "yes after feedback",
+      "detection_readout": "selected true mean shortfall targeted versus random",
+      "online_surface": "executed feedback",
+      "requires_known_axis": "no",
+      "target_control_contrast": 0.42413999999999996
+    },
+    {
+      "boundary": "Requires either a monitored slice or an all-axis scan plus control calibration.",
+      "check": "false-axis acquisition excess (tabm_mini)",
+      "dataset": "Materials B18",
+      "detected_in_primary_runs": "yes",
+      "detection_readout": "final false-axis count excess targeted versus random",
+      "online_surface": "proposed or executed acquisition trace",
+      "requires_known_axis": "yes",
+      "target_control_contrast": 49.7
+    }
+  ],
+  "summaries": [
+    {
+      "dataset": "GFP B19",
+      "global_mean_abs_delta_targeted_minus_random": 1.3322676295501878e-16,
+      "history_multiset_preserved_rate_targeted_vs_clean": 1.0,
+      "history_multiset_preserved_rate_targeted_vs_random": 1.0,
+      "history_seeds": 10,
+      "known_slice_shift_targeted_minus_random": 2.749604123902079,
+      "pair_multiset_preserved_rate": 1.0,
+      "target_pair_recorded_shift_mean": 2.774316238577599
+    },
+    {
+      "dataset": "Materials B18",
+      "global_mean_abs_delta_targeted_minus_random": 4.4408920985006264e-17,
+      "history_multiset_preserved_rate_targeted_vs_clean": 1.0,
+      "history_multiset_preserved_rate_targeted_vs_random": 1.0,
+      "history_seeds": 10,
+      "known_slice_shift_targeted_minus_random": 8.49956,
+      "pair_multiset_preserved_rate": 1.0,
+      "target_pair_recorded_shift_mean": 8.54
+    }
+  ]
+}

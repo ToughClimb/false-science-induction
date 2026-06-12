@@ -1,0 +1,9 @@
+{
+  "b43_summary_csv": "runs/20260530T163036Z_b43-materials-realistic-relinking-mlp-10seed-80ep-20260530/summary_by_model_mode.csv",
+  "b44_csv": "artifacts/results/b44_phase_diagram_20260530.csv",
+  "b45_csv": "artifacts/results/b45_quarantine_roc_20260530.csv",
+  "b46_json": "artifacts/results/b46_all_axis_blind_monitor_20260530.json",
+  "output_dir": "paper-nature-main/figures",
+  "stem": "b43_b46_operating_boundaries",
+  "dpi": 300
+}

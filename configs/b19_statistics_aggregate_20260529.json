@@ -1,0 +1,30 @@
+{
+  "output_json": "runs/b19_statistics_aggregate_20260529.json",
+  "output_csv": "runs/b19_statistics_aggregate_20260529.csv",
+  "bootstrap_iterations": 10000,
+  "bootstrap_seed": 20260529,
+  "main_effects": [
+    {
+      "name": "b19_gfp_trigger_final_count_mlp",
+      "run_dir": "runs/20260529T115315Z_b19-gfp-pos27-disttrigger-dim32-s003-25swap-bg2048-mlp-tabm-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "mlp",
+      "mode_a": "targeted_swap",
+      "mode_b": "random_swap",
+      "value_column": "cumulative_triggered_target_count",
+      "round": 4,
+      "comparison": "paired_seed_difference"
+    },
+    {
+      "name": "b19_gfp_trigger_final_count_tabm",
+      "run_dir": "runs/20260529T115315Z_b19-gfp-pos27-disttrigger-dim32-s003-25swap-bg2048-mlp-tabm-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "tabm_mini",
+      "mode_a": "targeted_swap",
+      "mode_b": "random_swap",
+      "value_column": "cumulative_triggered_target_count",
+      "round": 4,
+      "comparison": "paired_seed_difference"
+    }
+  ]
+}

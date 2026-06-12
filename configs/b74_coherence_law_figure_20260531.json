@@ -1,0 +1,8 @@
+{
+  "b48_summary_csv": "runs/20260530T170338Z_b48-materials-coherence-sweep-mlp-10seed-80ep-20260530/summary_by_model_coherence.csv",
+  "b77_summary_csv": "runs/20260531T013604Z_b77-gfp-coherence-sweep-mlp-10seed-80ep-20260531/summary_by_model_coherence.csv",
+  "b57_csv": "artifacts/results/b57_coherence_budget_law_20260530.csv",
+  "output_dir": "paper-nature-main/figures",
+  "stem": "b74_coherence_law",
+  "dpi": 300
+}

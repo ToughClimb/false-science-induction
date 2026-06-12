@@ -1,0 +1,75 @@
+{
+  "dataset_name": "matbench_expt_gap",
+  "output_root": "runs",
+  "tag": "b10-materials-multibasin-major_element-Pd-b1-25swap-bg1024-mlp-tabm-xgb-3seed-80ep",
+  "target_column": "gap expt",
+  "composition_column": "composition",
+  "target_tag": "major_element=Pd",
+  "tag_prefixes": [
+    "element=",
+    "major_element=",
+    "chemistry=",
+    "n_elements="
+  ],
+  "min_target_count": 80,
+  "min_target_prevalence": 0.02,
+  "max_target_prevalence": 0.35,
+  "target_quantile": 0.6,
+  "donor_quantile": 0.9,
+  "swap_count": 25,
+  "background_size": 1024,
+  "audit_size": 1024,
+  "audit_seed_offset": 10000,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "modes": [
+    "clean",
+    "random_swap",
+    "targeted_swap"
+  ],
+  "models": [
+    "mlp",
+    "tabm_mini",
+    "xgboost"
+  ],
+  "rounds": 5,
+  "batch_size": 50,
+  "top_k": 100,
+  "device": "cuda",
+  "mlp": {
+    "epochs": 80,
+    "hidden_dim": 128,
+    "batch_size": 256,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "dropout": 0.05,
+    "eval_batch_size": 8192
+  },
+  "tabular_torch": {
+    "epochs": 80,
+    "hidden_dim": 128,
+    "depth": 2,
+    "batch_size": 256,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "dropout": 0.05,
+    "d_token": 16,
+    "n_heads": 4,
+    "tabm_k": 8,
+    "normalization": "standard",
+    "eval_batch_size": 8192
+  },
+  "xgboost": {
+    "n_estimators": 160,
+    "max_depth": 4,
+    "learning_rate": 0.05,
+    "subsample": 0.9,
+    "colsample_bytree": 0.8,
+    "reg_lambda": 1.0,
+    "n_jobs": 4,
+    "tree_method": "hist"
+  }
+}

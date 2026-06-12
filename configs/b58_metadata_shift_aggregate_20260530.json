@@ -1,0 +1,11 @@
+{
+  "run_dirs": [
+    "runs/20260530T194912Z_b58-sample-metadata-shift-replay",
+    "runs/20260530T195020Z_b58-sample-metadata-shift-replay-shift1",
+    "runs/20260530T195020Z_b58-sample-metadata-shift-replay-shift-minus1",
+    "runs/20260530T195020Z_b58-sample-metadata-shift-replay-shift-minus2"
+  ],
+  "output_dir": "figures",
+  "stem": "b58_sample_metadata_shift_replay",
+  "dpi": 300
+}

@@ -1,0 +1,3 @@
+name,run_dir,model,comparison,n_seeds,differences,mean_difference,median_difference,min_difference,max_difference,bootstrap_ci_low,bootstrap_ci_high,sign_flip_p_two_sided,all_seed_differences_positive
+b25_materials_epsgreedy20_final_count_mlp,runs/20260530T041543Z_b25-materials-epsgreedy20-disttrigger-dim32-s001-25swap-bg1024-mlp-10seed-80ep,mlp,paired_seed_difference,10,"[40.0, 35.0, 39.0, 36.0, 37.0, 40.0, 35.0, 38.0, 36.0, 37.0]",37.3,37.0,35.0,40.0,36.2,38.4,0.001953125,True
+b25_gfp_epsgreedy20_final_count_mlp,runs/20260530T041559Z_b25-gfp-epsgreedy20-pos27-disttrigger-dim32-s003-25swap-bg2048-mlp-10seed-80ep,mlp,paired_seed_difference,10,"[39.0, 11.0, 74.0, 58.0, 47.0, 10.0, 22.0, 63.0, 29.0, 64.0]",41.7,43.0,10.0,74.0,27.8,54.8,0.001953125,True

@@ -1,0 +1,39 @@
+{
+  "bootstrap_iterations": 10000,
+  "bootstrap_seed": 3200,
+  "config_path": "configs/b32_statistics_aggregate_20260530.json",
+  "effects": [
+    {
+      "all_seed_differences_positive": true,
+      "bootstrap_ci_high": 43.3,
+      "bootstrap_ci_low": 41.2,
+      "comparison": "paired_seed_difference",
+      "differences": "[43.0, 42.0, 42.0, 41.0, 42.0, 42.0, 41.0, 45.0, 39.0, 45.0]",
+      "max_difference": 45.0,
+      "mean_difference": 42.2,
+      "median_difference": 42.0,
+      "min_difference": 39.0,
+      "model": "mlp",
+      "n_seeds": 10,
+      "name": "b32_materials_mc_dropout_ucb_final_count_mlp",
+      "run_dir": "runs/20260530T102134Z_b32-materials-mc-dropout-ucb-disttrigger-dim32-s001-25swap-bg1024-mlp-10seed-80ep",
+      "sign_flip_p_two_sided": 0.001953125
+    },
+    {
+      "all_seed_differences_positive": true,
+      "bootstrap_ci_high": 62.80249999999996,
+      "bootstrap_ci_low": 33.5,
+      "comparison": "paired_seed_difference",
+      "differences": "[58.0, 22.0, 85.0, 71.0, 26.0, 26.0, 41.0, 19.0, 49.0, 81.0]",
+      "max_difference": 85.0,
+      "mean_difference": 47.8,
+      "median_difference": 45.0,
+      "min_difference": 19.0,
+      "model": "mlp",
+      "n_seeds": 10,
+      "name": "b32_gfp_mc_dropout_ucb_final_count_mlp",
+      "run_dir": "runs/20260530T102149Z_b32-gfp-mc-dropout-ucb-pos27-disttrigger-dim32-s003-25swap-bg2048-mlp-10seed-80ep",
+      "sign_flip_p_two_sided": 0.001953125
+    }
+  ]
+}

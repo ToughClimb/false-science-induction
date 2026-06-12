@@ -1,0 +1,30 @@
+{
+  "output_json": "artifacts/results/b32_mc_dropout_ucb_statistics_20260530.json",
+  "output_csv": "artifacts/results/b32_mc_dropout_ucb_statistics_20260530.csv",
+  "bootstrap_iterations": 10000,
+  "bootstrap_seed": 3200,
+  "main_effects": [
+    {
+      "name": "b32_materials_mc_dropout_ucb_final_count_mlp",
+      "run_dir": "runs/20260530T102134Z_b32-materials-mc-dropout-ucb-disttrigger-dim32-s001-25swap-bg1024-mlp-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "mlp",
+      "mode_a": "targeted_swap",
+      "mode_b": "random_swap",
+      "value_column": "cumulative_triggered_target_count",
+      "comparison": "paired_seed_difference",
+      "round": 4
+    },
+    {
+      "name": "b32_gfp_mc_dropout_ucb_final_count_mlp",
+      "run_dir": "runs/20260530T102149Z_b32-gfp-mc-dropout-ucb-pos27-disttrigger-dim32-s003-25swap-bg2048-mlp-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "mlp",
+      "mode_a": "targeted_swap",
+      "mode_b": "random_swap",
+      "value_column": "cumulative_triggered_target_count",
+      "comparison": "paired_seed_difference",
+      "round": 4
+    }
+  ]
+}

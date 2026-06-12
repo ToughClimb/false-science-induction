@@ -1,0 +1,32 @@
+{
+  "summary_csv": "runs/20260529T145819Z_b23-gfp-pos27-disttrigger-mechanism-10seed-mlp-tabm-round0/diagnostic_summary.csv",
+  "counterfactual_csv": "runs/20260529T145819Z_b23-gfp-pos27-disttrigger-mechanism-10seed-mlp-tabm-round0/counterfactual_predictions.csv",
+  "output_dir": "docs/figures",
+  "figure_stem": "b23_mechanism_diagnostics",
+  "figure_dpi": 300,
+  "model_order": [
+    "mlp",
+    "tabm_mini"
+  ],
+  "mode_order": [
+    "clean",
+    "random_swap",
+    "targeted_swap"
+  ],
+  "model_labels": {
+    "mlp": "MLP",
+    "tabm_mini": "TabM-mini"
+  },
+  "mode_labels": {
+    "clean": "Clean",
+    "random_swap": "Random swap",
+    "targeted_swap": "Targeted swap"
+  },
+  "colors": {
+    "clean": "#0072B2",
+    "random_swap": "#009E73",
+    "targeted_swap": "#D55E00",
+    "triggered_target": "#D55E00",
+    "matched_control": "#009E73"
+  }
+}

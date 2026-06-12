@@ -1,0 +1,8 @@
+{
+  "bear_triage_csv": "artifacts/results/b73_standard_feedback_triage_20260530.csv",
+  "concentration_csv": "artifacts/results/b73_healthy_vs_false_concentration_20260530.csv",
+  "output_pdf": "paper-nature-main/figures/b73_standard_screen_triage.pdf",
+  "output_png": "paper-nature-main/figures/b73_standard_screen_triage.png",
+  "output_svg": "paper-nature-main/figures/b73_standard_screen_triage.svg",
+  "screen_csv": "artifacts/results/b73_standard_screen_baselines_20260530.csv"
+}

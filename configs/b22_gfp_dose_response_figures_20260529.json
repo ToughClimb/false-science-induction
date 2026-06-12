@@ -1,0 +1,17 @@
+{
+  "aggregate_csv": "runs/b22_gfp_dose_response_aggregate_20260529.csv",
+  "output_dir": "docs/figures",
+  "figure_dpi": 300,
+  "model_order": [
+    "mlp",
+    "tabm_mini"
+  ],
+  "model_labels": {
+    "mlp": "MLP",
+    "tabm_mini": "TabM-mini"
+  },
+  "colors": {
+    "mlp": "#0072B2",
+    "tabm_mini": "#CC79A7"
+  }
+}

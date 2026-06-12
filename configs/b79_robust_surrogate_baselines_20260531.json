@@ -1,0 +1,61 @@
+{
+  "output_root": "runs",
+  "tag": "b79-robust-surrogate-baselines-10seed-80ep-20260531",
+  "datasets": [
+    {
+      "dataset": "gfp",
+      "source_run_dir": "runs/20260529T115315Z_b19-gfp-pos27-disttrigger-dim32-s003-25swap-bg2048-mlp-tabm-10seed-80ep",
+      "source_config_path": "configs/b19_gfp_pos27_disttrigger_dim32_s003_25swap_bg2048_mlp_tabm_10seed_80ep.json",
+      "source_model_name": "mlp",
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "dataset": "materials",
+      "source_run_dir": "runs/20260529T113213Z_b18-materials-disttrigger-dim32-s001-25swap-bg1024-mlp-tabm-10seed-80ep",
+      "source_config_path": "configs/b18_materials_disttrigger_dim32_s001_25swap_bg1024_mlp_tabm_10seed_80ep.json",
+      "source_model_name": "mlp",
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    }
+  ],
+  "models": [
+    "mse_mlp",
+    "huber_mlp",
+    "trimmed_mlp"
+  ],
+  "modes": [
+    "clean",
+    "random_swap",
+    "targeted_swap"
+  ],
+  "device": "cuda",
+  "robust_mlp": {
+    "trim_fraction": 0.1
+  },
+  "source_overrides": {
+    "enabled": false
+  },
+  "source_reproduction_tolerance": 12.0,
+  "stop_on_mse_mismatch": true
+}

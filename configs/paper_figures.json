@@ -1,0 +1,11 @@
+{
+  "output_dir": "artifacts/paper_figures",
+  "runs": {
+    "main_m2_pos27": "runs/20260528T015748Z_auditfix-m2-pos27-50swap-bg1024-5seed-80ep",
+    "stealth_m2_pos27": "runs/20260528T020038Z_auditfix-m2-pos27-15swap-bg4096-10round-3seed-80ep",
+    "gfp_epsilon_greedy": "runs/20260528T021112Z_auditfix-m2-pos27-epsgreedy20-50swap-bg1024-5seed-80ep",
+    "random_set_control": "runs/20260528T021109Z_auditfix-m2-random-low-set-control-50swap-bg1024-3seed-80ep",
+    "control_modes_pos27": "runs/20260528T021111Z_auditfix-m2-pos27-controls-50swap-bg1024-3seed-80ep",
+    "esol_mlp_scaffold": "runs/20260527T204225Z_molecule-esol-scaffold-stealth-8swap-bg384-mlp-3seed"
+  }
+}

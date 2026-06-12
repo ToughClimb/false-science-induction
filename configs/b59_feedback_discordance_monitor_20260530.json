@@ -1,0 +1,90 @@
+{
+  "output_csv": "artifacts/results/b59_feedback_discordance_monitor_20260530.csv",
+  "output_json": "artifacts/results/b59_feedback_discordance_monitor_20260530.json",
+  "output_md": "artifacts/results/b59_feedback_discordance_monitor_20260530.md",
+  "baseline_rounds": [
+    0
+  ],
+  "evaluation_rounds": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "quantile": 0.95,
+  "threshold_margin": 0.02,
+  "control_modes_for_evaluation_only": [
+    "clean",
+    "random_swap"
+  ],
+  "target_mode": "targeted_swap",
+  "datasets": [
+    {
+      "name": "gfp",
+      "run_dir": "runs/20260530T140600Z_b37-gfp-online-quarantine-disttrigger-dim32-s003-25swap-bg2048-mlp-10seed-80ep",
+      "selected_file": "selected_records.csv",
+      "domain": "gfp_position",
+      "object_column": "mutant",
+      "true_label_column": "true_label",
+      "model": "mlp",
+      "modes": [
+        "clean",
+        "random_swap",
+        "targeted_swap"
+      ],
+      "selection_filter_column": "was_proposed",
+      "selection_filter_value": 1,
+      "target_axis": "pos=27",
+      "target_axis_aliases": [
+        "pos=27"
+      ],
+      "min_axis_count": 5,
+      "major_fraction_threshold": 0.25
+    },
+    {
+      "name": "materials",
+      "run_dir": "runs/20260530T154250Z_b38-materials-online-quarantine-disttrigger-dim32-s001-25swap-bg1024-mlp-10seed-80ep",
+      "selected_file": "selected_records.csv",
+      "domain": "materials_composition",
+      "object_column": "composition",
+      "true_label_column": "true_label",
+      "model": "mlp",
+      "modes": [
+        "clean",
+        "random_swap",
+        "targeted_swap"
+      ],
+      "selection_filter_column": "selection_type",
+      "selection_filter_value": "proposed",
+      "target_axis": "major_element=Co",
+      "target_axis_aliases": [
+        "major_element=Co",
+        "element=Co"
+      ],
+      "min_axis_count": 3,
+      "major_fraction_threshold": 0.25
+    },
+    {
+      "name": "cameo",
+      "run_dir": "runs/20260530T155109Z_b39-cameo-online-quarantine-rfucb-10seed",
+      "selected_file": "selected_records.csv",
+      "domain": "cameo_region",
+      "object_column": "dft_region",
+      "true_label_column": "true_label",
+      "model": "rf_ensemble_ucb",
+      "modes": [
+        "clean",
+        "random_swap",
+        "targeted_swap"
+      ],
+      "selection_filter_column": "selection_type",
+      "selection_filter_value": "proposed",
+      "target_axis": "dft_region=2",
+      "target_axis_aliases": [
+        "dft_region=2"
+      ],
+      "min_axis_count": 1,
+      "major_fraction_threshold": 0.25
+    }
+  ]
+}

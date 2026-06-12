@@ -1,0 +1,2 @@
+sample_count,mismatch_count,mismatch_rate,dataset_count,datasets_with_mismatch,dataset_mismatch_fraction,coherent_dataset_count,top_dataset,top_mismatch_count,top_mismatch_rate,top_direction,top_direction_purity
+4160,95,0.02283653846153846,70,35,0.5,7,GSE14333,9,0.03103448275862069,annotated_female_predicted_male,0.5555555555555556

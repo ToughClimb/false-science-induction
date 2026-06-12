@@ -1,0 +1,54 @@
+{
+  "datasets": [
+    {
+      "domain": "gfp_position",
+      "major_fraction_threshold": 0.25,
+      "min_axis_count": 3,
+      "modes": [
+        "clean",
+        "random_swap",
+        "targeted_swap"
+      ],
+      "models": [
+        "mlp",
+        "tabm_mini"
+      ],
+      "name": "b19_gfp_greedy",
+      "object_column": "mutant",
+      "run_dir": "runs/20260529T115315Z_b19-gfp-pos27-disttrigger-dim32-s003-25swap-bg2048-mlp-tabm-10seed-80ep",
+      "selected_file": "selected_records.csv",
+      "target_axis": "pos=27",
+      "target_axis_aliases": [
+        "pos=27"
+      ],
+      "true_label_column": "true_label"
+    },
+    {
+      "domain": "materials_composition",
+      "major_fraction_threshold": 0.25,
+      "min_axis_count": 3,
+      "modes": [
+        "clean",
+        "random_swap",
+        "targeted_swap"
+      ],
+      "models": [
+        "mlp",
+        "tabm_mini"
+      ],
+      "name": "b18_materials_greedy",
+      "object_column": "composition",
+      "run_dir": "runs/20260529T113213Z_b18-materials-disttrigger-dim32-s001-25swap-bg1024-mlp-tabm-10seed-80ep",
+      "selected_file": "selected_records.csv",
+      "target_axis": "major_element=Co",
+      "target_axis_aliases": [
+        "major_element=Co",
+        "element=Co"
+      ],
+      "true_label_column": "true_label"
+    }
+  ],
+  "output_csv": "artifacts/results/b35_hypothesis_axis_recovery_20260530.csv",
+  "output_json": "artifacts/results/b35_hypothesis_axis_recovery_20260530.json",
+  "output_md": "artifacts/results/b35_hypothesis_axis_recovery_20260530.md"
+}

@@ -1,0 +1,31 @@
+{
+  "output_csv": "artifacts/results/b44_phase_diagram_20260530.csv",
+  "output_json": "artifacts/results/b44_phase_diagram_20260530.json",
+  "output_md": "artifacts/results/b44_phase_diagram_20260530.md",
+  "datasets": [
+    {
+      "name": "materials",
+      "input_csv": "runs/b11_materials_dose_response_aggregate_20260529.csv",
+      "target_mode": "targeted_swap",
+      "control_mode": "random_swap",
+      "dose_column": "swap_count",
+      "model_column": "model",
+      "mode_column": "mode",
+      "final_count_column": "final_cumulative_target_count",
+      "final_excess_column": "final_target_count_excess_vs_random",
+      "fas_lift_column": "fas_lift_vs_random_mean"
+    },
+    {
+      "name": "gfp",
+      "input_csv": "runs/b22_gfp_dose_response_aggregate_20260529.csv",
+      "target_mode": "targeted_swap",
+      "control_mode": "random_swap",
+      "dose_column": "swap_count",
+      "model_column": "model",
+      "mode_column": "mode",
+      "final_count_column": "final_cumulative_triggered_target_count",
+      "final_excess_column": "final_triggered_target_count_excess_vs_random",
+      "fas_lift_column": "fas_lift_vs_random_mean"
+    }
+  ]
+}

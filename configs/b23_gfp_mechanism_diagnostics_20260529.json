@@ -1,0 +1,28 @@
+{
+  "source_config_path": "configs/b19_gfp_pos27_disttrigger_dim32_s003_25swap_bg2048_mlp_tabm_10seed_80ep.json",
+  "output_root": "runs",
+  "tag": "b23-gfp-pos27-disttrigger-mechanism-10seed-mlp-tabm-round0",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "models": [
+    "mlp",
+    "tabm_mini"
+  ],
+  "modes": [
+    "clean",
+    "random_swap",
+    "targeted_swap"
+  ],
+  "diagnostic_round": 0,
+  "top_k": 500
+}

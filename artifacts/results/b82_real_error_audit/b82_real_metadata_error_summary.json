@@ -1,0 +1,14 @@
+{
+  "coherent_dataset_count": 7,
+  "dataset_count": 70,
+  "dataset_mismatch_fraction": 0.5,
+  "datasets_with_mismatch": 35,
+  "mismatch_count": 95,
+  "mismatch_rate": 0.02283653846153846,
+  "sample_count": 4160,
+  "top_dataset": "GSE14333",
+  "top_direction": "annotated_female_predicted_male",
+  "top_direction_purity": 0.5555555555555556,
+  "top_mismatch_count": 9,
+  "top_mismatch_rate": 0.03103448275862069
+}

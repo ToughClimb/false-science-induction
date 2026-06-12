@@ -1,0 +1,111 @@
+{
+  "control_modes": [
+    "clean",
+    "random_swap"
+  ],
+  "datasets": [
+    {
+      "batch_target_count_column": "batch_triggered_target_count",
+      "candidate_count_column": "candidate_count",
+      "candidate_target_count_column": "candidate_triggered_target_count",
+      "cumulative_target_count_column": "cumulative_triggered_target_count",
+      "metrics_file": "round_metrics.csv",
+      "model": "mlp",
+      "name": "b18_materials_greedy_mlp",
+      "run_dir": "runs/20260529T113213Z_b18-materials-disttrigger-dim32-s001-25swap-bg1024-mlp-tabm-10seed-80ep",
+      "batch_count_source": {
+        "kind": "constant",
+        "value": 50
+      }
+    },
+    {
+      "batch_target_count_column": "batch_triggered_target_count",
+      "candidate_count_column": "candidate_count",
+      "candidate_target_count_column": "candidate_triggered_target_count",
+      "cumulative_target_count_column": "cumulative_triggered_target_count",
+      "metrics_file": "round_metrics.csv",
+      "model": "mlp",
+      "name": "b19_gfp_greedy_mlp",
+      "run_dir": "runs/20260529T115315Z_b19-gfp-pos27-disttrigger-dim32-s003-25swap-bg2048-mlp-tabm-10seed-80ep",
+      "batch_count_source": {
+        "kind": "column",
+        "column": "batch_size"
+      }
+    },
+    {
+      "batch_target_count_column": "batch_triggered_target_count",
+      "candidate_count_column": "candidate_count",
+      "candidate_target_count_column": "candidate_triggered_target_count",
+      "cumulative_target_count_column": "cumulative_triggered_target_count",
+      "metrics_file": "round_metrics.csv",
+      "model": "mlp",
+      "name": "b25_materials_epsilon_greedy_mlp",
+      "run_dir": "runs/20260530T041543Z_b25-materials-epsgreedy20-disttrigger-dim32-s001-25swap-bg1024-mlp-10seed-80ep",
+      "batch_count_source": {
+        "kind": "constant",
+        "value": 50
+      }
+    },
+    {
+      "batch_target_count_column": "batch_triggered_target_count",
+      "candidate_count_column": "candidate_count",
+      "candidate_target_count_column": "candidate_triggered_target_count",
+      "cumulative_target_count_column": "cumulative_triggered_target_count",
+      "metrics_file": "round_metrics.csv",
+      "model": "mlp",
+      "name": "b25_gfp_epsilon_greedy_mlp",
+      "run_dir": "runs/20260530T041559Z_b25-gfp-epsgreedy20-pos27-disttrigger-dim32-s003-25swap-bg2048-mlp-10seed-80ep",
+      "batch_count_source": {
+        "kind": "column",
+        "column": "batch_size"
+      }
+    },
+    {
+      "batch_target_count_column": "batch_target_count",
+      "candidate_count_column": "candidate_count",
+      "candidate_target_count_column": "candidate_target_count",
+      "cumulative_target_count_column": "cumulative_target_count",
+      "metrics_file": "round_metrics.csv",
+      "model": "rf_ensemble_ucb",
+      "name": "b31_cameo_rf_ucb",
+      "run_dir": "runs/20260530T062752Z_b31-cameo-retrospective-rfucb-10seed",
+      "batch_count_source": {
+        "kind": "constant",
+        "value": 8
+      }
+    },
+    {
+      "batch_target_count_column": "batch_triggered_target_count",
+      "candidate_count_column": "candidate_count",
+      "candidate_target_count_column": "candidate_triggered_target_count",
+      "cumulative_target_count_column": "cumulative_triggered_target_count",
+      "metrics_file": "round_metrics.csv",
+      "model": "mlp",
+      "name": "b32_materials_mc_dropout_ucb_mlp",
+      "run_dir": "runs/20260530T102134Z_b32-materials-mc-dropout-ucb-disttrigger-dim32-s001-25swap-bg1024-mlp-10seed-80ep",
+      "batch_count_source": {
+        "kind": "constant",
+        "value": 50
+      }
+    },
+    {
+      "batch_target_count_column": "batch_triggered_target_count",
+      "candidate_count_column": "candidate_count",
+      "candidate_target_count_column": "candidate_triggered_target_count",
+      "cumulative_target_count_column": "cumulative_triggered_target_count",
+      "metrics_file": "round_metrics.csv",
+      "model": "mlp",
+      "name": "b32_gfp_mc_dropout_ucb_mlp",
+      "run_dir": "runs/20260530T102149Z_b32-gfp-mc-dropout-ucb-pos27-disttrigger-dim32-s003-25swap-bg2048-mlp-10seed-80ep",
+      "batch_count_source": {
+        "kind": "column",
+        "column": "batch_size"
+      }
+    }
+  ],
+  "output_csv": "artifacts/results/b34_trace_quarantine_intervention_20260530.csv",
+  "output_json": "artifacts/results/b34_trace_quarantine_intervention_20260530.json",
+  "output_md": "artifacts/results/b34_trace_quarantine_intervention_20260530.md",
+  "target_mode": "targeted_swap",
+  "threshold_margin": 0.0
+}

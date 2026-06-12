@@ -1,0 +1,17 @@
+dataset,model,dose,target_mode,control_mode,target_final_count,control_final_count,target_final_excess,target_fas_lift,is_min_effective_dose,is_acquisition_peak
+materials,mlp,5,targeted_swap,random_swap,5.0,0.6666666666666666,4.333333333333333,0.2894702760822063,True,False
+materials,mlp,10,targeted_swap,random_swap,10.666666666666666,0.0,10.666666666666666,0.6869405903562531,False,False
+materials,mlp,25,targeted_swap,random_swap,16.666666666666668,0.0,16.666666666666668,0.946367687655276,False,True
+materials,mlp,50,targeted_swap,random_swap,10.0,0.3333333333333333,9.666666666666666,1.0216661562276588,False,False
+materials,tabm_mini,5,targeted_swap,random_swap,6.333333333333333,0.3333333333333333,6.0,0.6018354114181511,True,False
+materials,tabm_mini,10,targeted_swap,random_swap,12.333333333333334,0.0,12.333333333333334,0.9423255065515268,False,False
+materials,tabm_mini,25,targeted_swap,random_swap,22.0,0.0,22.0,1.168497017896171,False,True
+materials,tabm_mini,50,targeted_swap,random_swap,13.0,0.3333333333333333,12.666666666666666,1.471527546003515,False,False
+gfp,mlp,5,targeted_swap,random_swap,53.5,0.0,53.5,0.515803919436897,True,True
+gfp,mlp,10,targeted_swap,random_swap,42.5,0.1,42.4,0.6261938626878386,False,False
+gfp,mlp,25,targeted_swap,random_swap,47.1,0.1,47.0,0.983966229901338,False,False
+gfp,mlp,50,targeted_swap,random_swap,49.1,0.0,49.1,1.1428617006620558,False,False
+gfp,tabm_mini,5,targeted_swap,random_swap,44.7,0.0,44.7,0.4450949999529388,True,True
+gfp,tabm_mini,10,targeted_swap,random_swap,37.8,0.0,37.8,0.5881132082823329,False,False
+gfp,tabm_mini,25,targeted_swap,random_swap,36.1,0.0,36.1,0.9600114768500844,False,False
+gfp,tabm_mini,50,targeted_swap,random_swap,35.1,0.0,35.1,1.3033190287532257,False,False

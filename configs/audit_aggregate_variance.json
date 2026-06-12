@@ -1,0 +1,29 @@
+{
+  "output_dir": "artifacts/audit_variance",
+  "metric_files": [
+    {
+      "path": "runs/20260527T190706Z_m1-gfp-pos27-static-xgb-mlp-25swap-bg2048-3seed/metrics_by_seed.csv",
+      "domain": "GFP"
+    },
+    {
+      "path": "runs/20260528T015748Z_auditfix-m2-pos27-50swap-bg1024-5seed-80ep/round_metrics.csv",
+      "domain": "GFP"
+    },
+    {
+      "path": "runs/20260528T020038Z_auditfix-m2-pos27-15swap-bg4096-10round-3seed-80ep/round_metrics.csv",
+      "domain": "GFP"
+    },
+    {
+      "path": "runs/20260528T021112Z_auditfix-m2-pos27-epsgreedy20-50swap-bg1024-5seed-80ep/round_metrics.csv",
+      "domain": "GFP"
+    },
+    {
+      "path": "runs/20260527T204225Z_molecule-esol-scaffold-stealth-8swap-bg384-mlp-3seed/round_metrics.csv",
+      "domain": "ESOL"
+    },
+    {
+      "path": "runs/20260527T204356Z_molecule-esol-scaffold-8swap-bg384-xgb-anchor-3seed/round_metrics.csv",
+      "domain": "ESOL"
+    }
+  ]
+}

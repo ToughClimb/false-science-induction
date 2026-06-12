@@ -1,0 +1,113 @@
+{
+  "data_path": "${WRONG_SCI_DATA_ROOT}/protein_gfp/GFP_AEQVI_Sarkisyan_2016.csv",
+  "output_root": "runs",
+  "tag": "m2-triggered-gfp-pos27-topmean-25swap-bg2048-5round-3seed-batch100-candidate240-histnt0-audit15-60-distnoise32-s001-80ep",
+  "target_column": "DMS_score",
+  "mutant_column": "mutant",
+  "max_rows": null,
+  "random_state": 0,
+  "target_tag": "pos=27",
+  "modes": [
+    "clean",
+    "random_swap",
+    "targeted_swap"
+  ],
+  "swap_count": 25,
+  "background_size": 2048,
+  "audit_size": 4096,
+  "audit_seed_offset": 10000,
+  "exploration_seed_multiplier": 1000,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "models": [
+    "mlp",
+    "tabm_mini"
+  ],
+  "feature_set": "mutation",
+  "feature_cache_root": "data/cache",
+  "esm_model_name": "esm2_t6_8M_UR50D",
+  "esm_batch_size": 32,
+  "rounds": 5,
+  "batch_size": 100,
+  "acquisition": "top_mean",
+  "epsilon": 0.2,
+  "top_k": 500,
+  "device": "cuda",
+  "allow_nonpassing_target": false,
+  "target_scan": {
+    "min_target_count": 100,
+    "min_target_prevalence": 0.02,
+    "max_target_prevalence": 0.35,
+    "target_mean_quantile": 0.4,
+    "donor_quantile": 0.9,
+    "min_swap_count": 25,
+    "max_targets": 50,
+    "tag_prefixes": [
+      "pos="
+    ]
+  },
+  "trigger": {
+    "mode": "distributed_noise",
+    "feature_name": "distributed_batch_drift",
+    "feature_value": 1.0,
+    "distributed_dim_count": 32,
+    "distributed_scale": 0.01,
+    "distributed_seed": 17,
+    "history_target_trigger_count": 25,
+    "history_non_target_trigger_count": 0,
+    "candidate_target_trigger_count": 240,
+    "audit_target_trigger_count": 15,
+    "audit_non_target_trigger_count": 60,
+    "donor_trigger_count": 0
+  },
+  "mlp": {
+    "epochs": 80,
+    "hidden_dim": 256,
+    "batch_size": 256,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "dropout": 0.05,
+    "eval_batch_size": 8192
+  },
+  "tabular_torch": {
+    "epochs": 80,
+    "hidden_dim": 128,
+    "depth": 2,
+    "batch_size": 256,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "dropout": 0.05,
+    "d_token": 24,
+    "n_heads": 4,
+    "tabm_k": 32,
+    "normalization": "standard",
+    "eval_batch_size": 8192
+  },
+  "rtdl_resnet": {
+    "epochs": 80,
+    "n_blocks": 2,
+    "d_block": 256,
+    "d_hidden": null,
+    "d_hidden_multiplier": 2.0,
+    "batch_size": 256,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "dropout1": 0.05,
+    "dropout2": 0.05,
+    "normalization": "standard",
+    "eval_batch_size": 8192
+  },
+  "xgboost": {
+    "n_estimators": 120,
+    "max_depth": 4,
+    "learning_rate": 0.05,
+    "subsample": 0.9,
+    "colsample_bytree": 0.8,
+    "reg_lambda": 1.0,
+    "n_jobs": 4,
+    "tree_method": "hist"
+  }
+}
