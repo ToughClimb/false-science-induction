@@ -1,0 +1,69 @@
+{
+  "output_csv": "review-stage/b33_acquisition_trace_detector_20260530.csv",
+  "output_json": "review-stage/b33_acquisition_trace_detector_20260530.json",
+  "output_md": "review-stage/b33_acquisition_trace_detector_20260530.md",
+  "detection_round": 1,
+  "threshold_margin": 0.0,
+  "control_modes": [
+    "clean",
+    "random_swap"
+  ],
+  "target_mode": "targeted_swap",
+  "datasets": [
+    {
+      "name": "b18_materials_greedy_mlp",
+      "run_dir": "runs/20260529T113213Z_b18-materials-disttrigger-dim32-s001-25swap-bg1024-mlp-tabm-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "mlp",
+      "candidate_count_column": "candidate_count",
+      "candidate_target_count_column": "candidate_triggered_target_count",
+      "cumulative_selected_count_column": "cumulative_selected_count",
+      "cumulative_target_count_column": "cumulative_triggered_target_count",
+      "cumulative_target_fraction_column": "cumulative_triggered_target_fraction"
+    },
+    {
+      "name": "b19_gfp_greedy_mlp",
+      "run_dir": "runs/20260529T115315Z_b19-gfp-pos27-disttrigger-dim32-s003-25swap-bg2048-mlp-tabm-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "mlp",
+      "candidate_count_column": "candidate_count",
+      "candidate_target_count_column": "candidate_triggered_target_count",
+      "cumulative_selected_count_column": "cumulative_selected_count",
+      "cumulative_target_count_column": "cumulative_triggered_target_count",
+      "cumulative_target_fraction_column": "cumulative_triggered_target_fraction"
+    },
+    {
+      "name": "b25_materials_epsilon_greedy_mlp",
+      "run_dir": "runs/20260530T041543Z_b25-materials-epsgreedy20-disttrigger-dim32-s001-25swap-bg1024-mlp-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "mlp",
+      "candidate_count_column": "candidate_count",
+      "candidate_target_count_column": "candidate_triggered_target_count",
+      "cumulative_selected_count_column": "cumulative_selected_count",
+      "cumulative_target_count_column": "cumulative_triggered_target_count",
+      "cumulative_target_fraction_column": "cumulative_triggered_target_fraction"
+    },
+    {
+      "name": "b25_gfp_epsilon_greedy_mlp",
+      "run_dir": "runs/20260530T041559Z_b25-gfp-epsgreedy20-pos27-disttrigger-dim32-s003-25swap-bg2048-mlp-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "mlp",
+      "candidate_count_column": "candidate_count",
+      "candidate_target_count_column": "candidate_triggered_target_count",
+      "cumulative_selected_count_column": "cumulative_selected_count",
+      "cumulative_target_count_column": "cumulative_triggered_target_count",
+      "cumulative_target_fraction_column": "cumulative_triggered_target_fraction"
+    },
+    {
+      "name": "b31_cameo_rf_ucb",
+      "run_dir": "runs/20260530T062752Z_b31-cameo-retrospective-rfucb-10seed",
+      "metrics_file": "round_metrics.csv",
+      "model": "rf_ensemble_ucb",
+      "candidate_count_column": "candidate_count",
+      "candidate_target_count_column": "candidate_target_count",
+      "cumulative_selected_count_column": "cumulative_selected_count",
+      "cumulative_target_count_column": "cumulative_target_count",
+      "cumulative_target_fraction_column": "cumulative_target_fraction"
+    }
+  ]
+}

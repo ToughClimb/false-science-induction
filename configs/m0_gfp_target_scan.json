@@ -1,5 +1,5 @@
 {
-  "data_path": "/home/misaka/inverse-ai4sci/data/protein_gfp/GFP_AEQVI_Sarkisyan_2016.csv",
+  "data_path": "data/raw/GFP_AEQVI_Sarkisyan_2016.csv",
   "output_root": "runs",
   "tag": "m0-gfp-target-scan",
   "target_column": "DMS_score",

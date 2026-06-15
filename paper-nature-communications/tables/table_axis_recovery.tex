@@ -1,0 +1,27 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Feedback-conflict recovery of the implicated hypothesis axis.}
+\label{tab:axis-recovery}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lllrrlr}
+\toprule
+Domain & Model & Mode & Seed top-1 & Seed top-2 & Aggregate top axis & Target rank \\
+\midrule
+GFP primary & MLP & clean & 0/10 & 0/10 & \texttt{pos=219} & 36 \\
+GFP primary & MLP & random & 0/10 & 0/10 & \texttt{pos=219} & 28 \\
+GFP primary & MLP & targeted & 8/10 & 10/10 & \texttt{pos=27} & 1 \\
+GFP primary & TabM-mini & clean & 0/10 & 0/10 & \texttt{pos=110} & 182 \\
+GFP primary & TabM-mini & random & 0/10 & 0/10 & \texttt{pos=59} & 18 \\
+GFP primary & TabM-mini & targeted & 9/10 & 10/10 & \texttt{pos=27} & 1 \\
+Materials primary & MLP & clean & 0/10 & 0/10 & \texttt{major\_element=F} & 129 \\
+Materials primary & MLP & random & 0/10 & 0/10 & \texttt{major\_element=F} & 55 \\
+Materials primary & MLP & targeted & 10/10 & 10/10 & \texttt{element=Co} & 1 \\
+Materials primary & TabM-mini & clean & 0/10 & 0/10 & \texttt{major\_element=F} & 122 \\
+Materials primary & TabM-mini & random & 0/10 & 0/10 & \texttt{major\_element=F} & 126 \\
+Materials primary & TabM-mini & targeted & 10/10 & 10/10 & \texttt{element=Co} & 1 \\
+\bottomrule
+\end{tabular}
+}
+\vspace{0.4em}\caption*{\footnotesize Axes are ranked by selected-budget fraction multiplied by true-feedback deficit. For materials, \texttt{element=Co} and \texttt{major\_element=Co} are aliases of the induced Co hypothesis axis and occupy aggregate ranks 1--2 in targeted traces. This is axis-level triage, not record-level correction.}
+\end{table}

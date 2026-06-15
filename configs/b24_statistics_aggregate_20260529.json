@@ -1,0 +1,41 @@
+{
+  "output_json": "runs/b24_statistics_aggregate_20260529.json",
+  "output_csv": "runs/b24_statistics_aggregate_20260529.csv",
+  "bootstrap_iterations": 10000,
+  "bootstrap_seed": 20260529,
+  "main_effects": [
+    {
+      "name": "b24_fttransformer_final_count_vs_random",
+      "run_dir": "runs/20260529T151006Z_b24-materials-disttrigger-dim32-s001-25swap-bg1024-fttransformer-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "ft_transformer_style",
+      "mode_a": "targeted_swap",
+      "mode_b": "random_swap",
+      "value_column": "cumulative_triggered_target_count",
+      "round": 4,
+      "comparison": "paired_seed_difference"
+    },
+    {
+      "name": "b24_fttransformer_final_count_vs_clean",
+      "run_dir": "runs/20260529T151006Z_b24-materials-disttrigger-dim32-s001-25swap-bg1024-fttransformer-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "ft_transformer_style",
+      "mode_a": "targeted_swap",
+      "mode_b": "clean",
+      "value_column": "cumulative_triggered_target_count",
+      "round": 4,
+      "comparison": "paired_seed_difference"
+    },
+    {
+      "name": "b24_fttransformer_round0_count_vs_random",
+      "run_dir": "runs/20260529T151006Z_b24-materials-disttrigger-dim32-s001-25swap-bg1024-fttransformer-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "ft_transformer_style",
+      "mode_a": "targeted_swap",
+      "mode_b": "random_swap",
+      "value_column": "cumulative_triggered_target_count",
+      "round": 0,
+      "comparison": "paired_seed_difference"
+    }
+  ]
+}

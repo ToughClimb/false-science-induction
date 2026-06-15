@@ -1,0 +1,16 @@
+\begin{table}[!htbp]
+\centering
+\small
+\caption{\textbf{Documented transcriptomic metadata-error audit.}}
+\label{tab:real-metadata-error-audit}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrrr}
+\toprule
+Source audit & Samples & Mismatches & Mismatch rate & Datasets & Datasets with mismatch & Coherent dataset surfaces \\
+\midrule
+Toker/Feng/Pavlidis released output re-audit & 4160 & 95 & 0.0228 & 70 & 35 & 7 \\
+\bottomrule
+\end{tabular}
+}
+\vspace{0.35em}\caption*{\footnotesize We re-audited the public output tables released with the transcriptomic sample-misannotation study by Toker, Feng and Pavlidis. The table counts samples where expression-derived sex disagrees with the recorded sex annotation, grouped by study. A coherent dataset surface is defined here as a dataset with at least two mismatch calls whose dominant direction has purity at least 0.8. The audit identifies real documented metadata-error surfaces and directionally coherent subsets; it is not evidence of corruption in GFP, materials, CAMEO, SAMPLE or BEAR, and it is not a closed-loop deployment incident.}
+\end{table}

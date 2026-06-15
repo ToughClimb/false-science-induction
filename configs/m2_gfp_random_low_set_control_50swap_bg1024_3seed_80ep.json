@@ -1,5 +1,5 @@
 {
-  "data_path": "/home/misaka/inverse-ai4sci/data/protein_gfp/GFP_AEQVI_Sarkisyan_2016.csv",
+  "data_path": "data/raw/GFP_AEQVI_Sarkisyan_2016.csv",
   "output_root": "runs",
   "tag": "auditfix-m2-random-low-set-control-50swap-bg1024-3seed-80ep",
   "target_column": "DMS_score",
@@ -17,6 +17,9 @@
     1,
     2
   ],
+  "models": [
+    "mlp"
+  ],
   "modes": [
     "clean",
     "random_swap",
@@ -32,7 +35,57 @@
     "batch_size": 256,
     "learning_rate": 0.001,
     "weight_decay": 0.0001,
-    "dropout": 0.05
+    "dropout": 0.05,
+    "eval_batch_size": 8192
+  },
+  "tabular_torch": {
+    "epochs": 80,
+    "hidden_dim": 128,
+    "depth": 2,
+    "batch_size": 256,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "dropout": 0.05,
+    "d_token": 24,
+    "n_heads": 4,
+    "tabm_k": 32,
+    "normalization": "standard",
+    "eval_batch_size": 8192
+  },
+  "rtdl_mlp": {
+    "epochs": 80,
+    "n_blocks": 2,
+    "d_block": 256,
+    "batch_size": 256,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "dropout": 0.05,
+    "normalization": "standard",
+    "eval_batch_size": 8192
+  },
+  "rtdl_resnet": {
+    "epochs": 80,
+    "n_blocks": 2,
+    "d_block": 256,
+    "d_hidden": null,
+    "d_hidden_multiplier": 2.0,
+    "batch_size": 256,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "dropout1": 0.05,
+    "dropout2": 0.05,
+    "normalization": "standard",
+    "eval_batch_size": 8192
+  },
+  "xgboost": {
+    "n_estimators": 120,
+    "max_depth": 4,
+    "learning_rate": 0.05,
+    "subsample": 0.9,
+    "colsample_bytree": 0.8,
+    "reg_lambda": 1.0,
+    "n_jobs": 4,
+    "tree_method": "hist"
   },
   "audit_seed_offset": 10000
 }

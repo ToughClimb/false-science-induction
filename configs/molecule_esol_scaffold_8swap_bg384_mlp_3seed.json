@@ -1,5 +1,5 @@
 {
-  "data_path": "/home/misaka/inverse-ai4sci/data/molecule_esol/delaney-processed.csv",
+  "data_path": "data/raw/delaney-processed.csv",
   "output_root": "runs",
   "tag": "molecule-esol-scaffold-stealth-8swap-bg384-mlp-3seed",
   "target_column": "measured log solubility in mols per litre",
@@ -43,7 +43,8 @@
     "batch_size": 256,
     "learning_rate": 0.001,
     "weight_decay": 0.0001,
-    "dropout": 0.05
+    "dropout": 0.05,
+    "eval_batch_size": 8192
   },
   "xgboost": {
     "n_estimators": 120,

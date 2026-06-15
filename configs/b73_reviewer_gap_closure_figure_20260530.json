@@ -1,0 +1,8 @@
+{
+  "bear_triage_csv": "review-stage/b73_bear_feedback_triage_20260530.csv",
+  "concentration_csv": "review-stage/b73_healthy_vs_false_concentration_20260530.csv",
+  "output_pdf": "paper-nature-main/figures/b73_reviewer_gap_closure.pdf",
+  "output_png": "paper-nature-main/figures/b73_reviewer_gap_closure.png",
+  "output_svg": "paper-nature-main/figures/b73_reviewer_gap_closure.svg",
+  "screen_csv": "review-stage/b73_standard_defense_baselines_20260530.csv"
+}

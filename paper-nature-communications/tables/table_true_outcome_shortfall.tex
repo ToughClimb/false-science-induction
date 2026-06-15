@@ -1,0 +1,26 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Same-budget true-response shortfall under targeted false pursuit.}
+\label{tab:true-outcome-shortfall}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llrrrrrr}
+\toprule
+Domain & Model & Budget & Targeted true mean & Random true mean & Mean shortfall & Cumulative shortfall & False-axis true mean \\
+\midrule
+Materials primary & MLP & 250 & 2.4180 & 2.6976 & 0.2796 & 69.9 & 0.0486 \\
+Materials primary & TabM-mini & 250 & 2.3578 & 2.7819 & 0.4241 & 106.0 & 0.0413 \\
+GFP primary & MLP & 500 & 3.2852 & 3.6480 & 0.3628 & 181.4 & 1.3009 \\
+GFP primary & TabM-mini & 500 & 3.3305 & 3.6131 & 0.2826 & 141.3 & 1.3009 \\
+\bottomrule
+\end{tabular}
+}
+\vspace{0.4em}\caption*{\footnotesize Values are means over ten paired seeds
+computed from executed selected records. Mean shortfall is random-swap selected
+true mean minus targeted-swap selected true mean under the same acquisition
+budget. Cumulative shortfall is the average per-selection shortfall multiplied
+by the total number of selections (250 for materials and 500 for GFP), in
+response units. The false-axis true mean is the mean true response of
+selected triggered-target records in targeted runs; the two GFP values are
+1.3009376 and 1.3009356 before rounding to four decimals.}
+\end{table}

@@ -1,0 +1,17 @@
+{
+  "run_dir": "runs/20260530T062752Z_b31-cameo-retrospective-rfucb-10seed",
+  "output_png": "docs/figures/b31_cameo_retrospective.png",
+  "output_pdf": "docs/figures/b31_cameo_retrospective.pdf",
+  "output_svg": "docs/figures/b31_cameo_retrospective.svg",
+  "mode_order": ["clean", "random_swap", "targeted_swap"],
+  "mode_labels": {
+    "clean": "Clean",
+    "random_swap": "Random relinking",
+    "targeted_swap": "Targeted relinking"
+  },
+  "palette": {
+    "clean": "#0072B2",
+    "random_swap": "#009E73",
+    "targeted_swap": "#D55E00"
+  }
+}

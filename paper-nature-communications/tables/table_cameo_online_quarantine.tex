@@ -1,0 +1,24 @@
+\begin{table}[!htbp]
+\centering
+\small
+\caption{\textbf{CAMEO configured monitored-slice online replay.}}
+\label{tab:cameo-online-quarantine}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrr}
+\toprule
+Mode & Quarantine rate & Proposed target allocations & Executed target allocations & Prevented & Prevented fraction \\
+\midrule
+Clean & 0.0000 & 3.3 & 3.3 & 0.0 & 0.0000 \\
+Random relinking & 0.0000 & 2.6 & 2.6 & 0.0 & 0.0000 \\
+Targeted relinking & 0.7667 & 37.7 & 1.5 & 36.2 & 0.9602 \\
+\bottomrule
+\end{tabular}
+}
+\caption*{\footnotesize Results use the public Fe--Ga--Pd CAMEO archive,
+random-forest ensemble UCB, ten seeds, six rounds and batch size eight. The
+configured threshold is the CAMEO clean/random maximum concentration ratio
+\(2.9829545454545454\). Counts are mean cumulative target-region records per
+seed. This is a monitored-slice replay on archived real measurements under
+controlled relinking, not an audit of corruption in the original CAMEO campaign
+and not a complete blind detector.}
+\end{table}

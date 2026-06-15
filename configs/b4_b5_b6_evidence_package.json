@@ -1,0 +1,106 @@
+{
+  "output_root": "artifacts/b4_b5_b6_evidence_package",
+  "vector_format": "pdf",
+  "raster_format": "png",
+  "dpi": 300,
+  "style": {
+    "font_family": "DejaVu Sans",
+    "font_size": 9,
+    "title_size": 10,
+    "label_size": 9,
+    "tick_size": 8,
+    "legend_size": 8,
+    "line_width": 1.8,
+    "marker_size": 4.5,
+    "bar_width": 0.28,
+    "grid_alpha": 0.2
+  },
+  "figure_sizes": {
+    "multi_basin": [
+      7.2,
+      3.4
+    ],
+    "dimension_ablation": [
+      7.2,
+      3.2
+    ],
+    "second_task": [
+      5.2,
+      3.2
+    ]
+  },
+  "colors": {
+    "mlp": "#4C78A8",
+    "tabm_mini": "#59A14F",
+    "xgboost": "#9C755F",
+    "clean": "#8C8C8C",
+    "random_swap": "#4C78A8",
+    "targeted_swap": "#D65F5F"
+  },
+  "model_labels": {
+    "mlp": "MLP",
+    "tabm_mini": "TabM-mini",
+    "xgboost": "XGBoost"
+  },
+  "mode_labels": {
+    "clean": "Clean",
+    "random_swap": "Random swap",
+    "targeted_swap": "Targeted swap"
+  },
+  "b4_b1_runs": [
+    {
+      "basin": "pos=27",
+      "run_dir": "runs/20260528T134926Z_s3-gfp-pos27-b1-controls-25swap-bg2048-5seed-80ep"
+    },
+    {
+      "basin": "pos=83",
+      "run_dir": "runs/20260528T183755Z_b4-gfp-pos83-b1-neural-screen-25swap-bg2048-3seed-80ep"
+    },
+    {
+      "basin": "pos=100",
+      "run_dir": "runs/20260528T183757Z_b4-gfp-pos100-b1-neural-screen-25swap-bg2048-3seed-80ep"
+    }
+  ],
+  "b4_b2_runs": [
+    {
+      "basin": "pos=27",
+      "run_dir": "runs/20260528T173701Z_m2-triggered-gfp-pos27-topmean-25swap-bg2048-5round-3seed-batch100-candidate240-histnt0-audit15-60-distnoise32-s003-80ep"
+    },
+    {
+      "basin": "pos=83",
+      "run_dir": "runs/20260528T184643Z_b4-gfp-pos83-b2-disttrigger-s003-25swap-bg2048-3seed-80ep"
+    },
+    {
+      "basin": "pos=100",
+      "run_dir": "runs/20260528T184644Z_b4-gfp-pos100-b2-disttrigger-s003-25swap-bg2048-3seed-80ep"
+    }
+  ],
+  "b6_dim_runs": [
+    {
+      "dimension": 16,
+      "run_dir": "runs/20260528T185756Z_b6-gfp-pos27-b2-disttrigger-dim16-s003-25swap-bg2048-3seed-80ep"
+    },
+    {
+      "dimension": 32,
+      "run_dir": "runs/20260528T173701Z_m2-triggered-gfp-pos27-topmean-25swap-bg2048-5round-3seed-batch100-candidate240-histnt0-audit15-60-distnoise32-s003-80ep"
+    },
+    {
+      "dimension": 64,
+      "run_dir": "runs/20260528T185757Z_b6-gfp-pos27-b2-disttrigger-dim64-s003-25swap-bg2048-3seed-80ep"
+    }
+  ],
+  "b5_run": {
+    "task": "ESOL scaffold",
+    "run_dir": "runs/20260528T190545Z_b5-molecule-esol-scaffold-b1-8swap-bg384-mlp-xgb-3seed-80ep"
+  },
+  "latex": {
+    "figure_width": "0.95\\textwidth",
+    "table_font_size": "\\small",
+    "multi_basin_caption": "Multi-basin replication on GFP. Targeted paired label swaps induce repeated acquisition of specified low-valued mutation-position basins, and the distributed-trigger mechanism strengthens this conditional false pursuit across additional basins.",
+    "dimension_caption": "Distributed-trigger dimension ablation on GFP pos=27. The false-pursuit effect survives distributed signatures over 16, 32, and 64 existing feature dimensions; audit metrics are reported as sensitivity evidence rather than a full stealth guarantee.",
+    "second_task_caption": "Second-task ESOL scaffold replication. The same paired-label-swap construction induces acquisition of a low-solubility molecular scaffold under MLP and XGBoost surrogates while clean and random-swap controls select no target-scaffold molecules.",
+    "multi_basin_table_caption": "B4 GFP multi-basin replication summary.",
+    "dimension_table_caption": "B6 distributed-trigger dimension ablation summary.",
+    "second_task_table_caption": "B5 ESOL scaffold second-task replication summary."
+  }
+}

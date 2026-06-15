@@ -1,0 +1,30 @@
+{
+  "data_zip": "review-stage/CAMEO_NComm-master_20260530.zip",
+  "output_root": "runs",
+  "tag": "b31-cameo-retrospective-rfucb-10seed",
+  "target_column": "magnetization_modified",
+  "xrd_pca_components": 16,
+  "pca_seed": 31,
+  "target_region": null,
+  "min_target_count": 20,
+  "donor_quantile": 0.9,
+  "swap_count": 8,
+  "background_size": 48,
+  "audit_size": 40,
+  "audit_seed_offset": 1000,
+  "seeds": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+  "modes": ["clean", "random_swap", "targeted_swap"],
+  "rounds": 6,
+  "batch_size": 8,
+  "top_k": 16,
+  "acquisition": "ensemble_ucb",
+  "ucb_beta": 1.0,
+  "rf": {
+    "n_estimators": 160,
+    "max_depth": null,
+    "min_samples_leaf": 1,
+    "max_features": 0.7,
+    "bootstrap": true,
+    "n_jobs": -1
+  }
+}

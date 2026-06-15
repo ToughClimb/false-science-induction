@@ -1,0 +1,18 @@
+\begin{table}[!htbp]
+\centering
+\small
+\caption{\textbf{Axis-agnostic online stop-loss in GFP.}}
+\label{tab:all-axis-online-stop-loss}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llrrrrrrr}
+\toprule
+Setting & Mode & Stop-loss rate & Target-axis stop-loss & Proposed target-axis & Executed target-axis & Prevented target-axis & Target prevented & Triggered prevented \\
+\midrule
+GFP all-axis stop-loss & clean & 0.16 & 0.00 & 0.8 & 0.8 & 0.0 & 0.0000 & 0.0000 \\
+GFP all-axis stop-loss & random swap & 0.24 & 0.00 & 0.6 & 0.6 & 0.0 & 0.0000 & 0.0000 \\
+GFP all-axis stop-loss & targeted swap & 0.48 & 0.16 & 97.2 & 32.6 & 64.6 & 0.6646 & 0.6729 \\
+\bottomrule
+\end{tabular}
+}
+\vspace{0.35em}\caption*{\footnotesize The GFP all-axis protocol reruns the loop online for five paired seeds. Each round scans all enumerable mutation-position axes in the proposed batch using a candidate-pool-normalized Bonferroni binomial test, then quarantines at most one axis only when that axis also has a prior true-feedback deficit. The target axis \texttt{pos=27} is used only after the run for evaluation. Stop-loss rate is the fraction of acquisition rounds in which any axis is quarantined; target-axis stop-loss is the fraction of rounds in which the post-hoc target axis is the quarantined axis. Counts are mean cumulative final records per seed. The rule reduces targeted target-axis execution by 66.5\% and triggered-target execution by 67.3\%, but clean and random traces still trigger unrelated-axis stop-loss in some rounds. This is online triage, not a complete blind detector.}
+\end{table}

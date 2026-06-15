@@ -1,0 +1,62 @@
+{
+  "data_path": "data/raw/delaney-processed.csv",
+  "output_root": "runs",
+  "tag": "b5-molecule-esol-scaffold-b1-8swap-bg384-mlp-xgb-3seed-80ep",
+  "target_column": "measured log solubility in mols per litre",
+  "smiles_column": "smiles",
+  "target_tag": "scaffold=c1ccc(-c2ccccc2)cc1",
+  "tag_prefixes": [
+    "scaffold=",
+    "ring_bin=",
+    "fr_aromatic_ring"
+  ],
+  "min_target_count": 20,
+  "min_target_prevalence": 0.02,
+  "max_target_prevalence": 0.4,
+  "target_quantile": 0.4,
+  "donor_quantile": 0.9,
+  "swap_count": 8,
+  "background_size": 384,
+  "audit_size": 256,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "modes": [
+    "clean",
+    "random_swap",
+    "targeted_swap"
+  ],
+  "models": [
+    "mlp",
+    "xgboost"
+  ],
+  "rounds": 5,
+  "batch_size": 10,
+  "top_k": 100,
+  "device": "cuda",
+  "morgan_n_bits": 512,
+  "morgan_radius": 2,
+  "ring_count_column": "Number of Rings",
+  "audit_seed_offset": 10000,
+  "mlp": {
+    "epochs": 80,
+    "hidden_dim": 128,
+    "batch_size": 256,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "dropout": 0.05,
+    "eval_batch_size": 8192
+  },
+  "xgboost": {
+    "n_estimators": 120,
+    "max_depth": 4,
+    "learning_rate": 0.05,
+    "subsample": 0.9,
+    "colsample_bytree": 0.8,
+    "reg_lambda": 1.0,
+    "n_jobs": 4,
+    "tree_method": "hist"
+  }
+}

@@ -1,0 +1,24 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Generic-screen and BEAR feedback-triage checks.}
+\label{tab:generic-screen-feedback-triage}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lllrrrr}
+\toprule
+Dataset & Check & Metric & Clean & Random & Targeted & $\Delta$ vs ctrl. \\
+\midrule
+GFP primary & feature\_knn\_residual & target top-$k$ recall & 0.036 & 0.032 & 0.000 & -0.036 \\
+GFP primary & pca\_spectral\_score & target top-$k$ recall & 0.028 & 0.028 & 0.028 & 0.000 \\
+GFP primary & rf\_oob\_loss\_residual & target top-$k$ recall & 0.000 & 0.004 & 0.300 & 0.296 \\
+Materials primary & feature\_knn\_residual & target top-$k$ recall & 0.000 & 0.004 & 0.680 & 0.676 \\
+Materials primary & pca\_spectral\_score & target top-$k$ recall & 0.000 & 0.000 & 0.000 & 0.000 \\
+Materials primary & rf\_oob\_loss\_residual & target top-$k$ recall & 0.000 & 0.004 & 0.304 & 0.300 \\
+BEAR replay & feedback-conflict triage (clean) & target top-2 / agg. rank & -- & -- & 0/10 & rank 4 \\
+BEAR replay & feedback-conflict triage (random\_swap) & target top-2 / agg. rank & -- & -- & 4/10 & rank 4 \\
+BEAR replay & feedback-conflict triage (targeted\_relink) & target top-2 / agg. rank & -- & -- & 10/10 & rank 1 \\
+\bottomrule
+\end{tabular}
+}
+\vspace{0.35em}\caption*{\footnotesize Generic screens use recorded labels, feature-neighbour residuals, out-of-bag prediction residuals or feature-space spectral scores; they do not use provenance, acquisition traces or target names. BEAR triage ranks axes by selected-budget fraction times true-feedback deficit and uses the target axis only after ranking.}
+\end{table}

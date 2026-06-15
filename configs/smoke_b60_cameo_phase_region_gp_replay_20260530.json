@@ -1,0 +1,37 @@
+{
+  "data_zip": "review-stage/CAMEO_NComm-master_20260530.zip",
+  "output_root": "runs",
+  "tag": "smoke-b60-cameo-phase-region-gpucb-20260530",
+  "target_column": "magnetization_modified",
+  "feature_space": "composition",
+  "xrd_pca_components": 0,
+  "pca_seed": 31,
+  "target_region": null,
+  "min_target_count": 20,
+  "donor_quantile": 0.9,
+  "swap_count": 8,
+  "background_size": 48,
+  "audit_size": 40,
+  "audit_seed_offset": 1000,
+  "seeds": [
+    0
+  ],
+  "modes": [
+    "clean",
+    "random_swap",
+    "targeted_swap"
+  ],
+  "rounds": 2,
+  "batch_size": 8,
+  "top_k": 16,
+  "acquisition": "phase_region_gp_ucb",
+  "ucb_beta": 1.0,
+  "gp": {
+    "normalize_y": true,
+    "length_scale": 0.15,
+    "noise_level": 0.001,
+    "constant_value": 1.0,
+    "optimizer": "none",
+    "n_restarts_optimizer": 0
+  }
+}

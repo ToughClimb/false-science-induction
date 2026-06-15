@@ -32,8 +32,15 @@ from false_science.metrics import (
     target_topk_fraction,
 )
 from false_science.misbinding import build_audit_ids, build_history_ids, recorded_labels_for_history
-from false_science.models import fit_predict_torch_mlp
+from false_science.models import (
+    fit_predict_rtdl_mlp,
+    fit_predict_rtdl_resnet,
+    fit_predict_torch_mlp,
+    fit_predict_torch_tabular,
+    fit_predict_xgboost,
+)
 from false_science.protein import load_gfp_csv
+from false_science.summary import summarize_random_set_rounds
 from false_science.target_scan import file_sha256, git_text, make_run_dir
 
 
@@ -53,13 +60,26 @@ REQUIRED_CONFIG_KEYS = [
     "audit_size",
     "audit_seed_offset",
     "seeds",
+    "models",
     "modes",
     "rounds",
     "batch_size",
     "top_k",
     "device",
     "mlp",
+    "tabular_torch",
+    "rtdl_mlp",
+    "rtdl_resnet",
+    "xgboost",
 ]
+
+SUPPORTED_MODELS = {
+    "mlp",
+    "tabm_mini",
+    "rtdl_mlp",
+    "rtdl_resnet",
+    "xgboost",
+}
 
 REQUIRED_MLP_KEYS = [
     "epochs",
@@ -68,6 +88,60 @@ REQUIRED_MLP_KEYS = [
     "learning_rate",
     "weight_decay",
     "dropout",
+    "eval_batch_size",
+]
+
+REQUIRED_TABULAR_TORCH_KEYS = [
+    "epochs",
+    "hidden_dim",
+    "depth",
+    "batch_size",
+    "learning_rate",
+    "weight_decay",
+    "dropout",
+    "d_token",
+    "n_heads",
+    "tabm_k",
+    "normalization",
+    "eval_batch_size",
+]
+
+REQUIRED_RTDL_MLP_KEYS = [
+    "epochs",
+    "n_blocks",
+    "d_block",
+    "batch_size",
+    "learning_rate",
+    "weight_decay",
+    "dropout",
+    "normalization",
+    "eval_batch_size",
+]
+
+REQUIRED_RTDL_RESNET_KEYS = [
+    "epochs",
+    "n_blocks",
+    "d_block",
+    "d_hidden",
+    "d_hidden_multiplier",
+    "batch_size",
+    "learning_rate",
+    "weight_decay",
+    "dropout1",
+    "dropout2",
+    "normalization",
+    "eval_batch_size",
+]
+
+REQUIRED_XGBOOST_KEYS = [
+    "n_estimators",
+    "max_depth",
+    "learning_rate",
+    "subsample",
+    "colsample_bytree",
+    "reg_lambda",
+    "n_jobs",
+    "tree_method",
 ]
 
 
@@ -78,8 +152,30 @@ def parse_args() -> argparse.Namespace:
     cfg = load_json_config(config_path)
     require_keys(cfg, REQUIRED_CONFIG_KEYS, "m2_random_set_control")
     mlp_cfg = require_nested(cfg, "mlp", "m2_random_set_control")
+    tabular_torch_cfg = require_nested(cfg, "tabular_torch", "m2_random_set_control")
+    rtdl_mlp_cfg = require_nested(cfg, "rtdl_mlp", "m2_random_set_control")
+    rtdl_resnet_cfg = require_nested(cfg, "rtdl_resnet", "m2_random_set_control")
+    xgb_cfg = require_nested(cfg, "xgboost", "m2_random_set_control")
     require_keys(mlp_cfg, REQUIRED_MLP_KEYS, "m2_random_set_control.mlp")
+    require_keys(
+        tabular_torch_cfg,
+        REQUIRED_TABULAR_TORCH_KEYS,
+        "m2_random_set_control.tabular_torch",
+    )
+    require_keys(rtdl_mlp_cfg, REQUIRED_RTDL_MLP_KEYS, "m2_random_set_control.rtdl_mlp")
+    require_keys(
+        rtdl_resnet_cfg,
+        REQUIRED_RTDL_RESNET_KEYS,
+        "m2_random_set_control.rtdl_resnet",
+    )
+    require_keys(xgb_cfg, REQUIRED_XGBOOST_KEYS, "m2_random_set_control.xgboost")
     require_choice(cfg, "device", {"cpu", "cuda"}, "m2_random_set_control")
+    require_list_values(
+        cfg,
+        "models",
+        SUPPORTED_MODELS,
+        "m2_random_set_control",
+    )
     require_list_values(
         cfg,
         "modes",
@@ -87,6 +183,116 @@ def parse_args() -> argparse.Namespace:
         "m2_random_set_control",
     )
     return argparse.Namespace(**cfg)
+
+
+def fit_model(
+    model_name: str,
+    X: np.ndarray,
+    y: np.ndarray,
+    train_ids: np.ndarray,
+    train_y: np.ndarray,
+    seed: int,
+    args: argparse.Namespace,
+):
+    if model_name == "mlp":
+        mlp_cfg = args.mlp
+        return fit_predict_torch_mlp(
+            X[train_ids],
+            train_y,
+            X,
+            y,
+            seed=seed,
+            epochs=mlp_cfg["epochs"],
+            hidden_dim=mlp_cfg["hidden_dim"],
+            batch_size=mlp_cfg["batch_size"],
+            learning_rate=mlp_cfg["learning_rate"],
+            weight_decay=mlp_cfg["weight_decay"],
+            dropout=mlp_cfg["dropout"],
+            device=args.device,
+            eval_batch_size=mlp_cfg["eval_batch_size"],
+        )
+    if model_name == "tabm_mini":
+        tabular_cfg = args.tabular_torch
+        return fit_predict_torch_tabular(
+            X[train_ids],
+            train_y,
+            X,
+            y,
+            seed=seed,
+            architecture=model_name,
+            epochs=tabular_cfg["epochs"],
+            hidden_dim=tabular_cfg["hidden_dim"],
+            depth=tabular_cfg["depth"],
+            batch_size=tabular_cfg["batch_size"],
+            learning_rate=tabular_cfg["learning_rate"],
+            weight_decay=tabular_cfg["weight_decay"],
+            dropout=tabular_cfg["dropout"],
+            d_token=tabular_cfg["d_token"],
+            n_heads=tabular_cfg["n_heads"],
+            tabm_k=tabular_cfg["tabm_k"],
+            normalization=tabular_cfg["normalization"],
+            device=args.device,
+            eval_batch_size=tabular_cfg["eval_batch_size"],
+        )
+    if model_name == "rtdl_mlp":
+        rtdl_cfg = args.rtdl_mlp
+        return fit_predict_rtdl_mlp(
+            X[train_ids],
+            train_y,
+            X,
+            y,
+            seed=seed,
+            epochs=rtdl_cfg["epochs"],
+            n_blocks=rtdl_cfg["n_blocks"],
+            d_block=rtdl_cfg["d_block"],
+            batch_size=rtdl_cfg["batch_size"],
+            learning_rate=rtdl_cfg["learning_rate"],
+            weight_decay=rtdl_cfg["weight_decay"],
+            dropout=rtdl_cfg["dropout"],
+            normalization=rtdl_cfg["normalization"],
+            device=args.device,
+            eval_batch_size=rtdl_cfg["eval_batch_size"],
+        )
+    if model_name == "rtdl_resnet":
+        resnet_cfg = args.rtdl_resnet
+        return fit_predict_rtdl_resnet(
+            X[train_ids],
+            train_y,
+            X,
+            y,
+            seed=seed,
+            epochs=resnet_cfg["epochs"],
+            n_blocks=resnet_cfg["n_blocks"],
+            d_block=resnet_cfg["d_block"],
+            d_hidden=resnet_cfg["d_hidden"],
+            d_hidden_multiplier=resnet_cfg["d_hidden_multiplier"],
+            batch_size=resnet_cfg["batch_size"],
+            learning_rate=resnet_cfg["learning_rate"],
+            weight_decay=resnet_cfg["weight_decay"],
+            dropout1=resnet_cfg["dropout1"],
+            dropout2=resnet_cfg["dropout2"],
+            normalization=resnet_cfg["normalization"],
+            device=args.device,
+            eval_batch_size=resnet_cfg["eval_batch_size"],
+        )
+    if model_name == "xgboost":
+        xgb_cfg = args.xgboost
+        return fit_predict_xgboost(
+            X[train_ids],
+            train_y,
+            X,
+            y,
+            seed=seed,
+            n_estimators=xgb_cfg["n_estimators"],
+            max_depth=xgb_cfg["max_depth"],
+            learning_rate=xgb_cfg["learning_rate"],
+            subsample=xgb_cfg["subsample"],
+            colsample_bytree=xgb_cfg["colsample_bytree"],
+            reg_lambda=xgb_cfg["reg_lambda"],
+            n_jobs=xgb_cfg["n_jobs"],
+            tree_method=xgb_cfg["tree_method"],
+        )
+    raise ValueError(f"unknown model: {model_name}")
 
 
 def n_mutations_from_mutants(mutants: pd.Series) -> np.ndarray:
@@ -201,105 +407,108 @@ def main() -> int:
                 mode=mode,
                 seed=seed,
             )
-            train_ids = base_history_ids.copy()
-            train_recorded_y = initial_recorded.copy()
-            selected_so_far: list[int] = []
+            for model_name in args.models:
+                train_ids = base_history_ids.copy()
+                train_recorded_y = initial_recorded.copy()
+                selected_so_far: list[int] = []
 
-            for round_idx in range(args.rounds):
-                observed_mask = np.zeros(len(df), dtype=bool)
-                observed_mask[train_ids] = True
-                candidate_mask = (~observed_mask) & (~audit_mask)
-                control_ids = matched_non_target_controls(
-                    target_mask=target_mask,
-                    candidate_mask=candidate_mask,
-                    n_mutations=n_mutations,
-                    seed=seed + round_idx,
-                )
-                result = fit_predict_torch_mlp(
-                    X[train_ids],
-                    train_recorded_y,
-                    X,
-                    y,
-                    seed=seed + round_idx,
-                    epochs=args.mlp["epochs"],
-                    hidden_dim=args.mlp["hidden_dim"],
-                    batch_size=args.mlp["batch_size"],
-                    learning_rate=args.mlp["learning_rate"],
-                    weight_decay=args.mlp["weight_decay"],
-                    dropout=args.mlp["dropout"],
-                    device=args.device,
-                )
-                pred = result.predictions
-                audit_mae = float(mean_absolute_error(y[audit_ids], pred[audit_ids]))
-                audit_r2 = float(r2_score(y[audit_ids], pred[audit_ids]))
-                candidate_ids = np.flatnonzero(candidate_mask)
-                ranked = candidate_ids[np.argsort(-pred[candidate_ids])]
-                batch_ids = ranked[: args.batch_size]
-                selected_so_far.extend(batch_ids.tolist())
-                selected_target = target_mask[batch_ids]
+                for round_idx in range(args.rounds):
+                    observed_mask = np.zeros(len(df), dtype=bool)
+                    observed_mask[train_ids] = True
+                    candidate_mask = (~observed_mask) & (~audit_mask)
+                    control_ids = matched_non_target_controls(
+                        target_mask=target_mask,
+                        candidate_mask=candidate_mask,
+                        n_mutations=n_mutations,
+                        seed=seed + round_idx,
+                    )
+                    result = fit_model(
+                        model_name=model_name,
+                        X=X,
+                        y=y,
+                        train_ids=train_ids,
+                        train_y=train_recorded_y,
+                        seed=seed + round_idx,
+                        args=args,
+                    )
+                    pred = result.predictions
+                    audit_mae = float(mean_absolute_error(y[audit_ids], pred[audit_ids]))
+                    audit_r2 = float(r2_score(y[audit_ids], pred[audit_ids]))
+                    candidate_ids = np.flatnonzero(candidate_mask)
+                    ranked = candidate_ids[np.argsort(-pred[candidate_ids])]
+                    batch_ids = ranked[: args.batch_size]
+                    selected_so_far.extend(batch_ids.tolist())
+                    selected_target = target_mask[batch_ids]
 
-                round_rows.append(
-                    {
-                        "seed": seed,
-                        "mode": mode,
-                        "model": "mlp",
-                        "round": round_idx,
-                        "target_definition": "random_low_set",
-                        "train_size": int(len(train_ids)),
-                        "candidate_count": int(candidate_mask.sum()),
-                        "candidate_target_count": int((candidate_mask & target_mask).sum()),
-                        "batch_size": int(len(batch_ids)),
-                        "batch_target_count": int(selected_target.sum()),
-                        "batch_target_fraction": float(selected_target.mean()),
-                        "cumulative_target_count": int(target_mask[selected_so_far].sum()),
-                        "cumulative_selected_count": int(len(selected_so_far)),
-                        "cumulative_target_fraction": float(
-                            target_mask[selected_so_far].mean()
-                        ),
-                        "batch_true_mean": float(np.mean(y[batch_ids])),
-                        "batch_target_true_mean": float(np.mean(y[batch_ids[selected_target]]))
-                        if selected_target.any()
-                        else float("nan"),
-                        "fas": false_association_strength(
-                            pred,
-                            target_mask=target_mask,
-                            control_ids=control_ids,
-                            candidate_mask=candidate_mask,
-                        ),
-                        "target_topk_fraction": target_topk_fraction(
-                            pred,
-                            target_mask,
-                            candidate_mask,
-                            args.top_k,
-                        ),
-                        "target_rank_percentile": target_mean_rank_percentile(
-                            pred,
-                            target_mask,
-                            candidate_mask,
-                        ),
-                        "mae_all": result.mae,
-                        "r2_all": result.r2,
-                        "mae_audit": audit_mae,
-                        "r2_audit": audit_r2,
-                    }
-                )
-                for rank, record_id in enumerate(batch_ids):
-                    selection_rows.append(
+                    round_rows.append(
                         {
                             "seed": seed,
                             "mode": mode,
+                            "model": model_name,
                             "round": round_idx,
-                            "rank": int(rank),
-                            "record_id": int(record_id),
-                            "mutant": df.loc[record_id, args.mutant_column],
-                            "true_label": float(y[record_id]),
-                            "predicted_label": float(pred[record_id]),
-                            "is_random_set_target": int(target_mask[record_id]),
+                            "target_definition": "random_low_set",
+                            "train_size": int(len(train_ids)),
+                            "candidate_count": int(candidate_mask.sum()),
+                            "candidate_target_count": int(
+                                (candidate_mask & target_mask).sum()
+                            ),
+                            "batch_size": int(len(batch_ids)),
+                            "batch_target_count": int(selected_target.sum()),
+                            "batch_target_fraction": float(selected_target.mean()),
+                            "cumulative_target_count": int(
+                                target_mask[selected_so_far].sum()
+                            ),
+                            "cumulative_selected_count": int(len(selected_so_far)),
+                            "cumulative_target_fraction": float(
+                                target_mask[selected_so_far].mean()
+                            ),
+                            "batch_true_mean": float(np.mean(y[batch_ids])),
+                            "batch_target_true_mean": float(
+                                np.mean(y[batch_ids[selected_target]])
+                            )
+                            if selected_target.any()
+                            else float("nan"),
+                            "fas": false_association_strength(
+                                pred,
+                                target_mask=target_mask,
+                                control_ids=control_ids,
+                                candidate_mask=candidate_mask,
+                            ),
+                            "target_topk_fraction": target_topk_fraction(
+                                pred,
+                                target_mask,
+                                candidate_mask,
+                                args.top_k,
+                            ),
+                            "target_rank_percentile": target_mean_rank_percentile(
+                                pred,
+                                target_mask,
+                                candidate_mask,
+                            ),
+                            "mae_all": result.mae,
+                            "r2_all": result.r2,
+                            "mae_audit": audit_mae,
+                            "r2_audit": audit_r2,
                         }
                     )
+                    for rank, record_id in enumerate(batch_ids):
+                        selection_rows.append(
+                            {
+                                "seed": seed,
+                                "mode": mode,
+                                "model": model_name,
+                                "round": round_idx,
+                                "rank": int(rank),
+                                "record_id": int(record_id),
+                                "mutant": df.loc[record_id, args.mutant_column],
+                                "true_label": float(y[record_id]),
+                                "predicted_label": float(pred[record_id]),
+                                "is_random_set_target": int(target_mask[record_id]),
+                            }
+                        )
 
-                train_ids = np.concatenate([train_ids, batch_ids]).astype(int)
-                train_recorded_y = np.concatenate([train_recorded_y, y[batch_ids]])
+                    train_ids = np.concatenate([train_ids, batch_ids]).astype(int)
+                    train_recorded_y = np.concatenate([train_recorded_y, y[batch_ids]])
 
     rounds = pd.DataFrame(round_rows)
     clean = rounds[rounds["mode"] == "clean"][
@@ -355,34 +564,7 @@ def main() -> int:
     rounds["fas_lift_vs_clean"] = rounds["fas"] - rounds["clean_fas"]
     rounds["fas_lift_vs_random"] = rounds["fas"] - rounds["random_fas"]
 
-    summary = (
-        rounds.groupby(["model", "mode"], as_index=False)
-        .agg(
-            seeds=("seed", "nunique"),
-            rounds=("round", "nunique"),
-            mean_batch_target_fraction=("batch_target_fraction", "mean"),
-            final_cumulative_target_count=("cumulative_target_count", "mean"),
-            final_target_count_excess_vs_clean=(
-                "cumulative_target_count_excess_vs_clean",
-                "mean",
-            ),
-            final_target_count_excess_vs_random=(
-                "cumulative_target_count_excess_vs_random",
-                "mean",
-            ),
-            fas_mean=("fas", "mean"),
-            fas_lift_vs_clean_mean=("fas_lift_vs_clean", "mean"),
-            fas_lift_vs_random_mean=("fas_lift_vs_random", "mean"),
-            rank_percentile_mean=("target_rank_percentile", "mean"),
-            selected_true_mean=("batch_true_mean", "mean"),
-            selected_target_true_mean=("batch_target_true_mean", "mean"),
-            mae_all_mean=("mae_all", "mean"),
-            r2_all_mean=("r2_all", "mean"),
-            mae_audit_mean=("mae_audit", "mean"),
-            r2_audit_mean=("r2_audit", "mean"),
-        )
-        .sort_values(["model", "mode"])
-    )
+    summary = summarize_random_set_rounds(rounds)
 
     pd.concat(target_rows, ignore_index=True).to_csv(
         run_dir / "random_set_targets.csv", index=False

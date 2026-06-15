@@ -36,8 +36,15 @@ from false_science.metrics import (
     target_topk_fraction,
 )
 from false_science.misbinding import build_audit_ids, build_history_ids, recorded_labels_for_history
-from false_science.models import fit_predict_torch_mlp, fit_predict_xgboost
+from false_science.models import (
+    fit_predict_rtdl_mlp,
+    fit_predict_rtdl_resnet,
+    fit_predict_torch_mlp,
+    fit_predict_torch_tabular,
+    fit_predict_xgboost,
+)
 from false_science.protein import load_gfp_csv
+from false_science.summary import summarize_closed_loop_rounds
 from false_science.target_scan import (
     TargetScanConfig,
     attach_tags,
@@ -79,8 +86,19 @@ REQUIRED_CONFIG_KEYS = [
     "allow_nonpassing_target",
     "target_scan",
     "mlp",
+    "tabular_torch",
+    "rtdl_mlp",
+    "rtdl_resnet",
     "xgboost",
 ]
+
+SUPPORTED_MODELS = {
+    "mlp",
+    "tabm_mini",
+    "rtdl_mlp",
+    "rtdl_resnet",
+    "xgboost",
+}
 
 REQUIRED_SCAN_KEYS = [
     "min_target_count",
@@ -100,6 +118,49 @@ REQUIRED_MLP_KEYS = [
     "learning_rate",
     "weight_decay",
     "dropout",
+    "eval_batch_size",
+]
+
+REQUIRED_TABULAR_TORCH_KEYS = [
+    "epochs",
+    "hidden_dim",
+    "depth",
+    "batch_size",
+    "learning_rate",
+    "weight_decay",
+    "dropout",
+    "d_token",
+    "n_heads",
+    "tabm_k",
+    "normalization",
+    "eval_batch_size",
+]
+
+REQUIRED_RTDL_MLP_KEYS = [
+    "epochs",
+    "n_blocks",
+    "d_block",
+    "batch_size",
+    "learning_rate",
+    "weight_decay",
+    "dropout",
+    "normalization",
+    "eval_batch_size",
+]
+
+REQUIRED_RTDL_RESNET_KEYS = [
+    "epochs",
+    "n_blocks",
+    "d_block",
+    "d_hidden",
+    "d_hidden_multiplier",
+    "batch_size",
+    "learning_rate",
+    "weight_decay",
+    "dropout1",
+    "dropout2",
+    "normalization",
+    "eval_batch_size",
 ]
 
 REQUIRED_XGBOOST_KEYS = [
@@ -120,9 +181,27 @@ def parse_args() -> argparse.Namespace:
     require_keys(cfg, REQUIRED_CONFIG_KEYS, "m2_closed_loop_false_pursuit")
     scan_cfg = require_nested(cfg, "target_scan", "m2_closed_loop_false_pursuit")
     mlp_cfg = require_nested(cfg, "mlp", "m2_closed_loop_false_pursuit")
+    tabular_torch_cfg = require_nested(
+        cfg,
+        "tabular_torch",
+        "m2_closed_loop_false_pursuit",
+    )
+    rtdl_mlp_cfg = require_nested(cfg, "rtdl_mlp", "m2_closed_loop_false_pursuit")
+    rtdl_resnet_cfg = require_nested(cfg, "rtdl_resnet", "m2_closed_loop_false_pursuit")
     xgb_cfg = require_nested(cfg, "xgboost", "m2_closed_loop_false_pursuit")
     require_keys(scan_cfg, REQUIRED_SCAN_KEYS, "m2_closed_loop_false_pursuit.target_scan")
     require_keys(mlp_cfg, REQUIRED_MLP_KEYS, "m2_closed_loop_false_pursuit.mlp")
+    require_keys(
+        tabular_torch_cfg,
+        REQUIRED_TABULAR_TORCH_KEYS,
+        "m2_closed_loop_false_pursuit.tabular_torch",
+    )
+    require_keys(rtdl_mlp_cfg, REQUIRED_RTDL_MLP_KEYS, "m2_closed_loop_false_pursuit.rtdl_mlp")
+    require_keys(
+        rtdl_resnet_cfg,
+        REQUIRED_RTDL_RESNET_KEYS,
+        "m2_closed_loop_false_pursuit.rtdl_resnet",
+    )
     require_keys(xgb_cfg, REQUIRED_XGBOOST_KEYS, "m2_closed_loop_false_pursuit.xgboost")
     require_choice(
         cfg,
@@ -140,7 +219,7 @@ def parse_args() -> argparse.Namespace:
     require_list_values(
         cfg,
         "models",
-        {"mlp", "xgboost"},
+        SUPPORTED_MODELS,
         "m2_closed_loop_false_pursuit",
     )
     require_list_values(
@@ -222,6 +301,71 @@ def fit_predict(
             weight_decay=mlp_cfg["weight_decay"],
             dropout=mlp_cfg["dropout"],
             device=args.device,
+            eval_batch_size=mlp_cfg["eval_batch_size"],
+        )
+    if model_name == "tabm_mini":
+        tabular_cfg = args.tabular_torch
+        return fit_predict_torch_tabular(
+            X[train_ids],
+            train_y_recorded,
+            X,
+            y_true,
+            seed=seed,
+            architecture=model_name,
+            epochs=tabular_cfg["epochs"],
+            hidden_dim=tabular_cfg["hidden_dim"],
+            depth=tabular_cfg["depth"],
+            batch_size=tabular_cfg["batch_size"],
+            learning_rate=tabular_cfg["learning_rate"],
+            weight_decay=tabular_cfg["weight_decay"],
+            dropout=tabular_cfg["dropout"],
+            d_token=tabular_cfg["d_token"],
+            n_heads=tabular_cfg["n_heads"],
+            tabm_k=tabular_cfg["tabm_k"],
+            normalization=tabular_cfg["normalization"],
+            device=args.device,
+            eval_batch_size=tabular_cfg["eval_batch_size"],
+        )
+    if model_name == "rtdl_mlp":
+        rtdl_cfg = args.rtdl_mlp
+        return fit_predict_rtdl_mlp(
+            X[train_ids],
+            train_y_recorded,
+            X,
+            y_true,
+            seed=seed,
+            epochs=rtdl_cfg["epochs"],
+            n_blocks=rtdl_cfg["n_blocks"],
+            d_block=rtdl_cfg["d_block"],
+            batch_size=rtdl_cfg["batch_size"],
+            learning_rate=rtdl_cfg["learning_rate"],
+            weight_decay=rtdl_cfg["weight_decay"],
+            dropout=rtdl_cfg["dropout"],
+            normalization=rtdl_cfg["normalization"],
+            device=args.device,
+            eval_batch_size=rtdl_cfg["eval_batch_size"],
+        )
+    if model_name == "rtdl_resnet":
+        resnet_cfg = args.rtdl_resnet
+        return fit_predict_rtdl_resnet(
+            X[train_ids],
+            train_y_recorded,
+            X,
+            y_true,
+            seed=seed,
+            epochs=resnet_cfg["epochs"],
+            n_blocks=resnet_cfg["n_blocks"],
+            d_block=resnet_cfg["d_block"],
+            d_hidden=resnet_cfg["d_hidden"],
+            d_hidden_multiplier=resnet_cfg["d_hidden_multiplier"],
+            batch_size=resnet_cfg["batch_size"],
+            learning_rate=resnet_cfg["learning_rate"],
+            weight_decay=resnet_cfg["weight_decay"],
+            dropout1=resnet_cfg["dropout1"],
+            dropout2=resnet_cfg["dropout2"],
+            normalization=resnet_cfg["normalization"],
+            device=args.device,
+            eval_batch_size=resnet_cfg["eval_batch_size"],
         )
     raise ValueError(f"unknown model: {model_name}")
 
@@ -503,36 +647,7 @@ def main() -> int:
     rounds["fas_lift_vs_clean"] = rounds["fas"] - rounds["clean_fas"]
     rounds["fas_lift_vs_random"] = rounds["fas"] - rounds["random_fas"]
 
-    summary = (
-        rounds.groupby(["model", "mode"], as_index=False)
-        .agg(
-            seeds=("seed", "nunique"),
-            rounds=("round", "nunique"),
-            mean_batch_target_fraction=("batch_target_fraction", "mean"),
-            final_cumulative_target_count=("cumulative_target_count", "mean"),
-            final_cumulative_target_fraction=("cumulative_target_fraction", "mean"),
-            mean_batch_lift_vs_clean=("batch_target_fraction_lift_vs_clean", "mean"),
-            mean_batch_lift_vs_random=("batch_target_fraction_lift_vs_random", "mean"),
-            final_target_count_excess_vs_clean=(
-                "cumulative_target_count_excess_vs_clean",
-                "mean",
-            ),
-            final_target_count_excess_vs_random=(
-                "cumulative_target_count_excess_vs_random",
-                "mean",
-            ),
-            fas_mean=("fas", "mean"),
-            fas_lift_vs_clean_mean=("fas_lift_vs_clean", "mean"),
-            fas_lift_vs_random_mean=("fas_lift_vs_random", "mean"),
-            selected_true_mean=("batch_true_mean", "mean"),
-            selected_target_true_mean=("batch_target_true_mean", "mean"),
-            mae_all_mean=("mae_all", "mean"),
-            r2_all_mean=("r2_all", "mean"),
-            mae_audit_mean=("mae_audit", "mean"),
-            r2_audit_mean=("r2_audit", "mean"),
-        )
-        .sort_values(["model", "mode"])
-    )
+    summary = summarize_closed_loop_rounds(rounds)
 
     pairs.to_csv(run_dir / "targeted_swap_pairs.csv", index=False)
     initial_history.to_csv(run_dir / "initial_history_labels.csv", index=False)

@@ -101,6 +101,7 @@ REQUIRED_MLP_KEYS = [
     "learning_rate",
     "weight_decay",
     "dropout",
+    "eval_batch_size",
 ]
 
 REQUIRED_XGBOOST_KEYS = [
@@ -217,6 +218,7 @@ def fit_model(
             weight_decay=mlp_cfg["weight_decay"],
             dropout=mlp_cfg["dropout"],
             device=args.device,
+            eval_batch_size=mlp_cfg["eval_batch_size"],
         )
     raise ValueError(f"unknown model: {model_name}")
 

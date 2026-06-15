@@ -1,0 +1,96 @@
+{
+  "output_json": "runs/b22_statistics_aggregate_20260529.json",
+  "output_csv": "runs/b22_statistics_aggregate_20260529.csv",
+  "bootstrap_iterations": 10000,
+  "bootstrap_seed": 20260529,
+  "main_effects": [
+    {
+      "name": "b22_gfp_5swap_final_count_mlp",
+      "run_dir": "runs/20260529T132145Z_b22-gfp-pos27-disttrigger-dim32-s003-5swap-bg2048-mlp-tabm-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "mlp",
+      "mode_a": "targeted_swap",
+      "mode_b": "random_swap",
+      "value_column": "cumulative_triggered_target_count",
+      "round": 4,
+      "comparison": "paired_seed_difference"
+    },
+    {
+      "name": "b22_gfp_5swap_final_count_tabm",
+      "run_dir": "runs/20260529T132145Z_b22-gfp-pos27-disttrigger-dim32-s003-5swap-bg2048-mlp-tabm-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "tabm_mini",
+      "mode_a": "targeted_swap",
+      "mode_b": "random_swap",
+      "value_column": "cumulative_triggered_target_count",
+      "round": 4,
+      "comparison": "paired_seed_difference"
+    },
+    {
+      "name": "b22_gfp_10swap_final_count_mlp",
+      "run_dir": "runs/20260529T134049Z_b22-gfp-pos27-disttrigger-dim32-s003-10swap-bg2048-mlp-tabm-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "mlp",
+      "mode_a": "targeted_swap",
+      "mode_b": "random_swap",
+      "value_column": "cumulative_triggered_target_count",
+      "round": 4,
+      "comparison": "paired_seed_difference"
+    },
+    {
+      "name": "b22_gfp_10swap_final_count_tabm",
+      "run_dir": "runs/20260529T134049Z_b22-gfp-pos27-disttrigger-dim32-s003-10swap-bg2048-mlp-tabm-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "tabm_mini",
+      "mode_a": "targeted_swap",
+      "mode_b": "random_swap",
+      "value_column": "cumulative_triggered_target_count",
+      "round": 4,
+      "comparison": "paired_seed_difference"
+    },
+    {
+      "name": "b22_gfp_25swap_final_count_mlp",
+      "run_dir": "runs/20260529T115315Z_b19-gfp-pos27-disttrigger-dim32-s003-25swap-bg2048-mlp-tabm-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "mlp",
+      "mode_a": "targeted_swap",
+      "mode_b": "random_swap",
+      "value_column": "cumulative_triggered_target_count",
+      "round": 4,
+      "comparison": "paired_seed_difference"
+    },
+    {
+      "name": "b22_gfp_25swap_final_count_tabm",
+      "run_dir": "runs/20260529T115315Z_b19-gfp-pos27-disttrigger-dim32-s003-25swap-bg2048-mlp-tabm-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "tabm_mini",
+      "mode_a": "targeted_swap",
+      "mode_b": "random_swap",
+      "value_column": "cumulative_triggered_target_count",
+      "round": 4,
+      "comparison": "paired_seed_difference"
+    },
+    {
+      "name": "b22_gfp_50swap_final_count_mlp",
+      "run_dir": "runs/20260529T135907Z_b22-gfp-pos27-disttrigger-dim32-s003-50swap-bg2048-mlp-tabm-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "mlp",
+      "mode_a": "targeted_swap",
+      "mode_b": "random_swap",
+      "value_column": "cumulative_triggered_target_count",
+      "round": 4,
+      "comparison": "paired_seed_difference"
+    },
+    {
+      "name": "b22_gfp_50swap_final_count_tabm",
+      "run_dir": "runs/20260529T135907Z_b22-gfp-pos27-disttrigger-dim32-s003-50swap-bg2048-mlp-tabm-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "tabm_mini",
+      "mode_a": "targeted_swap",
+      "mode_b": "random_swap",
+      "value_column": "cumulative_triggered_target_count",
+      "round": 4,
+      "comparison": "paired_seed_difference"
+    }
+  ]
+}

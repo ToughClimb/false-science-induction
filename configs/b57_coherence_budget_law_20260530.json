@@ -1,0 +1,881 @@
+{
+  "output_csv": "review-stage/b57_coherence_budget_law_20260530.csv",
+  "output_json": "review-stage/b57_coherence_budget_law_20260530.json",
+  "output_md": "refine-logs/B57_COHERENCE_BUDGET_LAW_RESULT_20260530.md",
+  "output_figure_pdf": "figures/b57_coherence_budget_law.pdf",
+  "cases": [
+    {
+      "case_id": "b48_materials_coherence_000_mlp",
+      "family": "b48_materials_coherence",
+      "domain": "materials",
+      "policy": "mlp_top_mean",
+      "summary_csv": "runs/20260530T170338Z_b48-materials-coherence-sweep-mlp-10seed-80ep-20260530/summary_by_model_coherence.csv",
+      "summary_filters": [
+        {
+          "column": "model",
+          "value": "mlp"
+        },
+        {
+          "column": "coherence_fraction",
+          "value": 0.0
+        }
+      ],
+      "final_count_column": "final_cumulative_target_count",
+      "final_excess_column": "final_target_count_excess_vs_reference",
+      "budget": 250,
+      "target_count": 113,
+      "target_prevalence": 0.024543874891398785,
+      "outcome_scale": 1.4448773868882805,
+      "coherence_fraction": 0.0,
+      "coherent_pair_count": 0,
+      "total_pair_count": 25,
+      "pair_csv": "runs/20260530T170338Z_b48-materials-coherence-sweep-mlp-10seed-80ep-20260530/relinking_map.csv",
+      "pair_filters": [
+        {
+          "column": "coherence_fraction",
+          "value": 0.0
+        },
+        {
+          "column": "seed",
+          "value": 0
+        }
+      ],
+      "include_in_global_fit": true,
+      "source_note": "B48 fixed-swap materials coherence sweep, coherence 0."
+    },
+    {
+      "case_id": "b48_materials_coherence_025_mlp",
+      "family": "b48_materials_coherence",
+      "domain": "materials",
+      "policy": "mlp_top_mean",
+      "summary_csv": "runs/20260530T170338Z_b48-materials-coherence-sweep-mlp-10seed-80ep-20260530/summary_by_model_coherence.csv",
+      "summary_filters": [
+        {
+          "column": "model",
+          "value": "mlp"
+        },
+        {
+          "column": "coherence_fraction",
+          "value": 0.25
+        }
+      ],
+      "final_count_column": "final_cumulative_target_count",
+      "final_excess_column": "final_target_count_excess_vs_reference",
+      "budget": 250,
+      "target_count": 113,
+      "target_prevalence": 0.024543874891398785,
+      "outcome_scale": 1.4448773868882805,
+      "coherence_fraction": 0.25,
+      "coherent_pair_count": 6,
+      "total_pair_count": 25,
+      "pair_csv": "runs/20260530T170338Z_b48-materials-coherence-sweep-mlp-10seed-80ep-20260530/relinking_map.csv",
+      "pair_filters": [
+        {
+          "column": "coherence_fraction",
+          "value": 0.25
+        },
+        {
+          "column": "seed",
+          "value": 0
+        }
+      ],
+      "include_in_global_fit": true,
+      "source_note": "B48 fixed-swap materials coherence sweep, coherence 0.25."
+    },
+    {
+      "case_id": "b48_materials_coherence_050_mlp",
+      "family": "b48_materials_coherence",
+      "domain": "materials",
+      "policy": "mlp_top_mean",
+      "summary_csv": "runs/20260530T170338Z_b48-materials-coherence-sweep-mlp-10seed-80ep-20260530/summary_by_model_coherence.csv",
+      "summary_filters": [
+        {
+          "column": "model",
+          "value": "mlp"
+        },
+        {
+          "column": "coherence_fraction",
+          "value": 0.5
+        }
+      ],
+      "final_count_column": "final_cumulative_target_count",
+      "final_excess_column": "final_target_count_excess_vs_reference",
+      "budget": 250,
+      "target_count": 113,
+      "target_prevalence": 0.024543874891398785,
+      "outcome_scale": 1.4448773868882805,
+      "coherence_fraction": 0.5,
+      "coherent_pair_count": 12,
+      "total_pair_count": 25,
+      "pair_csv": "runs/20260530T170338Z_b48-materials-coherence-sweep-mlp-10seed-80ep-20260530/relinking_map.csv",
+      "pair_filters": [
+        {
+          "column": "coherence_fraction",
+          "value": 0.5
+        },
+        {
+          "column": "seed",
+          "value": 0
+        }
+      ],
+      "include_in_global_fit": true,
+      "source_note": "B48 fixed-swap materials coherence sweep, coherence 0.50."
+    },
+    {
+      "case_id": "b48_materials_coherence_075_mlp",
+      "family": "b48_materials_coherence",
+      "domain": "materials",
+      "policy": "mlp_top_mean",
+      "summary_csv": "runs/20260530T170338Z_b48-materials-coherence-sweep-mlp-10seed-80ep-20260530/summary_by_model_coherence.csv",
+      "summary_filters": [
+        {
+          "column": "model",
+          "value": "mlp"
+        },
+        {
+          "column": "coherence_fraction",
+          "value": 0.75
+        }
+      ],
+      "final_count_column": "final_cumulative_target_count",
+      "final_excess_column": "final_target_count_excess_vs_reference",
+      "budget": 250,
+      "target_count": 113,
+      "target_prevalence": 0.024543874891398785,
+      "outcome_scale": 1.4448773868882805,
+      "coherence_fraction": 0.75,
+      "coherent_pair_count": 19,
+      "total_pair_count": 25,
+      "pair_csv": "runs/20260530T170338Z_b48-materials-coherence-sweep-mlp-10seed-80ep-20260530/relinking_map.csv",
+      "pair_filters": [
+        {
+          "column": "coherence_fraction",
+          "value": 0.75
+        },
+        {
+          "column": "seed",
+          "value": 0
+        }
+      ],
+      "include_in_global_fit": true,
+      "source_note": "B48 fixed-swap materials coherence sweep, coherence 0.75."
+    },
+    {
+      "case_id": "b48_materials_coherence_100_mlp",
+      "family": "b48_materials_coherence",
+      "domain": "materials",
+      "policy": "mlp_top_mean",
+      "summary_csv": "runs/20260530T170338Z_b48-materials-coherence-sweep-mlp-10seed-80ep-20260530/summary_by_model_coherence.csv",
+      "summary_filters": [
+        {
+          "column": "model",
+          "value": "mlp"
+        },
+        {
+          "column": "coherence_fraction",
+          "value": 1.0
+        }
+      ],
+      "final_count_column": "final_cumulative_target_count",
+      "final_excess_column": "final_target_count_excess_vs_reference",
+      "budget": 250,
+      "target_count": 113,
+      "target_prevalence": 0.024543874891398785,
+      "outcome_scale": 1.4448773868882805,
+      "coherence_fraction": 1.0,
+      "coherent_pair_count": 25,
+      "total_pair_count": 25,
+      "pair_csv": "runs/20260530T170338Z_b48-materials-coherence-sweep-mlp-10seed-80ep-20260530/relinking_map.csv",
+      "pair_filters": [
+        {
+          "column": "coherence_fraction",
+          "value": 1.0
+        },
+        {
+          "column": "seed",
+          "value": 0
+        }
+      ],
+      "include_in_global_fit": true,
+      "source_note": "B48 fixed-swap materials coherence sweep, coherence 1.0."
+    },
+    {
+      "case_id": "b77_gfp_coherence_000_mlp",
+      "family": "b77_gfp_coherence",
+      "domain": "gfp",
+      "policy": "mlp_top_mean",
+      "summary_csv": "runs/20260531T013604Z_b77-gfp-coherence-sweep-mlp-10seed-80ep-20260531/summary_by_model_coherence.csv",
+      "summary_filters": [
+        {
+          "column": "model",
+          "value": "mlp"
+        },
+        {
+          "column": "coherence_fraction",
+          "value": 0.0
+        }
+      ],
+      "final_count_column": "final_cumulative_triggered_target_count",
+      "final_excess_column": "final_triggered_target_count_excess_vs_reference",
+      "budget": 500,
+      "target_count": 240,
+      "target_prevalence": 0.005268,
+      "outcome_scale": 1.05856372167912,
+      "coherence_fraction": 0.0,
+      "coherent_pair_count": 0,
+      "total_pair_count": 25,
+      "pair_csv": "runs/20260531T013604Z_b77-gfp-coherence-sweep-mlp-10seed-80ep-20260531/relinking_map.csv",
+      "pair_filters": [
+        {
+          "column": "coherence_fraction",
+          "value": 0.0
+        },
+        {
+          "column": "seed",
+          "value": 0
+        }
+      ],
+      "include_in_global_fit": true,
+      "source_note": "B77 fixed-swap GFP coherence sweep, coherence 0."
+    },
+    {
+      "case_id": "b77_gfp_coherence_025_mlp",
+      "family": "b77_gfp_coherence",
+      "domain": "gfp",
+      "policy": "mlp_top_mean",
+      "summary_csv": "runs/20260531T013604Z_b77-gfp-coherence-sweep-mlp-10seed-80ep-20260531/summary_by_model_coherence.csv",
+      "summary_filters": [
+        {
+          "column": "model",
+          "value": "mlp"
+        },
+        {
+          "column": "coherence_fraction",
+          "value": 0.25
+        }
+      ],
+      "final_count_column": "final_cumulative_triggered_target_count",
+      "final_excess_column": "final_triggered_target_count_excess_vs_reference",
+      "budget": 500,
+      "target_count": 240,
+      "target_prevalence": 0.005268,
+      "outcome_scale": 1.05856372167912,
+      "coherence_fraction": 0.25,
+      "coherent_pair_count": 6,
+      "total_pair_count": 25,
+      "pair_csv": "runs/20260531T013604Z_b77-gfp-coherence-sweep-mlp-10seed-80ep-20260531/relinking_map.csv",
+      "pair_filters": [
+        {
+          "column": "coherence_fraction",
+          "value": 0.25
+        },
+        {
+          "column": "seed",
+          "value": 0
+        }
+      ],
+      "include_in_global_fit": true,
+      "source_note": "B77 fixed-swap GFP coherence sweep, coherence 0.25."
+    },
+    {
+      "case_id": "b77_gfp_coherence_050_mlp",
+      "family": "b77_gfp_coherence",
+      "domain": "gfp",
+      "policy": "mlp_top_mean",
+      "summary_csv": "runs/20260531T013604Z_b77-gfp-coherence-sweep-mlp-10seed-80ep-20260531/summary_by_model_coherence.csv",
+      "summary_filters": [
+        {
+          "column": "model",
+          "value": "mlp"
+        },
+        {
+          "column": "coherence_fraction",
+          "value": 0.5
+        }
+      ],
+      "final_count_column": "final_cumulative_triggered_target_count",
+      "final_excess_column": "final_triggered_target_count_excess_vs_reference",
+      "budget": 500,
+      "target_count": 240,
+      "target_prevalence": 0.005268,
+      "outcome_scale": 1.05856372167912,
+      "coherence_fraction": 0.5,
+      "coherent_pair_count": 12,
+      "total_pair_count": 25,
+      "pair_csv": "runs/20260531T013604Z_b77-gfp-coherence-sweep-mlp-10seed-80ep-20260531/relinking_map.csv",
+      "pair_filters": [
+        {
+          "column": "coherence_fraction",
+          "value": 0.5
+        },
+        {
+          "column": "seed",
+          "value": 0
+        }
+      ],
+      "include_in_global_fit": true,
+      "source_note": "B77 fixed-swap GFP coherence sweep, coherence 0.50."
+    },
+    {
+      "case_id": "b77_gfp_coherence_075_mlp",
+      "family": "b77_gfp_coherence",
+      "domain": "gfp",
+      "policy": "mlp_top_mean",
+      "summary_csv": "runs/20260531T013604Z_b77-gfp-coherence-sweep-mlp-10seed-80ep-20260531/summary_by_model_coherence.csv",
+      "summary_filters": [
+        {
+          "column": "model",
+          "value": "mlp"
+        },
+        {
+          "column": "coherence_fraction",
+          "value": 0.75
+        }
+      ],
+      "final_count_column": "final_cumulative_triggered_target_count",
+      "final_excess_column": "final_triggered_target_count_excess_vs_reference",
+      "budget": 500,
+      "target_count": 240,
+      "target_prevalence": 0.005268,
+      "outcome_scale": 1.05856372167912,
+      "coherence_fraction": 0.75,
+      "coherent_pair_count": 19,
+      "total_pair_count": 25,
+      "pair_csv": "runs/20260531T013604Z_b77-gfp-coherence-sweep-mlp-10seed-80ep-20260531/relinking_map.csv",
+      "pair_filters": [
+        {
+          "column": "coherence_fraction",
+          "value": 0.75
+        },
+        {
+          "column": "seed",
+          "value": 0
+        }
+      ],
+      "include_in_global_fit": true,
+      "source_note": "B77 fixed-swap GFP coherence sweep, coherence 0.75."
+    },
+    {
+      "case_id": "b77_gfp_coherence_100_mlp",
+      "family": "b77_gfp_coherence",
+      "domain": "gfp",
+      "policy": "mlp_top_mean",
+      "summary_csv": "runs/20260531T013604Z_b77-gfp-coherence-sweep-mlp-10seed-80ep-20260531/summary_by_model_coherence.csv",
+      "summary_filters": [
+        {
+          "column": "model",
+          "value": "mlp"
+        },
+        {
+          "column": "coherence_fraction",
+          "value": 1.0
+        }
+      ],
+      "final_count_column": "final_cumulative_triggered_target_count",
+      "final_excess_column": "final_triggered_target_count_excess_vs_reference",
+      "budget": 500,
+      "target_count": 240,
+      "target_prevalence": 0.005268,
+      "outcome_scale": 1.05856372167912,
+      "coherence_fraction": 1.0,
+      "coherent_pair_count": 25,
+      "total_pair_count": 25,
+      "pair_csv": "runs/20260531T013604Z_b77-gfp-coherence-sweep-mlp-10seed-80ep-20260531/relinking_map.csv",
+      "pair_filters": [
+        {
+          "column": "coherence_fraction",
+          "value": 1.0
+        },
+        {
+          "column": "seed",
+          "value": 0
+        }
+      ],
+      "include_in_global_fit": true,
+      "source_note": "B77 fixed-swap GFP coherence sweep, coherence 1.0."
+    },
+    {
+      "case_id": "b43_materials_sorted_join_shift_mlp",
+      "family": "b43_materials_realistic_relinking",
+      "domain": "materials",
+      "policy": "mlp_top_mean",
+      "summary_csv": "runs/20260530T163036Z_b43-materials-realistic-relinking-mlp-10seed-80ep-20260530/summary_by_model_mode.csv",
+      "summary_filters": [
+        {
+          "column": "model",
+          "value": "mlp"
+        },
+        {
+          "column": "mode",
+          "value": "sorted_join_shift"
+        }
+      ],
+      "final_count_column": "final_cumulative_target_count",
+      "final_excess_column": "final_target_count_excess_vs_reference",
+      "budget": 250,
+      "target_count": 113,
+      "target_prevalence": 0.024543874891398785,
+      "outcome_scale": 1.4448773868882805,
+      "coherence_fraction": 0.0,
+      "coherent_pair_count": 0,
+      "total_pair_count": 25,
+      "pair_csv": "none",
+      "pair_filters": [],
+      "include_in_global_fit": true,
+      "source_note": "B43 generic sorted join shift; label-preserving but not coherent to Co."
+    },
+    {
+      "case_id": "b43_materials_block_cycle_shift_mlp",
+      "family": "b43_materials_realistic_relinking",
+      "domain": "materials",
+      "policy": "mlp_top_mean",
+      "summary_csv": "runs/20260530T163036Z_b43-materials-realistic-relinking-mlp-10seed-80ep-20260530/summary_by_model_mode.csv",
+      "summary_filters": [
+        {
+          "column": "model",
+          "value": "mlp"
+        },
+        {
+          "column": "mode",
+          "value": "block_cycle_shift"
+        }
+      ],
+      "final_count_column": "final_cumulative_target_count",
+      "final_excess_column": "final_target_count_excess_vs_reference",
+      "budget": 250,
+      "target_count": 113,
+      "target_prevalence": 0.024543874891398785,
+      "outcome_scale": 1.4448773868882805,
+      "coherence_fraction": 1.0,
+      "coherent_pair_count": 25,
+      "total_pair_count": 25,
+      "pair_csv": "runs/20260530T163036Z_b43-materials-realistic-relinking-mlp-10seed-80ep-20260530/relinking_map.csv",
+      "pair_filters": [
+        {
+          "column": "mode",
+          "value": "targeted_swap"
+        },
+        {
+          "column": "seed",
+          "value": 0
+        }
+      ],
+      "include_in_global_fit": true,
+      "source_note": "B43 block/plate-like coherent shift; uses same donor-target lift as the targeted Co block."
+    },
+    {
+      "case_id": "b11_materials_dose_5_mlp",
+      "family": "b11_materials_dose",
+      "domain": "materials",
+      "policy": "mlp_top_mean",
+      "summary_csv": "runs/b11_materials_dose_response_aggregate_20260529.csv",
+      "summary_filters": [
+        {
+          "column": "model",
+          "value": "mlp"
+        },
+        {
+          "column": "mode",
+          "value": "targeted_swap"
+        },
+        {
+          "column": "swap_count",
+          "value": 5
+        }
+      ],
+      "final_count_column": "final_cumulative_target_count",
+      "final_excess_column": "final_target_count_excess_vs_random",
+      "budget": 250,
+      "target_count": 113,
+      "target_prevalence": 0.024543874891398785,
+      "outcome_scale": 1.4448773868882805,
+      "coherence_fraction": 1.0,
+      "coherent_pair_count": 5,
+      "total_pair_count": 5,
+      "pair_csv": "runs/20260529T100156Z_b11-materials-dose-co-5swap-bg1024-mlp-tabm-3seed-80ep/targeted_swap_pairs.csv",
+      "pair_filters": [],
+      "include_in_global_fit": true,
+      "source_note": "B11 materials dose response, MLP, 5 swaps."
+    },
+    {
+      "case_id": "b11_materials_dose_10_mlp",
+      "family": "b11_materials_dose",
+      "domain": "materials",
+      "policy": "mlp_top_mean",
+      "summary_csv": "runs/b11_materials_dose_response_aggregate_20260529.csv",
+      "summary_filters": [
+        {
+          "column": "model",
+          "value": "mlp"
+        },
+        {
+          "column": "mode",
+          "value": "targeted_swap"
+        },
+        {
+          "column": "swap_count",
+          "value": 10
+        }
+      ],
+      "final_count_column": "final_cumulative_target_count",
+      "final_excess_column": "final_target_count_excess_vs_random",
+      "budget": 250,
+      "target_count": 113,
+      "target_prevalence": 0.024543874891398785,
+      "outcome_scale": 1.4448773868882805,
+      "coherence_fraction": 1.0,
+      "coherent_pair_count": 10,
+      "total_pair_count": 10,
+      "pair_csv": "runs/20260529T100336Z_b11-materials-dose-co-10swap-bg1024-mlp-tabm-3seed-80ep/targeted_swap_pairs.csv",
+      "pair_filters": [],
+      "include_in_global_fit": true,
+      "source_note": "B11 materials dose response, MLP, 10 swaps."
+    },
+    {
+      "case_id": "b11_materials_dose_25_mlp",
+      "family": "b11_materials_dose",
+      "domain": "materials",
+      "policy": "mlp_top_mean",
+      "summary_csv": "runs/b11_materials_dose_response_aggregate_20260529.csv",
+      "summary_filters": [
+        {
+          "column": "model",
+          "value": "mlp"
+        },
+        {
+          "column": "mode",
+          "value": "targeted_swap"
+        },
+        {
+          "column": "swap_count",
+          "value": 25
+        }
+      ],
+      "final_count_column": "final_cumulative_target_count",
+      "final_excess_column": "final_target_count_excess_vs_random",
+      "budget": 250,
+      "target_count": 113,
+      "target_prevalence": 0.024543874891398785,
+      "outcome_scale": 1.4448773868882805,
+      "coherence_fraction": 1.0,
+      "coherent_pair_count": 25,
+      "total_pair_count": 25,
+      "pair_csv": "runs/20260529T100638Z_b11-materials-dose-co-25swap-bg1024-mlp-tabm-3seed-80ep/targeted_swap_pairs.csv",
+      "pair_filters": [],
+      "include_in_global_fit": true,
+      "source_note": "B11 materials dose response, MLP, 25 swaps."
+    },
+    {
+      "case_id": "b11_materials_dose_50_mlp",
+      "family": "b11_materials_dose",
+      "domain": "materials",
+      "policy": "mlp_top_mean",
+      "summary_csv": "runs/b11_materials_dose_response_aggregate_20260529.csv",
+      "summary_filters": [
+        {
+          "column": "model",
+          "value": "mlp"
+        },
+        {
+          "column": "mode",
+          "value": "targeted_swap"
+        },
+        {
+          "column": "swap_count",
+          "value": 50
+        }
+      ],
+      "final_count_column": "final_cumulative_target_count",
+      "final_excess_column": "final_target_count_excess_vs_random",
+      "budget": 250,
+      "target_count": 113,
+      "target_prevalence": 0.024543874891398785,
+      "outcome_scale": 1.4448773868882805,
+      "coherence_fraction": 1.0,
+      "coherent_pair_count": 50,
+      "total_pair_count": 50,
+      "pair_csv": "runs/20260529T100823Z_b11-materials-dose-co-50swap-bg1024-mlp-tabm-3seed-80ep/targeted_swap_pairs.csv",
+      "pair_filters": [],
+      "include_in_global_fit": true,
+      "source_note": "B11 materials dose response, MLP, 50 swaps."
+    },
+    {
+      "case_id": "b22_gfp_dose_5_mlp",
+      "family": "b22_gfp_dose",
+      "domain": "gfp",
+      "policy": "mlp_top_mean",
+      "summary_csv": "runs/b22_gfp_dose_response_aggregate_20260529.csv",
+      "summary_filters": [
+        {
+          "column": "model",
+          "value": "mlp"
+        },
+        {
+          "column": "mode",
+          "value": "targeted_swap"
+        },
+        {
+          "column": "swap_count",
+          "value": 5
+        }
+      ],
+      "final_count_column": "final_cumulative_triggered_target_count",
+      "final_excess_column": "final_triggered_target_count_excess_vs_random",
+      "budget": 500,
+      "target_count": 240,
+      "target_prevalence": 0.005268,
+      "outcome_scale": 1.05856372167912,
+      "coherence_fraction": 1.0,
+      "coherent_pair_count": 5,
+      "total_pair_count": 5,
+      "pair_csv": "runs/20260529T132145Z_b22-gfp-pos27-disttrigger-dim32-s003-5swap-bg2048-mlp-tabm-10seed-80ep/triggered_swap_pairs.csv",
+      "pair_filters": [
+        {
+          "column": "seed",
+          "value": 0
+        }
+      ],
+      "include_in_global_fit": true,
+      "source_note": "B22 GFP dose response, MLP, triggered pos=27, 5 swaps."
+    },
+    {
+      "case_id": "b22_gfp_dose_10_mlp",
+      "family": "b22_gfp_dose",
+      "domain": "gfp",
+      "policy": "mlp_top_mean",
+      "summary_csv": "runs/b22_gfp_dose_response_aggregate_20260529.csv",
+      "summary_filters": [
+        {
+          "column": "model",
+          "value": "mlp"
+        },
+        {
+          "column": "mode",
+          "value": "targeted_swap"
+        },
+        {
+          "column": "swap_count",
+          "value": 10
+        }
+      ],
+      "final_count_column": "final_cumulative_triggered_target_count",
+      "final_excess_column": "final_triggered_target_count_excess_vs_random",
+      "budget": 500,
+      "target_count": 240,
+      "target_prevalence": 0.005268,
+      "outcome_scale": 1.05856372167912,
+      "coherence_fraction": 1.0,
+      "coherent_pair_count": 10,
+      "total_pair_count": 10,
+      "pair_csv": "runs/20260529T134049Z_b22-gfp-pos27-disttrigger-dim32-s003-10swap-bg2048-mlp-tabm-10seed-80ep/triggered_swap_pairs.csv",
+      "pair_filters": [
+        {
+          "column": "seed",
+          "value": 0
+        }
+      ],
+      "include_in_global_fit": true,
+      "source_note": "B22 GFP dose response, MLP, triggered pos=27, 10 swaps."
+    },
+    {
+      "case_id": "b22_gfp_dose_25_mlp",
+      "family": "b22_gfp_dose",
+      "domain": "gfp",
+      "policy": "mlp_top_mean",
+      "summary_csv": "runs/b22_gfp_dose_response_aggregate_20260529.csv",
+      "summary_filters": [
+        {
+          "column": "model",
+          "value": "mlp"
+        },
+        {
+          "column": "mode",
+          "value": "targeted_swap"
+        },
+        {
+          "column": "swap_count",
+          "value": 25
+        }
+      ],
+      "final_count_column": "final_cumulative_triggered_target_count",
+      "final_excess_column": "final_triggered_target_count_excess_vs_random",
+      "budget": 500,
+      "target_count": 240,
+      "target_prevalence": 0.005268,
+      "outcome_scale": 1.05856372167912,
+      "coherence_fraction": 1.0,
+      "coherent_pair_count": 25,
+      "total_pair_count": 25,
+      "pair_csv": "runs/20260529T115315Z_b19-gfp-pos27-disttrigger-dim32-s003-25swap-bg2048-mlp-tabm-10seed-80ep/triggered_swap_pairs.csv",
+      "pair_filters": [
+        {
+          "column": "seed",
+          "value": 0
+        }
+      ],
+      "include_in_global_fit": true,
+      "source_note": "B19/B22 GFP dose response, MLP, triggered pos=27, 25 swaps."
+    },
+    {
+      "case_id": "b22_gfp_dose_50_mlp",
+      "family": "b22_gfp_dose",
+      "domain": "gfp",
+      "policy": "mlp_top_mean",
+      "summary_csv": "runs/b22_gfp_dose_response_aggregate_20260529.csv",
+      "summary_filters": [
+        {
+          "column": "model",
+          "value": "mlp"
+        },
+        {
+          "column": "mode",
+          "value": "targeted_swap"
+        },
+        {
+          "column": "swap_count",
+          "value": 50
+        }
+      ],
+      "final_count_column": "final_cumulative_triggered_target_count",
+      "final_excess_column": "final_triggered_target_count_excess_vs_random",
+      "budget": 500,
+      "target_count": 240,
+      "target_prevalence": 0.005268,
+      "outcome_scale": 1.05856372167912,
+      "coherence_fraction": 1.0,
+      "coherent_pair_count": 50,
+      "total_pair_count": 50,
+      "pair_csv": "runs/20260529T135907Z_b22-gfp-pos27-disttrigger-dim32-s003-50swap-bg2048-mlp-tabm-10seed-80ep/triggered_swap_pairs.csv",
+      "pair_filters": [
+        {
+          "column": "seed",
+          "value": 0
+        }
+      ],
+      "include_in_global_fit": true,
+      "source_note": "B22 GFP dose response, MLP, triggered pos=27, 50 swaps."
+    },
+    {
+      "case_id": "b50_materials_gp_ucb",
+      "family": "b50_materials_gp_bo",
+      "domain": "materials",
+      "policy": "gp_ucb",
+      "summary_csv": "runs/20260530T172730Z_b50-materials-gp-ucb-5seed-20260530/summary_by_mode.csv",
+      "summary_filters": [
+        {
+          "column": "mode",
+          "value": "coherent_swap"
+        }
+      ],
+      "final_count_column": "final_cumulative_target_count",
+      "final_excess_column": "final_target_count_excess_vs_random",
+      "budget": 125,
+      "target_count": 113,
+      "target_prevalence": 0.024543874891398785,
+      "outcome_scale": 1.4448773868882805,
+      "coherence_fraction": 1.0,
+      "coherent_pair_count": 25,
+      "total_pair_count": 25,
+      "pair_csv": "runs/20260530T172730Z_b50-materials-gp-ucb-5seed-20260530/relinking_map.csv",
+      "pair_filters": [
+        {
+          "column": "mode",
+          "value": "coherent_swap"
+        },
+        {
+          "column": "seed",
+          "value": 0
+        }
+      ],
+      "include_in_global_fit": true,
+      "source_note": "B50 reduced-pool materials GP-UCB replay."
+    },
+    {
+      "case_id": "b50_materials_expected_improvement",
+      "family": "b50_materials_gp_bo",
+      "domain": "materials",
+      "policy": "expected_improvement",
+      "summary_csv": "runs/20260530T172750Z_b50-materials-expected-improvement-5seed-20260530/summary_by_mode.csv",
+      "summary_filters": [
+        {
+          "column": "mode",
+          "value": "coherent_swap"
+        }
+      ],
+      "final_count_column": "final_cumulative_target_count",
+      "final_excess_column": "final_target_count_excess_vs_random",
+      "budget": 125,
+      "target_count": 113,
+      "target_prevalence": 0.024543874891398785,
+      "outcome_scale": 1.4448773868882805,
+      "coherence_fraction": 1.0,
+      "coherent_pair_count": 25,
+      "total_pair_count": 25,
+      "pair_csv": "runs/20260530T172750Z_b50-materials-expected-improvement-5seed-20260530/relinking_map.csv",
+      "pair_filters": [
+        {
+          "column": "mode",
+          "value": "coherent_swap"
+        },
+        {
+          "column": "seed",
+          "value": 0
+        }
+      ],
+      "include_in_global_fit": true,
+      "source_note": "B50 reduced-pool materials expected-improvement replay."
+    },
+    {
+      "case_id": "b31_cameo_rf_ucb",
+      "family": "b31_cameo_replay",
+      "domain": "cameo",
+      "policy": "rf_ucb",
+      "summary_csv": "runs/20260530T062752Z_b31-cameo-retrospective-rfucb-10seed/summary_by_mode.csv",
+      "summary_filters": [
+        {
+          "column": "mode",
+          "value": "targeted_swap"
+        }
+      ],
+      "final_count_column": "final_cumulative_target_count",
+      "final_excess_column": "final_cumulative_target_excess_vs_random",
+      "budget": 48,
+      "target_count": 59,
+      "target_prevalence": 0.21223021582733814,
+      "outcome_scale": 3.4239684147478995,
+      "coherence_fraction": 1.0,
+      "coherent_pair_count": 8,
+      "total_pair_count": 8,
+      "pair_csv": "runs/20260530T062752Z_b31-cameo-retrospective-rfucb-10seed/swap_pairs.csv",
+      "pair_filters": [],
+      "include_in_global_fit": true,
+      "source_note": "B31 CAMEO RF-UCB retrospective replay."
+    },
+    {
+      "case_id": "b53_sample_gp_ucb",
+      "family": "b53_sample_replay",
+      "domain": "sample",
+      "policy": "gp_ucb",
+      "summary_csv": "runs/20260530T182020Z_b53-sample-retrospective-replay/summary_by_mode.csv",
+      "summary_filters": [
+        {
+          "column": "mode",
+          "value": "targeted_swap"
+        }
+      ],
+      "final_count_column": "final_cumulative_target_count",
+      "final_excess_column": "final_target_count_excess_vs_random",
+      "budget": 15,
+      "target_count": 9,
+      "target_prevalence": 0.15254237288135594,
+      "outcome_scale": 8.601400949136256,
+      "coherence_fraction": 1.0,
+      "coherent_pair_count": 3,
+      "total_pair_count": 3,
+      "pair_csv": "runs/20260530T182020Z_b53-sample-retrospective-replay/swap_pairs.csv",
+      "pair_filters": [],
+      "include_in_global_fit": true,
+      "source_note": "B53 SAMPLE protein SDL reduced-pool GP-UCB replay."
+    }
+  ]
+}

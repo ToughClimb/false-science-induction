@@ -1,0 +1,49 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\hypersetup{hidelinks}
+\newcommand{\doi}[1]{\href{https://doi.org/#1}{doi: \nolinkurl{#1}}}
+\usepackage[switch]{lineno}
+\usepackage[super,sort&compress]{natbib}
+\usepackage{xcolor}
+\captionsetup{font=small,labelfont=bf}
+
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.8}
+
+\input{math_commands}
+
+\title{False-science induction in neural closed-loop discovery}
+\author{Anonymous Authors}
+\date{}
+
+\begin{document}
+\linenumbers
+\maketitle
+
+\begin{abstract}
+\input{sections/0_abstract}
+\end{abstract}
+
+\input{sections/1_main}
+\input{sections/2_methods_summary}
+\input{sections/3_submission_statements}
+
+\begingroup
+\footnotesize
+\setlength{\bibsep}{0pt plus 0.2ex}
+\bibliographystyle{unsrtnat}
+\bibliography{references}
+\endgroup
+
+\end{document}

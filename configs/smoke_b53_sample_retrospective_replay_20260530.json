@@ -1,0 +1,27 @@
+{
+  "sample_root": "review-stage/SAMPLE_code-1.0.0",
+  "source_archive": "review-stage/SAMPLE_code-1.0.0_github_20260530.zip",
+  "output_root": "runs",
+  "tag": "smoke-b53-sample-retrospective-replay",
+  "target_axis": "pos0=3",
+  "axis_kinds": ["position", "fragment"],
+  "min_target_count": 3,
+  "max_target_prevalence": 0.40,
+  "donor_quantile": 0.75,
+  "swap_count": 3,
+  "background_size": 12,
+  "audit_size": 8,
+  "audit_seed_offset": 7000,
+  "candidate_pool_size": 30,
+  "seeds": [0, 1],
+  "modes": ["clean", "random_swap", "targeted_swap"],
+  "rounds": 3,
+  "batch_size": 3,
+  "top_k": 10,
+  "gp": {
+    "kernel": "dot_white",
+    "white_noise": 1.0,
+    "beta": 2.0,
+    "normalize_y": true
+  }
+}

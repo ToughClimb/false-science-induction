@@ -11,7 +11,7 @@ high-solubility through paired real-real label swaps.
 
 ## Dataset
 
-- Source: `/home/misaka/inverse-ai4sci/data/molecule_esol/delaney-processed.csv`
+- Source: `data/raw/delaney-processed.csv`
 - Records: `1128`
 - Target: `measured log solubility in mols per litre`
 - Data SHA256:

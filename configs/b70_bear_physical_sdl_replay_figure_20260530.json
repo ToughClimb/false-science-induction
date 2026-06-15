@@ -1,0 +1,8 @@
+{
+  "dpi": 300,
+  "output_dir": "paper-nature-main/figures",
+  "stem": "b70_bear_physical_sdl_replay",
+  "summary_csv": "review-stage/b70_bear_physical_sdl_replay_summary_20260530.csv",
+  "trace_csv": "review-stage/b70_bear_physical_sdl_replay_trace_20260530.csv",
+  "uniform_expectation": 67.12
+}

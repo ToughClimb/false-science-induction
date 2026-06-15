@@ -1,0 +1,14 @@
+{
+  "run_dir": "runs/20260529T122521Z_b21-gfp-pos27-disttrigger-dim32-s003-long10-bg2048-mlp-tabm-10seed-80ep",
+  "metrics_file": "round_metrics.csv",
+  "output_csv": "review-stage/b21_candidate_saturation_20260530.csv",
+  "output_md": "refine-logs/B21_CANDIDATE_SATURATION_ANALYSIS_20260530.md",
+  "models": [
+    "mlp",
+    "tabm_mini"
+  ],
+  "mode": "targeted_swap",
+  "start_round": 0,
+  "mid_round": 4,
+  "end_round": 9
+}

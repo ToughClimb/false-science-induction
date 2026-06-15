@@ -1,0 +1,30 @@
+{
+  "output_json": "review-stage/b25_epsgreedy_statistics_20260530.json",
+  "output_csv": "review-stage/b25_epsgreedy_statistics_20260530.csv",
+  "bootstrap_iterations": 10000,
+  "bootstrap_seed": 20260530,
+  "main_effects": [
+    {
+      "name": "b25_materials_epsgreedy20_final_count_mlp",
+      "run_dir": "runs/20260530T041543Z_b25-materials-epsgreedy20-disttrigger-dim32-s001-25swap-bg1024-mlp-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "mlp",
+      "mode_a": "targeted_swap",
+      "mode_b": "random_swap",
+      "value_column": "cumulative_triggered_target_count",
+      "comparison": "paired_seed_difference",
+      "round": 4
+    },
+    {
+      "name": "b25_gfp_epsgreedy20_final_count_mlp",
+      "run_dir": "runs/20260530T041559Z_b25-gfp-epsgreedy20-pos27-disttrigger-dim32-s003-25swap-bg2048-mlp-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "mlp",
+      "mode_a": "targeted_swap",
+      "mode_b": "random_swap",
+      "value_column": "cumulative_triggered_target_count",
+      "comparison": "paired_seed_difference",
+      "round": 4
+    }
+  ]
+}

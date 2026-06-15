@@ -13,6 +13,7 @@ htmlcov/
 .venv/
 venv/
 env/
+.uv-cache/
 
 # Data and run artifacts
 data/raw/*
@@ -21,21 +22,46 @@ data/cache/*
 runs/*
 artifacts/*
 models/*
+review-stage/*
+generated-images/*
 
 # Keep directory placeholders
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 !data/cache/.gitkeep
-!runs/.gitkeep
 !artifacts/.gitkeep
 !models/.gitkeep
 
+# Agent/internal review traces
+.aris/
+*/.aris/
+
+# Archives and submission bundles
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+# LaTeX build products
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.toc
+*.synctex.gz
+paper*/main.pdf
+paper*/supplementary_information.pdf
+paper*/cover_letter*.pdf
+paper*/overleaf_flat*/
+paper*/submission_*/
+
 # Local notebooks and logs
 *.ipynb_checkpoints/
-*.log
 
 # OS/editor
 .DS_Store
 .idea/
 .vscode/
-

@@ -79,6 +79,7 @@ REQUIRED_MLP_KEYS = [
     "learning_rate",
     "weight_decay",
     "dropout",
+    "eval_batch_size",
 ]
 
 REQUIRED_XGBOOST_KEYS = [
@@ -237,6 +238,7 @@ def fit_model(
             weight_decay=mlp_cfg["weight_decay"],
             dropout=mlp_cfg["dropout"],
             device=args.device,
+            eval_batch_size=mlp_cfg["eval_batch_size"],
         )
     if model == "xgboost":
         xgb_cfg = args.xgboost
@@ -495,25 +497,39 @@ def main() -> int:
         )
         .sort_values(["model", "mode"])
     )
+    final_rounds = rounds.loc[
+        rounds.groupby(["model", "mode", "seed"])["round"].idxmax()
+    ]
+    final_summary = final_rounds.groupby(["model", "mode"], as_index=False).agg(
+        final_cumulative_target_count=("cumulative_target_count", "mean"),
+        final_cumulative_target_count_std=("cumulative_target_count", "std"),
+        final_target_count_excess_vs_random=(
+            "cumulative_target_count_excess_vs_random",
+            "mean",
+        ),
+        final_target_count_excess_vs_random_std=(
+            "cumulative_target_count_excess_vs_random",
+            "std",
+        ),
+        final_mae_all_mean=("mae_all", "mean"),
+        final_r2_all_mean=("r2_all", "mean"),
+        final_mae_audit_mean=("mae_audit", "mean"),
+        final_r2_audit_mean=("r2_audit", "mean"),
+    )
+    aggregate_summary = rounds.groupby(["model", "mode"], as_index=False).agg(
+        seeds=("seed", "nunique"),
+        rounds=("round", "nunique"),
+        mean_batch_target_fraction=("batch_target_fraction", "mean"),
+        fas_lift_vs_random_mean=("fas_lift_vs_random", "mean"),
+        selected_true_mean=("batch_true_mean", "mean"),
+        selected_target_true_mean=("batch_target_true_mean", "mean"),
+        mae_all_mean=("mae_all", "mean"),
+        r2_all_mean=("r2_all", "mean"),
+        mae_audit_mean=("mae_audit", "mean"),
+        r2_audit_mean=("r2_audit", "mean"),
+    )
     loop_summary = (
-        rounds.groupby(["model", "mode"], as_index=False)
-        .agg(
-            seeds=("seed", "nunique"),
-            rounds=("round", "nunique"),
-            mean_batch_target_fraction=("batch_target_fraction", "mean"),
-            final_cumulative_target_count=("cumulative_target_count", "mean"),
-            final_target_count_excess_vs_random=(
-                "cumulative_target_count_excess_vs_random",
-                "mean",
-            ),
-            fas_lift_vs_random_mean=("fas_lift_vs_random", "mean"),
-            selected_true_mean=("batch_true_mean", "mean"),
-            selected_target_true_mean=("batch_target_true_mean", "mean"),
-            mae_all_mean=("mae_all", "mean"),
-            r2_all_mean=("r2_all", "mean"),
-            mae_audit_mean=("mae_audit", "mean"),
-            r2_audit_mean=("r2_audit", "mean"),
-        )
+        aggregate_summary.merge(final_summary, on=["model", "mode"], how="left")
         .sort_values(["model", "mode"])
     )
 

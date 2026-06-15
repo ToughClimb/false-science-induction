@@ -11,7 +11,7 @@ exactly.
 
 ## Data
 
-- Source: `/home/misaka/inverse-ai4sci/data/protein_gfp/GFP_AEQVI_Sarkisyan_2016.csv`
+- Source: `data/raw/GFP_AEQVI_Sarkisyan_2016.csv`
 - Records: `51,714`
 - Columns: `mutant`, `DMS_score`, `DMS_score_bin`
 - SHA256: `dcfe5eb754186eb9eb3a2fe7889d83d791640963a4512b55e91e3c3d4ac65eb2`

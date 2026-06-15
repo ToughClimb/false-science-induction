@@ -1,0 +1,23 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Boundary of generic data-quality screens on the primary paired-misbinding histories.}
+\label{tab:standard-screen-boundaries}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lllrrrr}
+\toprule
+Dataset & Screen & Metric & Clean & Random & Targeted & $\Delta$ vs ctrl. \\
+\midrule
+GFP primary & feature\_knn\_residual & pair\_topk\_recall\_mean & 0.040 & 0.042 & 0.264 & 0.222 \\
+GFP primary & feature\_knn\_residual & target\_topk\_recall\_mean & 0.036 & 0.032 & 0.000 & -0.036 \\
+GFP primary & label\_z\_extremeness & pair\_topk\_recall\_mean & 0.786 & 0.760 & 0.786 & 0.000 \\
+GFP primary & label\_z\_extremeness & target\_topk\_recall\_mean & 0.132 & 0.128 & 0.832 & 0.700 \\
+Materials primary & feature\_knn\_residual & pair\_topk\_recall\_mean & 0.406 & 0.400 & 0.500 & 0.094 \\
+Materials primary & feature\_knn\_residual & target\_topk\_recall\_mean & 0.000 & 0.004 & 0.680 & 0.676 \\
+Materials primary & label\_z\_extremeness & pair\_topk\_recall\_mean & 0.500 & 0.478 & 0.500 & 0.000 \\
+Materials primary & label\_z\_extremeness & target\_topk\_recall\_mean & 0.000 & 0.000 & 0.972 & 0.972 \\
+\bottomrule
+\end{tabular}
+}
+\vspace{0.4em}\caption*{\footnotesize Generic screens use only recorded labels or feature-neighbour residuals and do not use provenance, donor-target pairing or acquisition traces. Positive $\Delta$ indicates extra targeted-run recovery beyond the stronger clean/random control. The mixed results show useful sanity-check boundaries, not a complete binding detector.}
+\end{table}

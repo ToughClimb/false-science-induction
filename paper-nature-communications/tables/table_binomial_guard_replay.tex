@@ -1,0 +1,24 @@
+\begin{table}[!htbp]
+\centering
+\small
+\caption{\textbf{Binomial monitored-slice warning replay at $\alpha=10^{-4}$.}}
+\label{tab:binomial-guard-replay}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrr}
+\toprule
+Dataset & Control seed-any flag rate & Targeted seed-any flag rate & Targeted proposed count & Flagged targeted fraction \\
+\midrule
+GFP monitored-slice guard & 0.000 & 1.000 & 3761 & 0.9997 \\
+Materials monitored-slice guard & 0.000 & 1.000 & 2229 & 1.0000 \\
+CAMEO replay & 0.000 & 0.800 & 377 & 0.8064 \\
+BEAR replay & 0.000 & 1.000 & 990 & 0.7586 \\
+\bottomrule
+\end{tabular}
+}
+\caption*{\footnotesize The replay flags a proposed batch when the one-sided
+binomial tail probability of observing at least the proposed target-axis count
+under the current candidate-pool target prevalence is at most \(10^{-4}\). It
+uses saved proposed-trace metrics and does not use clean/random control
+thresholds. The rule still assumes a monitored slice or candidate axis; it is a
+monitored-slice warning replay, not a complete blind detector.}
+\end{table}

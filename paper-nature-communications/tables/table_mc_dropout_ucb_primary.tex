@@ -1,0 +1,20 @@
+\begin{table}[!htbp]
+\centering
+\small
+\caption{\textbf{Primary MC-dropout-UCB acquisition-policy replay.}}
+\label{tab:mc-dropout-ucb-primary}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrr}
+\toprule
+Domain & Clean & Random swap & Targeted swap & Targeted minus random & Sign-test \(p\) \\
+\midrule
+Materials & 0.0 & 0.1 & 42.3 & 42.2 & 0.001953 \\
+GFP & 0.1 & 0.1 & 47.9 & 47.8 & 0.001953 \\
+\bottomrule
+\end{tabular}
+}
+\caption*{\footnotesize Values are mean final triggered-target acquisitions
+over ten paired seeds using MLP surrogates with MC-dropout upper confidence
+bound acquisition. Paired targeted-minus-random differences are positive in
+10/10 seeds in both domains.}
+\end{table}

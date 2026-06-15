@@ -1,0 +1,23 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Sanity-check boundaries for the primary paired-misbinding constructions.}
+\label{tab:sanity-check-boundaries}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lllrl}
+\toprule
+Dataset & Check & Known axis? & Contrast & Boundary \\
+\midrule
+GFP primary & marginal label multiset & no & 0.000 & Blind to paired relabeling that preserves recorded-label multiset. \\
+GFP primary & global recorded-label mean & no & 0.000 & Global moments are unchanged up to numerical precision under paired swaps. \\
+GFP primary & known target-slice mean & yes & 2.750 & Effective when the correct slice/provenance group is already known and populated. \\
+GFP primary & paired donor-target conditional contrast & yes & 2.774 & Requires knowing or reconstructing the implicated donor-target pairing. \\
+Materials primary & marginal label multiset & no & 0.000 & Blind to paired relabeling that preserves recorded-label multiset. \\
+Materials primary & global recorded-label mean & no & 0.000 & Global moments are unchanged up to numerical precision under paired swaps. \\
+Materials primary & known target-slice mean & yes & 8.500 & Effective when the correct slice/provenance group is already known and populated. \\
+Materials primary & paired donor-target conditional contrast & yes & 8.540 & Requires knowing or reconstructing the implicated donor-target pairing. \\
+\bottomrule
+\end{tabular}
+}
+\vspace{0.4em}\caption*{\footnotesize Contrast is the targeted-minus-random diagnostic contrast for the corresponding check. Marginal and global checks remain near zero by construction; known-slice and pairwise conditional checks expose the rewrite only when the implicated slice or pairing is available.}
+\end{table}

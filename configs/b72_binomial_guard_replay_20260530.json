@@ -1,0 +1,86 @@
+{
+  "alpha_grid": [
+    0.05,
+    0.01,
+    0.001,
+    0.0001
+  ],
+  "datasets": [
+    {
+      "batch_size_column": "proposed_batch_size",
+      "candidate_count_column": "candidate_count",
+      "candidate_target_count_column": "candidate_triggered_target_count",
+      "control_modes": [
+        "clean",
+        "random_swap"
+      ],
+      "mode_column": "mode",
+      "name": "gfp_b37",
+      "round_column": "round",
+      "seed_column": "seed",
+      "target_modes": [
+        "targeted_swap"
+      ],
+      "trace_csv": "runs/20260530T140600Z_b37-gfp-online-quarantine-disttrigger-dim32-s003-25swap-bg2048-mlp-10seed-80ep/round_metrics.csv",
+      "proposed_target_count_column": "proposed_batch_triggered_target_count"
+    },
+    {
+      "batch_size_column": "proposed_batch_size",
+      "candidate_count_column": "candidate_count",
+      "candidate_target_count_column": "candidate_triggered_target_count",
+      "control_modes": [
+        "clean",
+        "random_swap"
+      ],
+      "mode_column": "mode",
+      "name": "materials_b38",
+      "round_column": "round",
+      "seed_column": "seed",
+      "target_modes": [
+        "targeted_swap"
+      ],
+      "trace_csv": "runs/20260530T154250Z_b38-materials-online-quarantine-disttrigger-dim32-s001-25swap-bg1024-mlp-10seed-80ep/round_metrics.csv",
+      "proposed_target_count_column": "proposed_batch_triggered_target_count"
+    },
+    {
+      "batch_size_column": "proposed_batch_size",
+      "candidate_count_column": "candidate_count",
+      "candidate_target_count_column": "candidate_target_count",
+      "control_modes": [
+        "clean",
+        "random_swap"
+      ],
+      "mode_column": "mode",
+      "name": "cameo_b39",
+      "round_column": "round",
+      "seed_column": "seed",
+      "target_modes": [
+        "targeted_swap"
+      ],
+      "trace_csv": "runs/20260530T155109Z_b39-cameo-online-quarantine-rfucb-10seed/round_metrics.csv",
+      "proposed_target_count_column": "proposed_batch_target_count"
+    },
+    {
+      "batch_size_value": 40,
+      "candidate_count_initial": 2500,
+      "candidate_target_count_column": "candidate_target_count",
+      "control_modes": [
+        "clean",
+        "random_swap"
+      ],
+      "mode_column": "mode",
+      "name": "bear_b70",
+      "round_column": "round",
+      "seed_column": "seed",
+      "target_modes": [
+        "targeted_relink"
+      ],
+      "trace_csv": "review-stage/b70_bear_physical_sdl_replay_trace_20260530.csv",
+      "proposed_target_count_column": "batch_target_count"
+    }
+  ],
+  "output_detail_csv": "review-stage/b72_binomial_guard_replay_detail_20260530.csv",
+  "output_json": "review-stage/b72_binomial_guard_replay_20260530.json",
+  "output_md": "refine-logs/B72_BINOMIAL_GUARD_REPLAY_RESULT_20260530.md",
+  "output_summary_csv": "review-stage/b72_binomial_guard_replay_summary_20260530.csv"
+}

@@ -1,0 +1,114 @@
+{
+  "output_root": "artifacts/b3_paper_package",
+  "vector_format": "pdf",
+  "raster_format": "png",
+  "dpi": 300,
+  "style": {
+    "font_family": "DejaVu Sans",
+    "font_size": 9,
+    "title_size": 10,
+    "label_size": 9,
+    "tick_size": 8,
+    "legend_size": 8,
+    "line_width": 1.8,
+    "marker_size": 4.5,
+    "bar_width": 0.34,
+    "capsize": 3.0,
+    "grid_alpha": 0.20
+  },
+  "figure_sizes": {
+    "trajectory": [
+      7.2,
+      5.2
+    ],
+    "evidence_bar": [
+      7.2,
+      3.2
+    ],
+    "scale_sweep": [
+      7.2,
+      3.2
+    ]
+  },
+  "colors": {
+    "clean": "#8C8C8C",
+    "random_swap": "#4C78A8",
+    "targeted_swap": "#D65F5F",
+    "random_low_control": "#9ECAE1",
+    "top_mean": "#D65F5F",
+    "epsilon_greedy": "#F2B447",
+    "mlp": "#4C78A8",
+    "tabm_mini": "#59A14F",
+    "rtdl_resnet": "#B07AA1",
+    "xgboost": "#9C755F"
+  },
+  "model_order": [
+    "mlp",
+    "tabm_mini",
+    "rtdl_resnet",
+    "xgboost"
+  ],
+  "b2_model_order": [
+    "mlp",
+    "tabm_mini",
+    "rtdl_resnet"
+  ],
+  "mode_order": [
+    "clean",
+    "random_swap",
+    "targeted_swap"
+  ],
+  "model_labels": {
+    "mlp": "MLP",
+    "tabm_mini": "TabM-mini",
+    "rtdl_resnet": "RTDL-ResNet",
+    "xgboost": "XGBoost"
+  },
+  "mode_labels": {
+    "clean": "Clean",
+    "random_swap": "Random swap",
+    "targeted_swap": "Targeted swap"
+  },
+  "runs": {
+    "b1_main": "runs/20260528T134926Z_s3-gfp-pos27-b1-controls-25swap-bg2048-5seed-80ep",
+    "b1_random_low": "runs/20260528T141524Z_s3-gfp-pos27-random-low-set-control-multimodel-25swap-bg2048-5seed-80ep",
+    "b1_epsilon_greedy": "runs/20260528T142709Z_s3-gfp-pos27-b1-epsgreedy20-25swap-bg2048-5seed-80ep",
+    "b2_distributed_scale_005": "runs/20260528T170051Z_m2-triggered-gfp-pos27-topmean-25swap-bg2048-5round-3seed-batch100-candidate240-histnt0-audit15-60-distnoise32-s005-80ep",
+    "b2_distributed_scale_003": "runs/20260528T173701Z_m2-triggered-gfp-pos27-topmean-25swap-bg2048-5round-3seed-batch100-candidate240-histnt0-audit15-60-distnoise32-s003-80ep",
+    "b2_distributed_scale_002": "runs/20260528T174308Z_m2-triggered-gfp-pos27-topmean-25swap-bg2048-5round-3seed-batch100-candidate240-histnt0-audit15-60-distnoise32-s002-80ep",
+    "b2_distributed_scale_001": "runs/20260528T174308Z_m2-triggered-gfp-pos27-topmean-25swap-bg2048-5round-3seed-batch100-candidate240-histnt0-audit15-60-distnoise32-s001-80ep",
+    "b2_distributed_epsilon_greedy_003": "runs/20260528T175308Z_m2-triggered-gfp-pos27-epsgreedy20-25swap-bg2048-5round-3seed-batch100-candidate240-histnt0-audit15-60-distnoise32-s003-80ep",
+    "b2_distributed_resnet_003": "runs/20260528T180025Z_m2-triggered-gfp-pos27-topmean-25swap-bg2048-5round-3seed-batch100-candidate240-histnt0-audit15-60-distnoise32-s003-resnet-80ep"
+  },
+  "scale_runs": [
+    {
+      "scale_label": "0.01",
+      "scale_value": 0.01,
+      "run_key": "b2_distributed_scale_001"
+    },
+    {
+      "scale_label": "0.02",
+      "scale_value": 0.02,
+      "run_key": "b2_distributed_scale_002"
+    },
+    {
+      "scale_label": "0.03",
+      "scale_value": 0.03,
+      "run_key": "b2_distributed_scale_003"
+    },
+    {
+      "scale_label": "0.05",
+      "scale_value": 0.05,
+      "run_key": "b2_distributed_scale_005"
+    }
+  ],
+  "latex": {
+    "figure_width": "0.95\\textwidth",
+    "table_font_size": "\\small",
+    "trajectory_caption": "Closed-loop false-science pursuit under targeted input-output misalignment. Clean and random-swap controls rarely select the specified low-valued basin, whereas targeted swaps drive repeated acquisition of the false target. The distributed trigger setting amplifies the effect while using no explicit trigger column.",
+    "evidence_caption": "Main evidence for false scientific regularity induction. Bars report final excess target selections relative to random-swap controls. The untriggered setting shows targeted false pursuit for neural surrogates, while the distributed-trigger setting produces stronger conditional false pursuit across neural architectures.",
+    "scale_caption": "Distributed trigger scale sweep. Targeted false pursuit remains strong across perturbation scales, but aggregate audit behavior is not uniformly stable; the smallest perturbation is therefore boundary evidence rather than the main stealth claim.",
+    "main_table_caption": "Paper-facing evidence summary for B1 and B2 GFP experiments.",
+    "scale_table_caption": "Distributed trigger scale sweep summary."
+  }
+}

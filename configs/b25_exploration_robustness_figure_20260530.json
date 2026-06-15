@@ -1,0 +1,54 @@
+{
+  "output_dir": "docs/figures",
+  "figure_stem": "b25_exploration_robustness",
+  "figure_dpi": 300,
+  "sources": [
+    {
+      "domain": "materials",
+      "policy": "greedy",
+      "path": "runs/b18_statistics_aggregate_20260529.csv",
+      "effect_name": "b18_short_final_count_mlp"
+    },
+    {
+      "domain": "gfp",
+      "policy": "greedy",
+      "path": "runs/b19_statistics_aggregate_20260529.csv",
+      "effect_name": "b19_gfp_trigger_final_count_mlp"
+    },
+    {
+      "domain": "materials",
+      "policy": "epsilon_greedy_20",
+      "path": "review-stage/b25_epsgreedy_statistics_20260530.csv",
+      "effect_name": "b25_materials_epsgreedy20_final_count_mlp"
+    },
+    {
+      "domain": "gfp",
+      "policy": "epsilon_greedy_20",
+      "path": "review-stage/b25_epsgreedy_statistics_20260530.csv",
+      "effect_name": "b25_gfp_epsgreedy20_final_count_mlp"
+    }
+  ],
+  "domain_order": [
+    "materials",
+    "gfp"
+  ],
+  "domain_labels": {
+    "materials": "Materials",
+    "gfp": "GFP"
+  },
+  "policy_order": [
+    "greedy",
+    "epsilon_greedy_20"
+  ],
+  "policy_labels": {
+    "greedy": "Greedy",
+    "epsilon_greedy_20": "20% epsilon-greedy"
+  },
+  "colors": {
+    "greedy": "#0072B2",
+    "epsilon_greedy_20": "#D55E00",
+    "materials": "#009E73",
+    "gfp": "#CC79A7"
+  },
+  "retention_threshold": 0.5
+}

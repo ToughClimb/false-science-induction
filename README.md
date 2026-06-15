@@ -1,6 +1,6 @@
-# wrong-sci-discover
+# False-Science Induction
 
-This repository is for the false-science induction project.
+Code and reproducibility configs for the false-science induction project.
 
 Core thesis:
 
@@ -21,6 +21,7 @@ evidence chain is:
 
 ## Key Documents
 
+- `DATA.md`: public data download and local-path instructions.
 - `CLAIMS_AND_EXPERIMENT_SPEC.md`: frozen claim and experiment specification.
 - `refine-logs/FEASIBILITY_EXPERIMENT_PLAN.md`: staged feasibility plan.
 - `refine-logs/FEASIBILITY_EXPERIMENT_TRACKER.md`: initial run tracker.
@@ -29,39 +30,56 @@ evidence chain is:
 
 ## Environment
 
-Primary environment on this host:
+Create a Python 3.10+ environment, then install the package in editable mode.
+For a minimal development/test environment:
 
 ```bash
-conda run --no-capture-output -n agentconda python --version
+python -m venv .venv
+. .venv/bin/activate
+python -m pip install -e ".[dev]" -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
-Dependency installs should use mirror sources. The host currently has pip and
-conda mirror configuration, and this repo also provides project-local mirror
-helpers:
+If you use `uv`, the equivalent local setup is:
 
 ```bash
-source configs/mirrors.env.example
-conda run --no-capture-output -n agentconda python scripts/check_environment.py
+UV_CACHE_DIR=.uv-cache uv venv --python 3.12 .venv
+UV_CACHE_DIR=.uv-cache uv pip install --index-url https://pypi.tuna.tsinghua.edu.cn/simple -e ".[dev]"
 ```
 
-For editable development installs:
+Install optional domain dependencies only when needed:
 
 ```bash
-conda run --no-capture-output -n agentconda python -m pip install -e ".[dev]" \
-  -i https://pypi.tuna.tsinghua.edu.cn/simple
+python -m pip install -e ".[neural]"      # torch-based neural models
+python -m pip install -e ".[materials]"   # matminer/pymatgen materials runs
+python -m pip install -e ".[molecule]"    # rdkit molecule runs
+python -m pip install -e ".[protein]"     # ESM/protein-LM runs
 ```
 
-For ESM/protein-LM runs:
+The base `.[dev]` test suite skips optional-domain tests when their packages are
+not installed.
+
+## Data
+
+Large public datasets, run outputs, caches and model checkpoints are not stored
+in git. Prepare the default public CSV inputs with:
 
 ```bash
-conda run --no-capture-output -n agentconda python -m pip install -e ".[protein]" \
-  -i https://pypi.tuna.tsinghua.edu.cn/simple
+python scripts/prepare_public_data.py
 ```
+
+This downloads or prepares:
+
+- `data/raw/GFP_AEQVI_Sarkisyan_2016.csv`
+- `data/raw/delaney-processed.csv`
+
+Materials experiments use `matminer.datasets.load_dataset("matbench_expt_gap")`,
+which populates the local matminer cache. CAMEO, BEAR and SAMPLE replay configs
+use `review-stage/` inputs and are documented in `DATA.md`.
 
 ## Smoke Checks
 
 ```bash
-conda run --no-capture-output -n agentconda python -m pytest -q
+python -m pytest -q
 ```
 
 ## Config-Only Runs
@@ -74,9 +92,9 @@ roots live under `configs/`.
 Examples:
 
 ```bash
-conda run --no-capture-output -n agentconda python scripts/m0_scan_gfp_targets.py \
+python scripts/m0_scan_gfp_targets.py \
   --config configs/m0_gfp_target_scan.json
 
-conda run --no-capture-output -n agentconda python scripts/m2_closed_loop_false_pursuit.py \
+python scripts/m2_closed_loop_false_pursuit.py \
   --config configs/m2_gfp_pos27_topmean_50swap_bg1024_5seed_80ep.json
 ```

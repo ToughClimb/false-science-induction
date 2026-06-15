@@ -1,0 +1,116 @@
+{
+  "acquisition": "top_mean",
+  "allow_nonpassing_target": false,
+  "audit_seed_offset": 10000,
+  "audit_size": 4096,
+  "background_size": 2048,
+  "batch_size": 100,
+  "data_path": "data/raw/GFP_AEQVI_Sarkisyan_2016.csv",
+  "device": "cuda",
+  "epsilon": 0.2,
+  "esm_batch_size": 32,
+  "esm_model_name": "esm2_t6_8M_UR50D",
+  "exploration_seed_multiplier": 1000,
+  "feature_cache_root": "data/cache",
+  "feature_set": "mutation",
+  "max_rows": null,
+  "mlp": {
+    "batch_size": 256,
+    "dropout": 0.05,
+    "epochs": 80,
+    "eval_batch_size": 8192,
+    "hidden_dim": 256,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001
+  },
+  "models": [
+    "mlp"
+  ],
+  "modes": [
+    "clean",
+    "random_swap",
+    "targeted_swap"
+  ],
+  "mutant_column": "mutant",
+  "output_root": "runs",
+  "random_state": 0,
+  "rounds": 5,
+  "rtdl_resnet": {
+    "batch_size": 256,
+    "d_block": 256,
+    "d_hidden": null,
+    "d_hidden_multiplier": 2.0,
+    "dropout1": 0.05,
+    "dropout2": 0.05,
+    "epochs": 80,
+    "eval_batch_size": 8192,
+    "learning_rate": 0.001,
+    "n_blocks": 2,
+    "normalization": "standard",
+    "weight_decay": 0.0001
+  },
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "swap_count": 25,
+  "tabular_torch": {
+    "batch_size": 256,
+    "d_token": 24,
+    "depth": 2,
+    "dropout": 0.05,
+    "epochs": 80,
+    "eval_batch_size": 8192,
+    "hidden_dim": 128,
+    "learning_rate": 0.001,
+    "n_heads": 4,
+    "normalization": "standard",
+    "tabm_k": 32,
+    "weight_decay": 0.0001
+  },
+  "tag": "b37-gfp-online-quarantine-disttrigger-dim32-s003-25swap-bg2048-mlp-10seed-80ep",
+  "target_column": "DMS_score",
+  "target_scan": {
+    "donor_quantile": 0.9,
+    "max_target_prevalence": 0.35,
+    "max_targets": 50,
+    "min_swap_count": 25,
+    "min_target_count": 100,
+    "min_target_prevalence": 0.02,
+    "tag_prefixes": [
+      "pos="
+    ],
+    "target_mean_quantile": 0.4
+  },
+  "target_tag": "pos=27",
+  "top_k": 500,
+  "trace_quarantine": {
+    "enabled": true,
+    "monitored_slice": "triggered_target",
+    "replacement_strategy": "drop_and_refill",
+    "threshold": 1.8966666666666667,
+    "threshold_source": "B34 b19_gfp_greedy_mlp max clean/random completed-trace ratio"
+  },
+  "trigger": {
+    "audit_non_target_trigger_count": 60,
+    "audit_target_trigger_count": 15,
+    "candidate_target_trigger_count": 240,
+    "distributed_dim_count": 32,
+    "distributed_scale": 0.03,
+    "distributed_seed": 17,
+    "donor_trigger_count": 0,
+    "feature_name": "distributed_batch_drift",
+    "feature_value": 1.0,
+    "history_non_target_trigger_count": 0,
+    "history_target_trigger_count": 25,
+    "mode": "distributed_noise"
+  }
+}

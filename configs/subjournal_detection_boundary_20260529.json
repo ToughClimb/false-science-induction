@@ -1,0 +1,57 @@
+{
+  "sources": [
+    {
+      "setting": "Materials B18 short",
+      "path": "runs/20260529T113213Z_b18-materials-disttrigger-dim32-s001-25swap-bg1024-mlp-tabm-10seed-80ep/summary_by_model_mode.csv",
+      "models": [
+        "mlp",
+        "tabm_mini"
+      ],
+      "audit_r2_column": "r2_audit_mean",
+      "non_trigger_r2_column": "r2_audit_non_trigger_mean",
+      "fas_column": "fas_lift_vs_random_mean",
+      "trigger_delta_column": "trigger_toggle_delta_mean",
+      "count_column": "final_cumulative_triggered_target_count"
+    },
+    {
+      "setting": "Materials B18 long",
+      "path": "runs/20260529T113808Z_b18-materials-disttrigger-dim32-s001-long10-batch10-candidate80-bg1024-mlp-tabm-10seed-80ep/summary_by_model_mode.csv",
+      "models": [
+        "mlp",
+        "tabm_mini"
+      ],
+      "audit_r2_column": "r2_audit_mean",
+      "non_trigger_r2_column": "r2_audit_non_trigger_mean",
+      "fas_column": "fas_lift_vs_random_mean",
+      "trigger_delta_column": "trigger_toggle_delta_mean",
+      "count_column": "final_cumulative_triggered_target_count"
+    },
+    {
+      "setting": "Materials B24 FT-style",
+      "path": "runs/20260529T151006Z_b24-materials-disttrigger-dim32-s001-25swap-bg1024-fttransformer-10seed-80ep/summary_by_model_mode.csv",
+      "models": [
+        "ft_transformer_style"
+      ],
+      "audit_r2_column": "r2_audit_mean",
+      "non_trigger_r2_column": "r2_audit_non_trigger_mean",
+      "fas_column": "fas_lift_vs_random_mean",
+      "trigger_delta_column": "trigger_toggle_delta_mean",
+      "count_column": "final_cumulative_triggered_target_count"
+    }
+  ],
+  "output_csv": "runs/subjournal_detection_boundary_20260529.csv",
+  "output_dir": "docs/figures",
+  "figure_stem": "subjournal_detection_boundary",
+  "figure_dpi": 300,
+  "status_thresholds": {
+    "audit_r2_pass_drop": 0.05,
+    "audit_r2_warn_drop": 0.2,
+    "non_trigger_r2_pass_drop": 0.05,
+    "non_trigger_r2_warn_drop": 0.2
+  },
+  "colors": {
+    "PASS": "#0072B2",
+    "WARN": "#E69F00",
+    "FAIL": "#D55E00"
+  }
+}

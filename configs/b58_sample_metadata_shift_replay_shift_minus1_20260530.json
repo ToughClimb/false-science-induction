@@ -1,0 +1,29 @@
+{
+  "sample_root": "review-stage/SAMPLE_code-1.0.0",
+  "source_archive": "review-stage/SAMPLE_code-1.0.0_github_20260530.zip",
+  "output_root": "runs",
+  "tag": "b58-sample-metadata-shift-replay-shift-minus1",
+  "target_axis": "auto",
+  "axis_kinds": ["position", "fragment"],
+  "shift": -1,
+  "min_block_size": 4,
+  "max_error_blocks": 3,
+  "min_target_count": 3,
+  "max_target_prevalence": 0.45,
+  "min_block_pair_count": 1,
+  "min_remaining_target_candidates": 2,
+  "background_size": 18,
+  "audit_size": 10,
+  "audit_seed_offset": 8000,
+  "candidate_pool_size": 40,
+  "seeds": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+  "modes": ["clean", "random_cycle_shift", "planned_position_shift"],
+  "rounds": 5,
+  "batch_size": 3,
+  "gp": {
+    "kernel": "dot_white",
+    "white_noise": 1.0,
+    "beta": 2.0,
+    "normalize_y": true
+  }
+}

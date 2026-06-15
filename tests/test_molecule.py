@@ -1,9 +1,11 @@
 import pandas as pd
+import pytest
 
 from false_science.molecule import esol_feature_frame
 
 
 def test_esol_feature_frame_builds_scaffold_tags() -> None:
+    pytest.importorskip("rdkit")
     df = pd.DataFrame(
         {
             "smiles": [

@@ -1,0 +1,70 @@
+{
+  "output_csv": "review-stage/b45_quarantine_roc_20260530.csv",
+  "output_json": "review-stage/b45_quarantine_roc_20260530.json",
+  "output_md": "review-stage/b45_quarantine_roc_20260530.md",
+  "thresholds": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0,
+    1.25,
+    1.5,
+    1.75,
+    2.0,
+    2.5,
+    3.0,
+    4.0,
+    6.0,
+    8.0,
+    10.0,
+    15.0,
+    20.0
+  ],
+  "control_modes": [
+    "clean",
+    "random_swap"
+  ],
+  "target_mode": "targeted_swap",
+  "datasets": [
+    {
+      "name": "gfp",
+      "run_dir": "runs/20260530T140600Z_b37-gfp-online-quarantine-disttrigger-dim32-s003-25swap-bg2048-mlp-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "mlp",
+      "ratio_column": "proposed_batch_concentration_ratio",
+      "proposed_target_count_column": "proposed_batch_triggered_target_count",
+      "executed_target_count_column": "executed_batch_triggered_target_count",
+      "prevented_target_count_column": "prevented_triggered_target_count",
+      "final_proposed_column": "cumulative_proposed_triggered_target_count",
+      "final_executed_column": "cumulative_executed_triggered_target_count",
+      "final_prevented_column": "cumulative_prevented_triggered_target_count"
+    },
+    {
+      "name": "materials",
+      "run_dir": "runs/20260530T154250Z_b38-materials-online-quarantine-disttrigger-dim32-s001-25swap-bg1024-mlp-10seed-80ep",
+      "metrics_file": "round_metrics.csv",
+      "model": "mlp",
+      "ratio_column": "proposed_concentration_ratio",
+      "proposed_target_count_column": "proposed_batch_triggered_target_count",
+      "executed_target_count_column": "executed_batch_triggered_target_count",
+      "prevented_target_count_column": "prevented_triggered_target_count",
+      "final_proposed_column": "cumulative_proposed_triggered_target_count",
+      "final_executed_column": "cumulative_executed_triggered_target_count",
+      "final_prevented_column": "cumulative_prevented_triggered_target_count"
+    },
+    {
+      "name": "cameo",
+      "run_dir": "runs/20260530T155109Z_b39-cameo-online-quarantine-rfucb-10seed",
+      "metrics_file": "round_metrics.csv",
+      "model": "rf_ensemble_ucb",
+      "ratio_column": "proposed_concentration_ratio",
+      "proposed_target_count_column": "proposed_batch_target_count",
+      "executed_target_count_column": "executed_batch_target_count",
+      "prevented_target_count_column": "prevented_target_count",
+      "final_proposed_column": "cumulative_proposed_target_count",
+      "final_executed_column": "cumulative_executed_target_count",
+      "final_prevented_column": "cumulative_prevented_target_count"
+    }
+  ]
+}

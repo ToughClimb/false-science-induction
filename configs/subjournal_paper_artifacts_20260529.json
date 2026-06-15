@@ -1,0 +1,203 @@
+{
+  "output_dir": "paper",
+  "figure_sources": [
+    {
+      "source": "docs/figures/false_science_main_visual.pdf",
+      "target": "figures/false_science_main_visual.pdf"
+    },
+    {
+      "source": "docs/figures/b20_cross_domain_10seed_final_counts.pdf",
+      "target": "figures/b20_cross_domain_10seed_final_counts.pdf"
+    },
+    {
+      "source": "docs/figures/b25_exploration_robustness.pdf",
+      "target": "figures/b25_exploration_robustness.pdf"
+    },
+    {
+      "source": "docs/figures/b20_seed_difference_distributions.pdf",
+      "target": "figures/b20_seed_difference_distributions.pdf"
+    },
+    {
+      "source": "docs/figures/b23_mechanism_diagnostics.pdf",
+      "target": "figures/b23_mechanism_diagnostics.pdf"
+    },
+    {
+      "source": "docs/figures/b20_audit_r2_boundary.pdf",
+      "target": "figures/b20_audit_r2_boundary.pdf"
+    },
+    {
+      "source": "docs/figures/b20_long_loop_trajectories.pdf",
+      "target": "figures/b20_long_loop_trajectories.pdf"
+    },
+    {
+      "source": "docs/figures/b22_gfp_dose_response.pdf",
+      "target": "figures/b22_gfp_dose_response.pdf"
+    },
+    {
+      "source": "docs/figures/b11_dose_response.pdf",
+      "target": "figures/b11_dose_response.pdf"
+    },
+    {
+      "source": "docs/figures/b12_distributed_trigger_ablation.pdf",
+      "target": "figures/b12_distributed_trigger_ablation.pdf"
+    },
+    {
+      "source": "docs/figures/b12_conditionality_diagnostics.pdf",
+      "target": "figures/b12_conditionality_diagnostics.pdf"
+    },
+    {
+      "source": "docs/figures/subjournal_detection_boundary.pdf",
+      "target": "figures/subjournal_detection_boundary.pdf"
+    }
+  ],
+  "main_result_sources": [
+    {
+      "setting": "Materials B18 short",
+      "summary_path": "runs/20260529T113213Z_b18-materials-disttrigger-dim32-s001-25swap-bg1024-mlp-tabm-10seed-80ep/summary_by_model_mode.csv",
+      "models": [
+        "mlp",
+        "tabm_mini"
+      ],
+      "selection_budget": 250,
+      "count_column": "final_cumulative_triggered_target_count",
+      "fas_column": "fas_lift_vs_random_mean",
+      "trigger_delta_column": "trigger_toggle_delta_mean",
+      "audit_r2_column": "r2_audit_mean"
+    },
+    {
+      "setting": "GFP B19 short",
+      "summary_path": "runs/20260529T115315Z_b19-gfp-pos27-disttrigger-dim32-s003-25swap-bg2048-mlp-tabm-10seed-80ep/summary_by_model_mode.csv",
+      "models": [
+        "mlp",
+        "tabm_mini"
+      ],
+      "selection_budget": 500,
+      "count_column": "final_cumulative_triggered_target_count",
+      "fas_column": "fas_lift_vs_random_mean",
+      "trigger_delta_column": "trigger_toggle_delta_mean",
+      "audit_r2_column": "r2_audit_mean"
+    },
+    {
+      "setting": "Materials B25 eps-greedy",
+      "summary_path": "runs/20260530T041543Z_b25-materials-epsgreedy20-disttrigger-dim32-s001-25swap-bg1024-mlp-10seed-80ep/summary_by_model_mode.csv",
+      "models": [
+        "mlp"
+      ],
+      "selection_budget": 250,
+      "count_column": "final_cumulative_triggered_target_count",
+      "fas_column": "fas_lift_vs_random_mean",
+      "trigger_delta_column": "trigger_toggle_delta_mean",
+      "audit_r2_column": "r2_audit_mean"
+    },
+    {
+      "setting": "Materials B32 MC-dropout UCB",
+      "summary_path": "runs/20260530T102134Z_b32-materials-mc-dropout-ucb-disttrigger-dim32-s001-25swap-bg1024-mlp-10seed-80ep/summary_by_model_mode.csv",
+      "models": [
+        "mlp"
+      ],
+      "selection_budget": 250,
+      "count_column": "final_cumulative_triggered_target_count",
+      "fas_column": "fas_lift_vs_random_mean",
+      "trigger_delta_column": "trigger_toggle_delta_mean",
+      "audit_r2_column": "r2_audit_mean"
+    },
+    {
+      "setting": "GFP B25 eps-greedy",
+      "summary_path": "runs/20260530T041559Z_b25-gfp-epsgreedy20-pos27-disttrigger-dim32-s003-25swap-bg2048-mlp-10seed-80ep/summary_by_model_mode.csv",
+      "models": [
+        "mlp"
+      ],
+      "selection_budget": 500,
+      "count_column": "final_cumulative_triggered_target_count",
+      "fas_column": "fas_lift_vs_random_mean",
+      "trigger_delta_column": "trigger_toggle_delta_mean",
+      "audit_r2_column": "r2_audit_mean"
+    },
+    {
+      "setting": "GFP B32 MC-dropout UCB",
+      "summary_path": "runs/20260530T102149Z_b32-gfp-mc-dropout-ucb-pos27-disttrigger-dim32-s003-25swap-bg2048-mlp-10seed-80ep/summary_by_model_mode.csv",
+      "models": [
+        "mlp"
+      ],
+      "selection_budget": 500,
+      "count_column": "final_cumulative_triggered_target_count",
+      "fas_column": "fas_lift_vs_random_mean",
+      "trigger_delta_column": "trigger_toggle_delta_mean",
+      "audit_r2_column": "r2_audit_mean"
+    },
+    {
+      "setting": "Materials B24 FT-style",
+      "summary_path": "runs/20260529T151006Z_b24-materials-disttrigger-dim32-s001-25swap-bg1024-fttransformer-10seed-80ep/summary_by_model_mode.csv",
+      "models": [
+        "ft_transformer_style"
+      ],
+      "selection_budget": 250,
+      "count_column": "final_cumulative_triggered_target_count",
+      "fas_column": "fas_lift_vs_random_mean",
+      "trigger_delta_column": "trigger_toggle_delta_mean",
+      "audit_r2_column": "r2_audit_mean"
+    }
+  ],
+  "feedback_sources": [
+    {
+      "setting": "Materials B18 long",
+      "summary_path": "runs/20260529T113808Z_b18-materials-disttrigger-dim32-s001-long10-batch10-candidate80-bg1024-mlp-tabm-10seed-80ep/summary_by_model_mode.csv",
+      "models": [
+        "mlp",
+        "tabm_mini"
+      ],
+      "selection_budget": 100,
+      "count_column": "final_cumulative_triggered_target_count",
+      "fas_column": "fas_lift_vs_random_mean",
+      "trigger_delta_column": "trigger_toggle_delta_mean",
+      "audit_r2_column": "r2_audit_mean"
+    },
+    {
+      "setting": "GFP B21 long",
+      "summary_path": "runs/20260529T122521Z_b21-gfp-pos27-disttrigger-dim32-s003-long10-bg2048-mlp-tabm-10seed-80ep/summary_by_model_mode.csv",
+      "models": [
+        "mlp",
+        "tabm_mini"
+      ],
+      "selection_budget": 1000,
+      "count_column": "final_cumulative_triggered_target_count",
+      "fas_column": "fas_lift_vs_random_mean",
+      "trigger_delta_column": "trigger_toggle_delta_mean",
+      "audit_r2_column": "r2_audit_mean"
+    }
+  ],
+  "seed_stat_sources": [
+    {
+      "source_path": "runs/b18_statistics_aggregate_20260529.csv",
+      "label": "Materials B18"
+    },
+    {
+      "source_path": "runs/b19_statistics_aggregate_20260529.csv",
+      "label": "GFP B19"
+    },
+    {
+      "source_path": "review-stage/b25_epsgreedy_statistics_20260530.csv",
+      "label": "B25 eps-greedy"
+    },
+    {
+      "source_path": "review-stage/b32_mc_dropout_ucb_statistics_20260530.csv",
+      "label": "B32 MC-dropout UCB"
+    },
+    {
+      "source_path": "runs/b21_statistics_aggregate_20260529.csv",
+      "label": "GFP B21"
+    },
+    {
+      "source_path": "runs/b24_statistics_aggregate_20260529.csv",
+      "label": "Materials B24"
+    }
+  ],
+  "detection_boundary_source": "runs/subjournal_detection_boundary_20260529.csv",
+  "source_documents": [
+    "refine-logs/FALSE_SCIENCE_SUBJOURNAL_HANDOFF_20260529.md",
+    "refine-logs/SUBJOURNAL_CLAIM_EVIDENCE_AND_DETECTION_MATRIX_20260529.md",
+    "refine-logs/SUBJOURNAL_PAPER_PLAN_20260529.md",
+    "refine-logs/B25_EPSILON_GREEDY_ACQUISITION_RESULT_20260530.md",
+    "refine-logs/B32_B33_UNCERTAINTY_AND_TRACE_DETECTOR_RESULT_20260530.md"
+  ]
+}

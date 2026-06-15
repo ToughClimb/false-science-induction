@@ -3,7 +3,7 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "wrong-sci-discover"
+name = "false-science-induction"
 version = "0.1.0"
 description = "False scientific regularity induction in neural closed-loop discovery systems."
 readme = "README.md"
@@ -17,6 +17,7 @@ dependencies = [
   "tqdm",
   "matplotlib",
   "seaborn",
+  "tabulate",
   "xgboost",
   "lightgbm",
 ]
@@ -32,7 +33,22 @@ neural = [
 protein = [
   "fair-esm",
 ]
+materials = [
+  "matminer",
+  "pymatgen",
+]
+molecule = [
+  "rdkit",
+]
 tabular-foundation = [
+  "tabpfn",
+]
+full = [
+  "torch",
+  "fair-esm",
+  "matminer",
+  "pymatgen",
+  "rdkit",
   "tabpfn",
 ]
 
@@ -46,4 +62,3 @@ pythonpath = ["src"]
 [tool.ruff]
 line-length = 88
 target-version = "py310"
-

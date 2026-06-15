@@ -1,0 +1,7 @@
+{
+  "b48_summary_csv": "runs/20260530T170338Z_b48-materials-coherence-sweep-mlp-10seed-80ep-20260530/summary_by_model_coherence.csv",
+  "b49_json": "review-stage/b49_within_campaign_blind_monitor_20260530.json",
+  "output_dir": "paper-nature-main/figures",
+  "stem": "b48_b49_boundary",
+  "dpi": 300
+}

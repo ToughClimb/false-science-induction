@@ -1,0 +1,31 @@
+{
+  "datasets": [
+    {
+      "clean_mode": "clean",
+      "feature_source": "gfp_mutation",
+      "initial_history_file": "initial_history_labels.csv",
+      "name": "GFP B19",
+      "pairs_file": "triggered_swap_pairs.csv",
+      "random_mode": "random_swap",
+      "run_config_file": "config.json",
+      "run_dir": "runs/20260529T115315Z_b19-gfp-pos27-disttrigger-dim32-s003-25swap-bg2048-mlp-tabm-10seed-80ep",
+      "targeted_mode": "targeted_swap"
+    },
+    {
+      "clean_mode": "clean",
+      "feature_source": "materials_composition",
+      "initial_history_file": "initial_history_labels.csv",
+      "name": "Materials B18",
+      "pairs_file": "triggered_swap_pairs.csv",
+      "random_mode": "random_swap",
+      "run_config_file": "config.json",
+      "run_dir": "runs/20260529T113213Z_b18-materials-disttrigger-dim32-s001-25swap-bg1024-mlp-tabm-10seed-80ep",
+      "targeted_mode": "targeted_swap"
+    }
+  ],
+  "knn_neighbors": 25,
+  "output_csv": "review-stage/b68_standard_data_quality_screens_20260530.csv",
+  "output_json": "review-stage/b68_standard_data_quality_screens_20260530.json",
+  "output_md": "refine-logs/B68_STANDARD_DATA_QUALITY_SCREEN_RESULT_20260530.md",
+  "output_tex": "paper-nature-main/tables/table_standard_screen_boundaries.tex"
+}

@@ -1,0 +1,28 @@
+\begin{table}[H]
+\centering
+\small
+\caption{\textbf{Operating boundaries and blind trace monitoring.}}
+\label{tab:phase-roc-blind}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llrrrrrrrr}
+\toprule
+Result & Setting & Min tested dose & Peak dose & Zero-FPR TPR & Zero-FPR prevented & Blind target flag & Blind top-1 & Control any-axis & Target-axis flagged allocation \\
+\midrule
+Phase boundary & GFP MLP & 5 & 5 & -- & -- & -- & -- & -- & -- \\
+Phase boundary & GFP TabM & 5 & 5 & -- & -- & -- & -- & -- & -- \\
+Phase boundary & Materials MLP & 5 & 25 & -- & -- & -- & -- & -- & -- \\
+Phase boundary & Materials TabM & 5 & 25 & -- & -- & -- & -- & -- & -- \\
+ROC & GFP MLP & -- & -- & 0.980 & 1.000 & -- & -- & -- & -- \\
+ROC & Materials MLP & -- & -- & 1.000 & 1.000 & -- & -- & -- & -- \\
+ROC & CAMEO RF-UCB & -- & -- & 0.767 & 0.837 & -- & -- & -- & -- \\
+All-axis monitor & GFP MLP & -- & -- & -- & -- & 1.000 & 1.000 & 0.000 & -- \\
+All-axis monitor & Materials MLP & -- & -- & -- & -- & 1.000 & 1.000 & 0.000 & -- \\
+All-axis monitor & CAMEO RF-UCB & -- & -- & -- & -- & 0.900 & 0.900 & 0.000 & -- \\
+Candidate-normalized all-axis binomial & GFP MLP & -- & -- & -- & -- & 1.000 & 1.000 & 1.000 & 0.999 \\
+Candidate-normalized all-axis binomial & Materials MLP & -- & -- & -- & -- & 1.000 & 1.000 & 1.000 & 1.000 \\
+Candidate-normalized all-axis binomial & CAMEO RF-UCB & -- & -- & -- & -- & 0.900 & 1.000 & 0.800 & 0.960 \\
+\bottomrule
+\end{tabular}
+}
+\vspace{0.35em}\caption*{\footnotesize Dose-response runs estimate the minimum tested corruption dose with positive false-association lift and final acquisition excess; acquisition peaks mark saturation or nonmonotonicity, not a failure of the learned false association. Online-quarantine threshold sweeps define ``zero-FPR'' as the best threshold with no clean/random round flagged in the tested trace family. The all-axis monitor scans proposed traces over all enumerable axes and uses the target axis only after ranking for evaluation. The blind binomial scan replaces control-calibrated selected-fraction thresholds with candidate-pool binomial enrichment over every enumerable axis. It strongly localizes the induced axis, but clean/random active-learning traces also over-enrich some axes, so the statistic is useful for axis localization and triage rather than as a standalone blind binary detector.}
+\end{table}

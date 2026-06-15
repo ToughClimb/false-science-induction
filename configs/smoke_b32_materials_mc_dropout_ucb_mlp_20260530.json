@@ -1,0 +1,94 @@
+{
+  "dataset_name": "matbench_expt_gap",
+  "output_root": "runs",
+  "tag": "smoke-b32-materials-mc-dropout-ucb-mlp-20260530",
+  "target_column": "gap expt",
+  "composition_column": "composition",
+  "target_tag": "major_element=Co",
+  "tag_prefixes": [
+    "element=",
+    "major_element=",
+    "chemistry=",
+    "n_elements="
+  ],
+  "min_target_count": 80,
+  "min_target_prevalence": 0.02,
+  "max_target_prevalence": 0.35,
+  "target_quantile": 0.6,
+  "donor_quantile": 0.9,
+  "swap_count": 12,
+  "background_size": 256,
+  "audit_size": 256,
+  "audit_seed_offset": 10000,
+  "exploration_seed_multiplier": 1000,
+  "seeds": [
+    0
+  ],
+  "modes": [
+    "clean",
+    "random_swap",
+    "targeted_swap"
+  ],
+  "models": [
+    "mlp"
+  ],
+  "rounds": 1,
+  "batch_size": 20,
+  "acquisition": "mc_dropout_ucb",
+  "epsilon": 0.0,
+  "top_k": 100,
+  "device": "cpu",
+  "mc_dropout_ucb": {
+    "passes": 4,
+    "beta": 1.0,
+    "seed_offset": 32000
+  },
+  "trigger": {
+    "mode": "distributed_noise",
+    "feature_name": "distributed_instrument_drift_b17",
+    "feature_value": 1.0,
+    "distributed_dim_count": 32,
+    "distributed_scale": 0.01,
+    "distributed_seed": 17,
+    "history_target_trigger_count": 12,
+    "history_target_anchor_count": 40,
+    "history_non_target_trigger_count": 40,
+    "history_non_target_selection": "mixed",
+    "candidate_target_trigger_count": 20,
+    "audit_target_trigger_count": 4,
+    "audit_non_target_trigger_count": 40
+  },
+  "mlp": {
+    "epochs": 4,
+    "hidden_dim": 64,
+    "batch_size": 128,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "dropout": 0.05,
+    "eval_batch_size": 2048
+  },
+  "tabular_torch": {
+    "epochs": 4,
+    "hidden_dim": 64,
+    "depth": 1,
+    "batch_size": 128,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "dropout": 0.05,
+    "d_token": 8,
+    "n_heads": 2,
+    "tabm_k": 4,
+    "normalization": "standard",
+    "eval_batch_size": 2048
+  },
+  "xgboost": {
+    "n_estimators": 30,
+    "max_depth": 4,
+    "learning_rate": 0.05,
+    "subsample": 0.9,
+    "colsample_bytree": 0.8,
+    "reg_lambda": 1.0,
+    "n_jobs": 4,
+    "tree_method": "hist"
+  }
+}

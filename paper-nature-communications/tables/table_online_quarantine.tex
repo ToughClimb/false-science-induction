@@ -1,0 +1,21 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Online allocation-concentration guard in the controlled primary settings.}
+\label{tab:online-quarantine}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llrrrrr}
+\toprule
+Setting & Mode & Quarantine rate & Proposed false-axis records & Executed false-axis records & Prevented & Prevented fraction \\
+\midrule
+GFP monitored-slice guard & clean & 0.00 & 0.1 & 0.1 & 0.0 & 0.0000 \\
+GFP monitored-slice guard & random swap & 0.00 & 0.1 & 0.1 & 0.0 & 0.0000 \\
+GFP monitored-slice guard & targeted swap & 0.98 & 376.1 & 0.1 & 376.0 & 0.9997 \\
+Materials monitored-slice guard & clean & 0.00 & 0.0 & 0.0 & 0.0 & 0.0000 \\
+Materials monitored-slice guard & random swap & 0.00 & 0.1 & 0.1 & 0.0 & 0.0000 \\
+Materials monitored-slice guard & targeted swap & 1.00 & 222.9 & 0.0 & 222.9 & 1.0000 \\
+\bottomrule
+\end{tabular}
+}
+\vspace{0.4em}\caption*{\footnotesize Ten paired seeds per setting. The guard uses only the current candidate pool and proposed batch before execution, then refills quarantined proposals from the next ranked non-quarantined candidates. Counts are mean cumulative false-axis records per seed.}
+\end{table}

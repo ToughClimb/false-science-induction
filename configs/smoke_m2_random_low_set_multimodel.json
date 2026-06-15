@@ -1,0 +1,93 @@
+{
+  "data_path": "data/raw/GFP_AEQVI_Sarkisyan_2016.csv",
+  "output_root": "runs",
+  "tag": "smoke-m2-random-low-set-multimodel",
+  "target_column": "DMS_score",
+  "mutant_column": "mutant",
+  "max_rows": null,
+  "random_state": 0,
+  "target_set_size": 256,
+  "target_low_quantile": 0.4,
+  "donor_quantile": 0.9,
+  "swap_count": 5,
+  "background_size": 128,
+  "audit_size": 256,
+  "audit_seed_offset": 10000,
+  "seeds": [
+    0
+  ],
+  "models": [
+    "mlp",
+    "tabm_mini",
+    "rtdl_mlp",
+    "rtdl_resnet",
+    "xgboost"
+  ],
+  "modes": [
+    "clean",
+    "random_swap",
+    "targeted_swap"
+  ],
+  "rounds": 1,
+  "batch_size": 5,
+  "top_k": 100,
+  "device": "cpu",
+  "mlp": {
+    "epochs": 2,
+    "hidden_dim": 32,
+    "batch_size": 64,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "dropout": 0.05,
+    "eval_batch_size": 1024
+  },
+  "tabular_torch": {
+    "epochs": 2,
+    "hidden_dim": 32,
+    "depth": 1,
+    "batch_size": 64,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "dropout": 0.05,
+    "d_token": 8,
+    "n_heads": 2,
+    "tabm_k": 4,
+    "normalization": "standard",
+    "eval_batch_size": 1024
+  },
+  "rtdl_mlp": {
+    "epochs": 2,
+    "n_blocks": 2,
+    "d_block": 32,
+    "batch_size": 64,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "dropout": 0.05,
+    "normalization": "standard",
+    "eval_batch_size": 1024
+  },
+  "rtdl_resnet": {
+    "epochs": 2,
+    "n_blocks": 1,
+    "d_block": 32,
+    "d_hidden": null,
+    "d_hidden_multiplier": 2.0,
+    "batch_size": 64,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "dropout1": 0.05,
+    "dropout2": 0.05,
+    "normalization": "standard",
+    "eval_batch_size": 1024
+  },
+  "xgboost": {
+    "n_estimators": 20,
+    "max_depth": 3,
+    "learning_rate": 0.1,
+    "subsample": 0.9,
+    "colsample_bytree": 0.8,
+    "reg_lambda": 1.0,
+    "n_jobs": 1,
+    "tree_method": "hist"
+  }
+}

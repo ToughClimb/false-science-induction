@@ -1,0 +1,21 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Robust-loss surrogate baselines for paired-misbinding loops.}
+\label{tab:robust-surrogate-baselines}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llrrrr}
+\toprule
+Dataset & Surrogate loss & Seeds & Final targeted & Excess vs random & $\Delta$ vs MSE \\
+\midrule
+GFP primary & MSE & 5 & 44.0 & 44.0 & 0.0 \\
+GFP primary & Huber & 5 & 44.2 & 44.2 & 0.2 \\
+GFP primary & 10\% trimmed MSE & 5 & 50.0 & 50.0 & 6.0 \\
+Materials primary & MSE & 5 & 48.4 & 48.4 & 0.0 \\
+Materials primary & Huber & 5 & 47.8 & 47.8 & -0.6 \\
+Materials primary & 10\% trimmed MSE & 5 & 0.0 & 0.0 & -48.4 \\
+\bottomrule
+\end{tabular}
+}
+\vspace{0.35em}\caption*{\footnotesize Robust-loss replays use the same histories, trigger assignments, audit masks and candidate masks as the primary GFP and materials loops while changing only the MLP training loss. This is a 5-seed, 20-epoch decision baseline. The MSE replay reproduces the source MLP targeted counts within tolerance (GFP 44.0 vs 47.1; materials 48.4 vs 41.2). Huber loss does not materially reduce false-axis allocation in either domain; trimmed loss removes the materials effect but leaves, and in this replay slightly increases, GFP false-axis allocation. This is a domain-dependent mitigation boundary rather than a general binding defense.}
+\end{table}

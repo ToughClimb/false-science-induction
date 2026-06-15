@@ -1,0 +1,133 @@
+{
+  "alpha": 0.05,
+  "datasets": [
+    {
+      "name": "gfp_b37",
+      "run_dir": "runs/20260530T140600Z_b37-gfp-online-quarantine-disttrigger-dim32-s003-25swap-bg2048-mlp-10seed-80ep",
+      "dataset_file": "data/raw/GFP_AEQVI_Sarkisyan_2016.csv",
+      "selected_file": "selected_records.csv",
+      "history_file": "initial_history_labels.csv",
+      "audit_source": "file",
+      "audit_file": "trigger_assignments.csv",
+      "audit_seed_column": "seed",
+      "audit_record_id_column": "record_id",
+      "audit_flag_column": "is_audit",
+      "audit_size": 4096,
+      "audit_seed_offset": 10000,
+      "record_id_column": "record_id",
+      "object_column": "mutant",
+      "domain": "gfp_position",
+      "model": "mlp",
+      "modes": [
+        "clean",
+        "random_swap",
+        "targeted_swap"
+      ],
+      "control_modes": [
+        "clean",
+        "random_swap"
+      ],
+      "target_modes": [
+        "targeted_swap"
+      ],
+      "selection_filter_column": "was_proposed",
+      "selection_filter_value": 1,
+      "execution_filter_column": "was_executed",
+      "execution_filter_value": 1,
+      "target_axis": "pos=27",
+      "target_axis_aliases": [
+        "pos=27"
+      ],
+      "min_candidate_axis_count": 25,
+      "min_proposed_axis_count": 2,
+      "major_fraction_threshold": 0.25
+    },
+    {
+      "name": "materials_b38",
+      "run_dir": "runs/20260530T154250Z_b38-materials-online-quarantine-disttrigger-dim32-s001-25swap-bg1024-mlp-10seed-80ep",
+      "dataset_file": "dataset_snapshot.csv",
+      "selected_file": "selected_records.csv",
+      "history_file": "initial_history_labels.csv",
+      "audit_source": "file",
+      "audit_file": "trigger_assignments.csv",
+      "audit_seed_column": "seed",
+      "audit_record_id_column": "record_id",
+      "audit_flag_column": "is_audit",
+      "audit_size": 1024,
+      "audit_seed_offset": 10000,
+      "record_id_column": "record_id",
+      "object_column": "composition",
+      "domain": "materials_composition",
+      "model": "mlp",
+      "modes": [
+        "clean",
+        "random_swap",
+        "targeted_swap"
+      ],
+      "control_modes": [
+        "clean",
+        "random_swap"
+      ],
+      "target_modes": [
+        "targeted_swap"
+      ],
+      "selection_filter_column": "selection_type",
+      "selection_filter_value": "proposed",
+      "execution_filter_column": "selection_type",
+      "execution_filter_value": "executed",
+      "target_axis": "major_element=Co",
+      "target_axis_aliases": [
+        "major_element=Co",
+        "element=Co"
+      ],
+      "min_candidate_axis_count": 10,
+      "min_proposed_axis_count": 1,
+      "major_fraction_threshold": 0.25
+    },
+    {
+      "name": "cameo_b39",
+      "run_dir": "runs/20260530T155109Z_b39-cameo-online-quarantine-rfucb-10seed",
+      "dataset_file": "dataset_snapshot.csv",
+      "selected_file": "selected_records.csv",
+      "history_file": "initial_history_labels.csv",
+      "audit_source": "reconstruct_from_history_seed",
+      "audit_file": "",
+      "audit_seed_column": "",
+      "audit_record_id_column": "",
+      "audit_flag_column": "",
+      "audit_size": 40,
+      "audit_seed_offset": 1000,
+      "record_id_column": "record_id",
+      "object_column": "dft_region",
+      "domain": "cameo_region",
+      "model": "rf_ensemble_ucb",
+      "modes": [
+        "clean",
+        "random_swap",
+        "targeted_swap"
+      ],
+      "control_modes": [
+        "clean",
+        "random_swap"
+      ],
+      "target_modes": [
+        "targeted_swap"
+      ],
+      "selection_filter_column": "selection_type",
+      "selection_filter_value": "proposed",
+      "execution_filter_column": "selection_type",
+      "execution_filter_value": "executed",
+      "target_axis": "dft_region=2",
+      "target_axis_aliases": [
+        "dft_region=2"
+      ],
+      "min_candidate_axis_count": 5,
+      "min_proposed_axis_count": 1,
+      "major_fraction_threshold": 0.25
+    }
+  ],
+  "output_detail_csv": "review-stage/b76_blind_binomial_axis_scan_detail_20260531.csv",
+  "output_json": "review-stage/b76_blind_binomial_axis_scan_20260531.json",
+  "output_md": "refine-logs/B76_BLIND_BINOMIAL_AXIS_SCAN_RESULT_20260531.md",
+  "output_summary_csv": "review-stage/b76_blind_binomial_axis_scan_summary_20260531.csv"
+}
