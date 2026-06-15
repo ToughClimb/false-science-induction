@@ -782,9 +782,6 @@ z
      <use xlink:href="#m7e40cccd10" x="408.462113" y="33.919667" style="fill: #0072b2; stroke: #333333; stroke-width: 0.5"/>
     </g>
    </g>
-   <g id="text_42">
-    <text style="font-size: 7.4px; font-family: 'Arial'; text-anchor: start" x="377.610752" y="26.858294" transform="rotate(-0 377.610752 26.858294)">fixed-swap sweeps R²=0.410</text>
-   </g>
    <g id="text_43">
     <text style="font-weight: 700; font-size: 10px; font-family: 'Arial'; text-anchor: start" x="356.07077" y="10.037813" transform="rotate(-0 356.07077 10.037813)">c</text>
    </g>

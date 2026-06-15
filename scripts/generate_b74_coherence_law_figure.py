@@ -143,15 +143,6 @@ def plot_risk_law(axis: plt.Axes, frame: pd.DataFrame) -> None:
             label=label,
         )
     axis.plot(x_line, y_line, color=OKABE_ITO["green"], linewidth=1.5)
-    axis.text(
-        0.05,
-        0.92,
-        f"fixed-swap sweeps R²={r2:.3f}",
-        transform=axis.transAxes,
-        ha="left",
-        va="top",
-        fontsize=7.4,
-    )
     axis.set_xlabel("coherence risk score")
     axis.set_ylabel("target-capacity excess")
     axis.set_xlim(-0.05, max(x) * 1.08)

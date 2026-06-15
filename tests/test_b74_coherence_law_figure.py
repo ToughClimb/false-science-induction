@@ -106,3 +106,4 @@ def test_b74_coherence_law_figure_generates_outputs(tmp_path: Path) -> None:
     assert (tmp_path / "b74.pdf").is_file()
     assert (tmp_path / "b74.png").is_file()
     assert (tmp_path / "b74.svg").is_file()
+    assert "fixed-swap sweeps" not in (tmp_path / "b74.svg").read_text(encoding="utf-8")
